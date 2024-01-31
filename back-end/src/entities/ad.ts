@@ -1,6 +1,6 @@
 import { ObjectType, Field, ID, Float } from "type-graphql";
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
-
+import { editOrCreated } from "../resolvers/AdResolver";
 export enum HousingTypeEnum {
     Chalet = 'Chalet',
     Appartement = 'Appartement',
@@ -105,23 +105,21 @@ class Ad extends BaseEntity {
     @Field()
     image!: string;
 
-    @Column({
-        type: "enum",
-        enum: HousingTypeEnum,
-        array: true,
-        default: [HousingTypeEnum]
-    })
-    @Field()
-    type!: HousingTypeEnum;
+    // @Column({
+    //     type: "enum",
+    //     enum: HousingTypeEnum,
+    //     array: true,
+    //     default: null
+    // })
+    // type!: HousingTypeEnum;
 
-    @Column({
-        type: "enum",
-        enum: equipementsEnum,
-        array: true,
-        default: [equipementsEnum]
-    })
-    @Field()
-    equipments!: equipementsEnum;
+    // @Column({
+    //     type: "enum",
+    //     enum: equipementsEnum,
+    //     array: true,
+    //     default: null
+    // })
+    // equipments!: equipementsEnum;
 
     constructor(ad?: Partial<Ad>) {
         super();
@@ -145,20 +143,20 @@ class Ad extends BaseEntity {
             }
             this.location = ad.location
 
-            if (!ad.image) {
-                throw new Error('L\'image ne peut pas être vide')
-            }
-            this.image = ad.image
+            // if (!ad.image) {
+            //     throw new Error('L\'image ne peut pas être vide')
+            // }
+            // this.image = ad.image
 
-            if (!ad.equipments) {
-                throw new Error('Les équipements ne peuvent pas être vide')
-            }
-            this.equipments = ad.equipments
+            // if (!ad.equipments) {
+            //     throw new Error('Les équipements ne peuvent pas être vide')
+            // }
+            // this.equipments = ad.equipments
 
-            if (!ad.type) {
-                throw new Error('Le type ne peut pas être vide')
-            }
-            this.type = ad.type
+            // if (!ad.type) {
+            //     throw new Error('Le type ne peut pas être vide')
+            // }
+            // this.type = ad.type
 
         }
     }
@@ -175,7 +173,7 @@ class Ad extends BaseEntity {
         return ad;
     }
 
-    static async createAd(adInformations : Ad): Promise<Ad> {
+    static async createAd(adInformations : editOrCreated): Promise<Ad> {
         const newAd = new Ad(adInformations);
         const savedAd = await newAd.save();
         return savedAd;
