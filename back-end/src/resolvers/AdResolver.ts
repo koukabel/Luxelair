@@ -3,7 +3,7 @@ import Ad from "../entities/ad";
 import { MinLength, Min } from "class-validator";
 
 @ArgsType()
-export class editOrCreated {
+export class editOrCreateAd {
     @Field()
     @MinLength(2)
     title!: string;
@@ -37,7 +37,7 @@ export class AdResolver {
     }
 
     @Mutation(() => Ad)
-    createAd(@Args() args: editOrCreated) {
+    createAd(@Args() args: editOrCreateAd) {
       return Ad.createAd(args);
     }
 }
