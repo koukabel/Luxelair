@@ -70,7 +70,7 @@ export enum exceptionalServicesEnum {
 export enum equipementsEnum {
     SecurityEquipementEnum,
     FornitureEnum,
-    otherServicesEnum,
+    exceptionalServicesEnum,
     BathroomEnum,
     ElectonicsEnum,
     KitchenEnum
@@ -162,10 +162,45 @@ class Ad extends BaseEntity {
 
         }
     }
-    static async getAds() {
+    static async getAds(): Promise<Ad[]> {
         const ads = await Ad.find();
         return ads;
     }
+
+    static async getAdById(id: string): Promise<Ad> {
+        const ad = await Ad.findOneBy({ id : id});
+        if (!ad) {
+            throw new Error('Ad does not exist');
+        }
+        return ad;
+    }
+
+    static async createAd(adInformations : Ad): Promise<Ad> {
+        const newAd = new Ad(adInformations);
+        const savedAd = await newAd.save();
+        return savedAd;
+    }
+
+
+    static async updateAd (id: string, adInformations: Ad) :Promise<Ad> {
+        const adToUpdate = await Ad.findOneBy({id: id})
+        if (!adToUpdate) {
+            throw new Error('Ad does not exist');
+        }
+        await Ad.update(id, adInformations);
+        await adToUpdate?.reload();
+        return adToUpdate;
+    }
+
+
+    static async deleteAd(id: number): Promise<void> {
+        const { affected } = await Ad.delete(id);
+        if (affected === 0) {
+          throw new Error(`Ad with ID ${id} does not exist.`);
+        }
+      }
+    
 }
+    
 
 export default Ad; 

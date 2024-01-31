@@ -1,7 +1,7 @@
 {
-  "name": "the-good-corner",
+  "name": "luxelair",
   "version": "0.1.0",
-  "description": "Simple clone of leboncoin.fr",
+  "description": "a clone of airbnb.com",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@apollo/server": "^4.9.5",
     "class-validator": "^0.14.0",
+    "esrun": "^3.2.26",
     "express": "^4.18.2",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
