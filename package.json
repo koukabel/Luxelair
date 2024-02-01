@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "@types/node": "^20.11.13"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "eslint": "^8.56.0"
   }
 }
