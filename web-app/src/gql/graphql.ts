@@ -80,7 +80,9 @@ export type User = {
 export type AdsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdsQuery = { __typename?: 'Query', ads: Array<{ __typename?: 'Ad', location: string, price: number, title: string, description: string, id: string }> };
+export type AdsQuery = { __typename?: 'Query', ads: Array<{
+    image: any; __typename?: 'Ad', location: string, price: number, title: string, description: string, id: string 
+}> };
 
 
 export const AdsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Ads"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ads"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AdsQuery, AdsQueryVariables>;

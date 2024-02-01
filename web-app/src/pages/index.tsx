@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 
-const cardArray = Array.from({ length: 6 }, (_, index) => <Card key={index} />);
 
 const GET_ADS = gql`
   query Ads {
@@ -16,17 +15,18 @@ const GET_ADS = gql`
       location
       price
       title
-      description
       id
     }
   }
 `;
 
+
 export default function HomePage() {
 
- // const publishedAdsArray = useQuery<AdsQuery>(GET_ADS);
 
- // console.log(publishedAdsArray)
+const {data} = useQuery<AdsQuery>(GET_ADS);
+
+
   return (
     <ChakraProvider>
         <Navbar/>
@@ -52,19 +52,20 @@ export default function HomePage() {
 
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
        
-        {/* {publishedAdsArray?.ads ? (
-            publishedAdsArray.ads.map((ad) => (
+        {
+        data?.ads ? (
+            data.ads.map((ad) => (
             <Card 
-            key={ad.id}
             id={ad.id}
-            title={ad.title}
             price={ad.price}
-            
+            location={ad.location}
+            image={ad.image}
+            // description={ad.description}
             />
         )
-       } */}
+       )) : null}
 
-{ cardArray }
+
 
       </SimpleGrid>
 <Footer/>

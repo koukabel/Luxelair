@@ -12,6 +12,8 @@ import {
 } from "@chakra-ui/react";
 
 export default function CreateAdComponent() {
+
+    
     return (
       
         <form style={{ margin: 'auto', marginTop: '5rem', width: '50%'}}>

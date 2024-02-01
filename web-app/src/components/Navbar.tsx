@@ -34,7 +34,7 @@ export default function Navbar() {
           Mettre ma propriété sur Luxelair
         </Link>
 
-        <Avatar bg="#B4770A" />
+        <Avatar cursor='pointer' bg="#B4770A" />
       </Flex>
     </Flex>
     
