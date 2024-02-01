@@ -1,4 +1,4 @@
-import { ChakraProvider, Heading } from "@chakra-ui/react";
+import { AbsoluteCenter, ChakraProvider, Heading } from "@chakra-ui/react";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import Card from "../components/Card";
 import { Image } from "@chakra-ui/react";
@@ -6,7 +6,9 @@ import { gql, useQuery } from "@apollo/client";
 import { AdsQuery } from "@/gql/graphql";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
- const cardArray = Array.from({ length: 6 }, (_, index) => <Card key={index} />);
+import SearchBar from "@/components/SearchBar";
+
+const cardArray = Array.from({ length: 6 }, (_, index) => <Card key={index} />);
 
 const GET_ADS = gql`
   query Ads {
@@ -28,19 +30,19 @@ export default function HomePage() {
   return (
     <ChakraProvider>
         <Navbar/>
+        <SearchBar />
       <Box pos="relative">
-        <Image
-         
-        
+        <Image margin="auto"
           objectFit="cover"
           src="welcomePage.png"
           alt="Welcome Page"
         />
+       
         <Heading
           w="100%"
           pos="absolute"
-          top="75%"
-          left="60%"
+          top="80%"
+          left="70%"
           color="white"
           transform="translate(-50%,-50%)"
         >

@@ -1,4 +1,4 @@
-import { Badge, Box } from "@chakra-ui/react"; 
+import { AbsoluteCenter, Badge, Box } from "@chakra-ui/react"; 
 import { Image } from '@chakra-ui/react'
 import { StarIcon} from '@chakra-ui/icons'
 
@@ -19,7 +19,8 @@ export default function Card  ()  {
 
   return (
     <Box cursor = 'pointer'  maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
-    <Image src={cardProperties.imageUrl} alt={cardProperties.imageAlt} />
+        
+    <Image   objectFit='cover' src={cardProperties.imageUrl} alt={cardProperties.imageAlt} /> 
    
     <Box p='6'>
       <Box display='flex' alignItems='baseline'>
