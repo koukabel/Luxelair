@@ -66,7 +66,6 @@ const {data} = useQuery<AdsQuery>(GET_ADS);
        )) : null}
 
 
-
       </SimpleGrid>
 <Footer/>
     </ChakraProvider>

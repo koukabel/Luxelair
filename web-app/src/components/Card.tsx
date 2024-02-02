@@ -10,7 +10,6 @@ import { Image } from '@chakra-ui/react'
 
  const Card: React.FC<props> = ({id, location, price , image}) => {
   
- 
   return (
     <Box cursor='pointer'  maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
         

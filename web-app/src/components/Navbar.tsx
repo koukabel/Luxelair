@@ -14,20 +14,21 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
+
 export default function Navbar() {
   return (
     <Flex alignItems="center">
 		<Link href="/">
       <Image src="logoWhite.png" boxSize="150px" objectFit="contain" />
       </Link>
-	  <Heading color={"linear-gradient(to right, black, #B4770A)"}>
+	  <Heading className="mainHeading">
         LUXELAIR
       </Heading>
       <Spacer />
       <Flex direction="row" alignItems="center" gap={5}  padding="10">
         <Link
-          fontFamily="Montserrat"
-          fontWeight="extrabold"
+          cursor={'pointer'}
+          fontWeight="light"
           fontSize="16px"
           href="/CreateAdForm"
         >

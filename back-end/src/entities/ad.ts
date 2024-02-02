@@ -155,10 +155,10 @@ class Ad extends BaseEntity {
             // }
             // this.image = ad.image
 
-            if (!ad.equipments) {
-                throw new Error('Les équipements ne peuvent pas être vide')
-            }
-            this.equipments = ad.equipments
+            // if (!ad.equipments) {
+            //     throw new Error('Les équipements ne peuvent pas être vide')
+            // }
+            // this.equipments = ad.equipments
 
             // if (!ad.type) {
             //     throw new Error('Le type ne peut pas être vide')
