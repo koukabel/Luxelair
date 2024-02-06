@@ -16,8 +16,14 @@ services:
     ports:
       - 5001:5001
     volumes:
-      - ./file-hosting:/app
-      - /app/node_modules
+      - file-hosting-public:/app/public
+    develop:
+      watch:
+        - action: sync
+          path: ./file-hosting
+          target: /app
+        - action: rebuild
+          path: file-hosting/package.json
 
   web-app:
     build: ./web-app
@@ -36,3 +42,4 @@ services:
 
 volumes:
   database-data:
+  file-hosting-public:

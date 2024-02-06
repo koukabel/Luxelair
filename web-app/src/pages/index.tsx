@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 
-
 const GET_ADS = gql`
   query Ads {
     ads {
@@ -20,24 +19,21 @@ const GET_ADS = gql`
   }
 `;
 
-
 export default function HomePage() {
-
-
-const {data} = useQuery<AdsQuery>(GET_ADS);
-
+  const { data } = useQuery<AdsQuery>(GET_ADS);
 
   return (
     <ChakraProvider>
-        <Navbar/>
-        <SearchBar />
+      <Navbar />
+      <SearchBar />
       <Box pos="relative">
-        <Image margin="auto"
+        <Image
+          margin="auto"
           objectFit="cover"
           src="welcomePage.png"
           alt="Welcome Page"
         />
-       
+
         <Heading
           w="100%"
           pos="absolute"
@@ -51,23 +47,19 @@ const {data} = useQuery<AdsQuery>(GET_ADS);
       </Box>
 
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
-       
-        {
-        data?.ads ? (
-            data.ads.map((ad) => (
-            <Card 
-            id={ad.id}
-            price={ad.price}
-            location={ad.location}
-            image={ad.image}
-            // description={ad.description}
-            />
-        )
-       )) : null}
-
-
+        {data?.ads
+          ? data.ads.map((ad) => (
+              <Card
+                id={ad.id}
+                price={ad.price}
+                location={ad.location}
+                image={`/file-hosting/${ad.title}.jpg`}
+                // description={ad.description}
+              />
+            ))
+          : null}
       </SimpleGrid>
-<Footer/>
+      <Footer />
     </ChakraProvider>
   );
 }
