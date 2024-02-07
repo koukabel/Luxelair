@@ -9,14 +9,14 @@ import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 
 const GET_ADS = gql`
-  query Ads {
-    ads {
-      location
-      price
-      title
-      id
-    }
-  }
+	query Ads {
+		ads {
+			location
+			price
+			title
+			id
+		}
+	}
 `;
 
 export default function HomePage() {

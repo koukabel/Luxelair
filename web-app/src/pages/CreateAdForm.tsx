@@ -1,4 +1,5 @@
 import { ChakraProvider, Image, Text, Heading, Stack } from "@chakra-ui/react";
+import { ChakraProvider, Image, Text, Heading, Stack } from "@chakra-ui/react";
 import CreateAdComponent from "@/components/CreateAdComponent";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
