@@ -40,6 +40,33 @@ export type Booking = {
   statusPayment: Scalars['Boolean']['output'];
 };
 
+export enum EquipmentTypeEnum {
+  Bathroom = 'Bathroom',
+  Electronics = 'Electronics',
+  Forniture = 'Forniture',
+  Kitchen = 'Kitchen',
+
+  EssentialEquipmentsEnum = 'EssentialEquipmentsEnum',
+  ExceptionalServices = 'ExceptionalServices',
+
+  SecurityEquipement = 'SecurityEquipement'
+}
+
+export type EquipmentValueInput = {
+  equipmentType: EquipmentTypeEnum;
+  selectedValues?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export enum HousingTypeEnum {
+  Appartement = 'Appartement',
+  Chalet = 'Chalet',
+  Chateau = 'Chateau',
+  Duplex = 'Duplex',
+  HotelParticulier = 'Hotel_particulier',
+  Loft = 'Loft',
+  Maison = 'Maison'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAd: Ad;
@@ -49,10 +76,13 @@ export type Mutation = {
 
 export type MutationCreateAdArgs = {
   description?: InputMaybe<Scalars['String']['input']>;
+  equipments?: InputMaybe<Array<EquipmentTypeEnum>>;
   image?: InputMaybe<Scalars['String']['input']>;
   location: Scalars['String']['input'];
   price: Scalars['Float']['input'];
+  selectedEquipmentValues?: InputMaybe<Array<EquipmentValueInput>>;
   title: Scalars['String']['input'];
+  type?: InputMaybe<HousingTypeEnum>;
 };
 
 
@@ -66,7 +96,13 @@ export type MutationCreateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   ads: Array<Ad>;
+  equipmentValues: Array<Scalars['String']['output']>;
   users: Array<User>;
+};
+
+
+export type QueryEquipmentValuesArgs = {
+  equipmentTypes: Array<EquipmentTypeEnum>;
 };
 
 export type User = {
@@ -82,18 +118,19 @@ export type CreateAdMutationVariables = Exact<{
   location: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<HousingTypeEnum>;
+  equipments?: InputMaybe<Array<EquipmentTypeEnum> | EquipmentTypeEnum>;
+  selectedEquipmentValues?: InputMaybe<Array<EquipmentValueInput> | EquipmentValueInput>;
 }>;
 
 
-export type CreateAdMutation = { __typename?: 'Mutation', createAd: { __typename?: 'Ad', title: string, location: string, price: number, description: string } };
+export type CreateAdMutation = { __typename?: 'Mutation', createAd: { __typename?: 'Ad', title: string, price: number, location: string, description: string } };
 
 export type AdsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdsQuery = { __typename?: 'Query', ads: Array<{
-  image: string; __typename?: 'Ad', location: string, price: number, title: string, id: string 
-}> };
+export type AdsQuery = { __typename?: 'Query', ads: Array<{ __typename?: 'Ad', location: string, price: number, title: string, id: string }> };
 
 
-export const CreateAdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateAd"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"location"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"price"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createAd"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"location"},"value":{"kind":"Variable","name":{"kind":"Name","value":"location"}}},{"kind":"Argument","name":{"kind":"Name","value":"price"},"value":{"kind":"Variable","name":{"kind":"Name","value":"price"}}},{"kind":"Argument","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<CreateAdMutation, CreateAdMutationVariables>;
+export const CreateAdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateAd"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"location"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"price"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"HousingTypeEnum"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"equipments"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EquipmentTypeEnum"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"selectedEquipmentValues"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EquipmentValueInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createAd"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"location"},"value":{"kind":"Variable","name":{"kind":"Name","value":"location"}}},{"kind":"Argument","name":{"kind":"Name","value":"price"},"value":{"kind":"Variable","name":{"kind":"Name","value":"price"}}},{"kind":"Argument","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"Argument","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}},{"kind":"Argument","name":{"kind":"Name","value":"equipments"},"value":{"kind":"Variable","name":{"kind":"Name","value":"equipments"}}},{"kind":"Argument","name":{"kind":"Name","value":"selectedEquipmentValues"},"value":{"kind":"Variable","name":{"kind":"Name","value":"selectedEquipmentValues"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<CreateAdMutation, CreateAdMutationVariables>;
 export const AdsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Ads"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ads"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AdsQuery, AdsQueryVariables>;

@@ -9,11 +9,11 @@ export enum HousingTypeEnum {
     Maison = 'Maison',
     Duplex = 'Duplex',
     Loft = 'Loft',
-    Hôtel_particulier = 'Hôtel particulier',
-    Château = 'Château'
+    Hotel_particulier = 'Hotel_particulier', 
+    Chateau = 'Chateau'
 }
 
-export enum KitchenEnum {
+export enum EssentialEquipmentsEnum {
     Ustensiles = 'Ustensiles',
     Vaisselle = 'couverts et verres',
     Micro_ondes = 'micro-ondes',
@@ -21,26 +21,15 @@ export enum KitchenEnum {
     Cuisinière = 'Cuisinière',
     Bouilloire = 'Bouilloire',
     Cafetière = 'Cafetière',
-    Grille_pain = 'Grille pain'
-}
-
-export enum BathroomEnum {
+    Grille_pain = 'Grille pain',
     Literie = 'Literie',
     Serviettes_de_bain = 'Serviettes de bain',
     Papier_toilette = 'Papier toilette',
     Savon = 'Savon',
     Shampooing = 'Shampooing',
-    Sèche_cheveux = 'Sèche_cheveux',
+    Sèche_cheveux = 'Sèche cheveux',
     Lave_linge = 'Lave linge',
     Sèche_linge = 'Sèche linge '
-}
-
-export enum ElectonicsEnum {
-    Télévision = 'Télévision',
-    WiFi = 'Wifi',
-    Climatisation = "Climatisation",
-    Chauffage = 'Chauffage',
-    Fer_planche_à_repasser = 'Fer et place à rep'
 }
 
 export enum SecurityEquipementEnum {
@@ -48,16 +37,17 @@ export enum SecurityEquipementEnum {
     Extincteur = 'Extincteur',
 }
 
-export enum FornitureEnum {
+export enum exceptionalServicesEnum {
+    Télévision = 'Télévision',
+    WiFi = 'Wifi',
+    Climatisation = "Climatisation",
+    Chauffage = 'Chauffage',
+    Fer_planche_à_repasser = 'Fer et place à rep',
     Canapés = 'Canapé',
     Fauteuils = 'Fauteuils',
     Tables = 'Tables et chaises',
     Espace_travail = 'Espace de travail',
-    Placards = 'Placards'
-}
-
-
-export enum exceptionalServicesEnum {
+    Placards = 'Placards',
     Pool = 'piscine',
     Parking = 'Parking',
     Ascenseur = 'Ascenseur',
@@ -69,14 +59,16 @@ export enum exceptionalServicesEnum {
     Chef_privé = 'Chef privé'
 }
 
-export enum equipementsEnum {
-    SecurityEquipementEnum,
-    FornitureEnum,
-    exceptionalServicesEnum,
-    BathroomEnum,
-    ElectonicsEnum,
-    KitchenEnum
+export enum EquipmentTypeEnum {
+    SecurityEquipement = 'SecurityEquipementEnum',
+    ExceptionalServices = 'exceptionalServicesEnum',
+    EssentialEquipmentsEnum = 'EssentialEquipmentsEnum',
+    Bathroom = 'BathroomEnum',
+    Electronics = 'ElectronicsEnum',
+    Kitchen = 'KitchenEnum'  ,
+    Forniture = 'FornitureEnum',
 }
+
 
 @Entity()
 @ObjectType()
@@ -110,18 +102,18 @@ class Ad extends BaseEntity {
     @Column({
         type: "enum",
         enum: HousingTypeEnum,
-        array: true,
         default: null
     })
     type!: HousingTypeEnum;
 
     @Column({
         type: "enum",
-        enum: ['SecurityEquipementEnum', 'FornitureEnum', 'exceptionalServicesEnum', 'BathroomEnum', 'ElectonicsEnum', 'KitchenEnum'],
+        enum: EquipmentTypeEnum,
         array: true,
         default: null
     })
-    equipments!: ('SecurityEquipementEnum' | 'FornitureEnum' | 'exceptionalServicesEnum' | 'BathroomEnum' | 'ElectonicsEnum' | 'KitchenEnum')[];
+    equipments!: EquipmentTypeEnum[];
+    
     
     @JoinTable()
     @ManyToMany(() => Booking, (booking) => booking.ads)
@@ -155,18 +147,18 @@ class Ad extends BaseEntity {
             // }
             // this.image = ad.image
 
-            // if (!ad.equipments) {
-            //     throw new Error('Les équipements ne peuvent pas être vide')
-            // }
-            // this.equipments = ad.equipments
+            if (!ad.equipments) {
+                throw new Error('Les équipements ne peuvent pas être vide')
+            }
+            this.equipments = ad.equipments
 
-            // if (!ad.type) {
-            //     throw new Error('Le type ne peut pas être vide')
-            // }
-            // this.type = ad.type
-
+            if (!ad.type) {
+                throw new Error('Le type ne peut pas être vide')
+            }
+            this.type = ad.type
         }
     }
+
     static async getAds(): Promise<Ad[]> {
         const ads = await Ad.find();
         return ads;
