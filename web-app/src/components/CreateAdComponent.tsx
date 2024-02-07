@@ -23,6 +23,7 @@ const CREATE_AD = gql`
       price: $price
       description: $description
     ) {
+      id
       title
       location
       price
@@ -52,10 +53,10 @@ export default function CreateAdComponent() {
     }));
   }
 
-  const uploadFile = async (title: string) => {
+  const uploadFile = async (id: string) => {
     if (fileAd) {
       const body = new FormData();
-      body.append("file", fileAd, `${title}.jpg`);
+      body.append("file", fileAd, `${id}.jpg`);
       await fetch("/file-hosting", {
         method: "POST",
         body,
@@ -78,7 +79,8 @@ export default function CreateAdComponent() {
         },
       });
       if (data) {
-        await uploadFile(data.createAd.title);
+        const { id } = data.createAd;
+        await uploadFile(id);
       }
     } catch (error) {
       console.log(error);

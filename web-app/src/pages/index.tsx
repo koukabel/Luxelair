@@ -53,7 +53,7 @@ export default function HomePage() {
                 id={ad.id}
                 price={ad.price}
                 location={ad.location}
-                image={`/file-hosting/${ad.title}.jpg`}
+                image={`/file-hosting/${ad.id}.jpg`}
                 // description={ad.description}
               />
             ))
