@@ -14,14 +14,18 @@ import {
 	Container,
 } from "@chakra-ui/react";
 
-export default function Payment() {
+interface props {
+	price: number;
+}
+
+const Payment: React.FC<props> = ({ price }) => {
 	return (
 		<Flex justifyContent="center">
 			<Card maxW="lm" width={"70%"}>
 				<CardBody>
 					<Stack mt="6" spacing="3">
 						<Flex justifyContent="space-between">
-							<Heading size="md">75€/nuit</Heading>
+							<Heading size="md">{price}</Heading>
 							<Heading size="md">7 reviews</Heading>
 						</Flex>
 						<Flex>
@@ -64,7 +68,7 @@ export default function Payment() {
 						<Flex justifyContent="space-between" width="100%">
 							<Container>
 								<Text align="left" size="md">
-									79€ x 7 nuit
+									{price}€ x 7 nuit
 								</Text>
 							</Container>
 							<Container>
@@ -127,4 +131,5 @@ export default function Payment() {
 			</Card>
 		</Flex>
 	);
-}
+};
+export default Payment;

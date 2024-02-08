@@ -7,7 +7,10 @@ import {
 	Box,
 } from "@chakra-ui/react";
 
-export default function Toggle() {
+interface props {
+	description: string;
+}
+const Toggle: React.FC<props> = ({ description }) => {
 	return (
 		<Accordion defaultIndex={[0]} allowMultiple>
 			<AccordionItem>
@@ -19,12 +22,7 @@ export default function Toggle() {
 						<AccordionIcon />
 					</AccordionButton>
 				</h2>
-				<AccordionPanel pb={4}>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat.
-				</AccordionPanel>
+				<AccordionPanel pb={4}>{description}</AccordionPanel>
 			</AccordionItem>
 
 			<AccordionItem>
@@ -45,4 +43,6 @@ export default function Toggle() {
 			</AccordionItem>
 		</Accordion>
 	);
-}
+};
+
+export default Toggle;

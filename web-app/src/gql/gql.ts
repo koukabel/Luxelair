@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n    mutation CreateAd(\n        $title: String!, \n        $location: String!, \n        $price: Float!, \n        $description: String) {\n    createAd(title: $title, location: $location, price: $price, description: $description) {\n      title\n      location\n      price\n      description\n    }\n  } \n": types.CreateAdDocument,
+    "\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n": types.AdDocument,
     "\n\tquery Ads {\n\t\tads {\n\t\t\tlocation\n\t\t\tprice\n\t\t\ttitle\n\t\t\tid\n\t\t}\n\t}\n": types.AdsDocument,
 };
 
@@ -35,6 +36,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation CreateAd(\n        $title: String!, \n        $location: String!, \n        $price: Float!, \n        $description: String) {\n    createAd(title: $title, location: $location, price: $price, description: $description) {\n      title\n      location\n      price\n      description\n    }\n  } \n"): (typeof documents)["\n    mutation CreateAd(\n        $title: String!, \n        $location: String!, \n        $price: Float!, \n        $description: String) {\n    createAd(title: $title, location: $location, price: $price, description: $description) {\n      title\n      location\n      price\n      description\n    }\n  } \n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

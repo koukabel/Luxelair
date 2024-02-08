@@ -9,16 +9,6 @@ interface props {
 	price: number;
 	image: string;
 }
-// const router = useRouter();
-
-// const handleClick = (id: string) => {
-// 	e.preventDefault();
-// 	router.push(`/ad/${id}`);
-// };
-
-// const openCardDetails = (id: string) => {
-// 	router.push();
-// };
 
 const Card: React.FC<props> = ({ id, location, price, image }) => {
 	return (
@@ -29,8 +19,6 @@ const Card: React.FC<props> = ({ id, location, price, image }) => {
 				borderWidth="1px"
 				borderRadius="lg"
 				overflow="hidden"
-				// href=""
-				// onClick={() => router.push({ pathname: "/ad/[id]", query: { id: id } })}
 			>
 				<Image objectFit="cover" src={image} alt={id} />
 
