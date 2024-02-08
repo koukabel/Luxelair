@@ -54,39 +54,75 @@ export default function Payment() {
 							Réserver
 						</Button>
 						<Text color="black.400" fontSize="sl" textAlign="center">
-							You won't be charged
+							Vous n'aurez pas encore à payer
 						</Text>
 					</Stack>
 				</CardBody>
 				<Divider />
 				<CardFooter>
-					<Flex justifyContent="space-between" width="100%">
-						<Container>
-							<Text align="center" size="md">
-								79€ x 7 nuit
-							</Text>
-						</Container>
-						<Container>
-							<Text align="center" size="md">
-								555€
-							</Text>
-						</Container>
+					<Flex flexDirection="column" width="100%" gap="4">
+						<Flex justifyContent="space-between" width="100%">
+							<Container>
+								<Text align="left" size="md">
+									79€ x 7 nuit
+								</Text>
+							</Container>
+							<Container>
+								<Text align="right" size="md">
+									555€
+								</Text>
+							</Container>
+						</Flex>
+						<Flex justifyContent="space-between" width="100%">
+							<Container>
+								<Text align="left" size="md">
+									frais de nettoyage
+								</Text>
+							</Container>
+							<Container>
+								<Text align="right" size="md">
+									20€
+								</Text>
+							</Container>
+						</Flex>
+						<Flex justifyContent="space-between" width="100%">
+							<Container>
+								<Text align="left" size="md">
+									frais de service
+								</Text>
+							</Container>
+							<Container>
+								<Text align="right" size="md">
+									15€
+								</Text>
+							</Container>
+						</Flex>
+						<Flex justifyContent="space-between" width="100%">
+							<Container>
+								<Text align="left" size="md">
+									Taxe d'occupation
+								</Text>
+							</Container>
+							<Container>
+								<Text align="right" size="md">
+									12€
+								</Text>
+							</Container>
+						</Flex>
+						<Divider color="black" />
+						<Flex justifyContent="space-between" width="100%">
+							<Container>
+								<Text align="left" size="md">
+									Total
+								</Text>
+							</Container>
+							<Container>
+								<Text align="right" size="md">
+									602€
+								</Text>
+							</Container>
+						</Flex>
 					</Flex>
-					{/* <Flex>
-					<Container>
-						<Text color="blue.600" fontSize="2xl">
-							$79 x 7 night
-						</Text>
-						<Text color="blue.600" fontSize="2xl">
-							$555
-						</Text>
-					</Container>
-				</Flex> */}
-					{/* <Container>
-					<Text color="blue.600" fontSize="2xl">
-						Total : $450
-					</Text>
-				</Container> */}
 				</CardFooter>
 			</Card>
 		</Flex>
