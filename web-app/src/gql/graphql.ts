@@ -91,7 +91,7 @@ export type CreateAdMutationVariables = Exact<{
 }>;
 
 
-export type CreateAdMutation = { __typename?: 'Mutation', createAd: { __typename?: 'Ad', title: string, location: string, price: number, description: string } };
+export type CreateAdMutation = { __typename?: 'Mutation', createAd: { __typename?: 'Ad', id: string,title: string, location: string, price: number, description: string } };
 
 export type AdQueryVariables = Exact<{
   adId: Scalars['ID']['input'];

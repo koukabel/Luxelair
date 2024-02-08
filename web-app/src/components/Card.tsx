@@ -1,6 +1,5 @@
-import { AbsoluteCenter, Badge, Box } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
-// import { useRouter } from "next/router";
+import { AbsoluteCenter, Badge, Box } from "@chakra-ui/react"; 
+import { Image } from '@chakra-ui/react'
 import Link from "next/link";
 
 interface props {
@@ -10,33 +9,19 @@ interface props {
 	image: string;
 }
 
-const Card: React.FC<props> = ({ id, location, price, image }) => {
-	return (
-		<Link href={`/ad/${id}`}>
-			<Box
-				cursor="pointer"
-				maxW="sm"
-				borderWidth="1px"
-				borderRadius="lg"
-				overflow="hidden"
-			>
-				<Image objectFit="cover" src={image} alt={id} />
-
-				<Box p="6"></Box>
-				<Box display="flex" alignItems="baseline">
-					<Badge borderRadius="full" px="2" bg="#B4770A" color="white">
-						New
-					</Badge>
-					{/* <Box
-          color='gray.500'
-          fontWeight='semibold'
-          letterspacing='wide'
-          fontsize='xs'
-          textTransform='uppercase'
-          ml='2'
-        >
-          {beds} beds &bull; {baths} baths
-        </Box> */}
+ const Card: React.FC<props> = ({id, location, price , image}) => {
+  
+  return (
+	<Link href={`/ad/${id}`}>
+    <Box cursor='pointer'  maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
+        
+    <Image objectFit='cover' src={image} alt={id} /> 
+   
+    <Box p='6'></Box>
+      <Box display='flex' alignItems='baseline'>
+        <Badge borderRadius='full' px='2' bg="#B4770A" color="white">
+          New
+        </Badge>
 				</Box>
 
 				<Box
