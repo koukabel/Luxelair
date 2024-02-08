@@ -59,8 +59,8 @@ const {data} = useQuery<AdsQuery>(GET_ADS);
             id={ad.id}
             price={ad.price}
             location={ad.location}
-            image={ad.image}
-            // description={ad.description}
+            //image={ad.image}
+          
             />
         )
        )) : null}

@@ -1,4 +1,4 @@
-import { Args, ArgsType, Field, Float, InputType, Mutation, Query, Resolver, registerEnumType } from "type-graphql";
+import { Arg, Args, ArgsType, Field, Float, InputType, Mutation, Query, Resolver, registerEnumType } from "type-graphql";
 import Ad, { EquipmentTypeEnum, HousingTypeEnum } from "../entities/ad";
 import { MinLength, Min } from "class-validator";
 import { EquipmentResolver } from "./EquipementResolver";
@@ -56,49 +56,21 @@ export class AdResolver {
         return Ad.getAds(); 
     }
 
-   
+    @Query(() => [HousingTypeEnum])
+    async HousingTypes(): Promise<HousingTypeEnum[]> {
+        return Object.values(HousingTypeEnum);
+    }
+
+
+
     @Mutation(() => Ad)
-    // async createAd(@Args() args: editOrCreateAd) {
-      
-    //     const adData = {
-    //         title: args.title,
-    //         description: args.description,
-    //         location: args.location,
-    //         price: args.price,
-    //         image: args.image,
-    //         type: args.type,
-    //         equipments: args.equipments,
-    //         selectedEquipmentValues: args.selectedEquipmentValues
-    //     };
-
-    //     return Ad.createAd(adData);
-    // }
-
     async createAd(@Args() args: editOrCreateAd) {
       const ad = new Ad(args);
-  
-
-
-      
-      // Initialize an array to store all valid equipment values
       let allValidEquipmentValues: string[] = [];
-  
-      // Iterate over each equipment type in the args.equipments array
       for (const equipmentType of args.equipments) {
-          // Call getEquipmentValues for the current equipment type and concatenate its values
           const equipmentValues = EquipmentResolver.getEquipmentValues(equipmentType);
           allValidEquipmentValues.push(...equipmentValues);
       }
-  
-      // Now you have all the valid equipment values selected by the user
-      
-      
-      
-      
-      
-      console.log(allValidEquipmentValues);
-  
-      // Create the ad
       return Ad.createAd(args);
   }
 }

@@ -1,24 +1,38 @@
-import { ChakraProvider, Image, Text, Heading, Stack } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react";
 import CreateAdComponent from "@/components/CreateAdComponent";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { gql, useMutation } from "@apollo/client";
+import FirstStep from "@/components/adCreationComponents/FirstStep/FirstStep";
+import ControlButtons from "@/components/adCreationComponents/FirstStep/ControlButtons";
+import { useState } from "react";
+import Equipements from "@/components/adCreationComponents/SecondStep/Equipements";
+import HouseType from "@/components/adCreationComponents/FirstStep/HouseType";
+import SecondStep from "@/components/adCreationComponents/SecondStep/SecondStep";
 
-export default function CreateAdForm () {
-    return (
-        <ChakraProvider >
-            <Navbar />
-            <Image  maxW='sm' src="https://s3-eu-west-1.amazonaws.com/course.oc-static.com/projects/front-end-kasa-project/accommodation-20-1.jpg" alt="Test image" w="100%" h="100%" m="auto"/>
-            <Stack spacing={4} m="auto" width="90%" mt={5} textAlign="center">
-                <Heading as='h1' size='2xl'>
-                Vous avez une propriété à mettre en location ?
-                 </Heading>
-                <Text fontSize='2xl'>
-                 Profitez de notre réseau unique chez LuxeLair. Rencontrez des millions de voyageurs.
-                 </Text>
-            </Stack>
-            <CreateAdComponent />
-            <Footer /> 
-         </ChakraProvider>
-    );
+export default function CreateAdForm() {
+  const [currentComponent, setCurrentComponent] = useState(1);
+  const [progressValue, setProgressValue] = useState(10);
+
+  const handleNext = () => {
+    setProgressValue(prevProgress => prevProgress + 10); 
+    setCurrentComponent(currentComponent => currentComponent + 1);
+  };
+
+  const handlePrevious = () => {
+    setProgressValue(prevProgress => prevProgress - 10); 
+    setCurrentComponent(currentComponent => currentComponent - 1);
+  };
+
+  return (
+    <ChakraProvider>
+      <Navbar />
+      {currentComponent === 1 && <FirstStep />}
+      {currentComponent === 2 && <Equipements />}
+      {currentComponent === 3 && <HouseType />}
+      {currentComponent === 4 && <SecondStep />}
+      <ControlButtons handleNext={handleNext} handlePrevious={handlePrevious} progressValue={progressValue} />
+      <Footer />
+    </ChakraProvider>
+  );
 }

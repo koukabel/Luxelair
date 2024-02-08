@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation CreateAd(\n    $title: String!\n    $location: String!\n    $price: Float!\n    $description: String\n    $type: HousingTypeEnum\n    $equipments: [EquipmentTypeEnum!]\n    $selectedEquipmentValues: [EquipmentValueInput!]\n  ) {\n    createAd(\n      title: $title\n      location: $location\n      price: $price\n      description: $description\n      type: $type\n      equipments: $equipments\n      selectedEquipmentValues: $selectedEquipmentValues\n    ) {\n      title\n      price\n      location\n      description\n    }\n  }\n": types.CreateAdDocument,
+    "\n  query Query($equipmentTypes: [EquipmentTypeEnum!]!) {\n    equipmentValues(equipmentTypes: $equipmentTypes)\n  }\n": types.QueryDocument,
     "\n  query Ads {\n    ads {\n      location\n      price\n      title\n      id\n    }\n  }\n": types.AdsDocument,
 };
 
@@ -35,6 +36,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateAd(\n    $title: String!\n    $location: String!\n    $price: Float!\n    $description: String\n    $type: HousingTypeEnum\n    $equipments: [EquipmentTypeEnum!]\n    $selectedEquipmentValues: [EquipmentValueInput!]\n  ) {\n    createAd(\n      title: $title\n      location: $location\n      price: $price\n      description: $description\n      type: $type\n      equipments: $equipments\n      selectedEquipmentValues: $selectedEquipmentValues\n    ) {\n      title\n      price\n      location\n      description\n    }\n  }\n"): (typeof documents)["\n  mutation CreateAd(\n    $title: String!\n    $location: String!\n    $price: Float!\n    $description: String\n    $type: HousingTypeEnum\n    $equipments: [EquipmentTypeEnum!]\n    $selectedEquipmentValues: [EquipmentValueInput!]\n  ) {\n    createAd(\n      title: $title\n      location: $location\n      price: $price\n      description: $description\n      type: $type\n      equipments: $equipments\n      selectedEquipmentValues: $selectedEquipmentValues\n    ) {\n      title\n      price\n      location\n      description\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Query($equipmentTypes: [EquipmentTypeEnum!]!) {\n    equipmentValues(equipmentTypes: $equipmentTypes)\n  }\n"): (typeof documents)["\n  query Query($equipmentTypes: [EquipmentTypeEnum!]!) {\n    equipmentValues(equipmentTypes: $equipmentTypes)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
