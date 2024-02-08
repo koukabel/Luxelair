@@ -32,6 +32,7 @@ export default function CreateAdForm() {
       {currentComponent === 3 && <HouseType />}
       {currentComponent === 4 && <SecondStep />}
       <ControlButtons handleNext={handleNext} handlePrevious={handlePrevious} progressValue={progressValue} />
+
       <Footer />
     </ChakraProvider>
   );

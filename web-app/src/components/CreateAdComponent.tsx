@@ -4,6 +4,7 @@ import {
   Input,
   Textarea,
   Button,
+<<<<<<< HEAD
   Stack,
   Radio,
 } from "@chakra-ui/react";
@@ -16,6 +17,13 @@ import {
   EquipmentValueInput,
   HousingTypeEnum,
 } from "@/gql/graphql";
+=======
+  Box,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+import { CreateAdMutation, CreateAdMutationVariables } from "@/gql/graphql";
+>>>>>>> dev
 
 const CREATE_AD = gql`
   mutation CreateAd(
@@ -23,19 +31,27 @@ const CREATE_AD = gql`
     $location: String!
     $price: Float!
     $description: String
+<<<<<<< HEAD
     $type: HousingTypeEnum
     $equipments: [EquipmentTypeEnum!]
     $selectedEquipmentValues: [EquipmentValueInput!]
+=======
+>>>>>>> dev
   ) {
     createAd(
       title: $title
       location: $location
       price: $price
       description: $description
+<<<<<<< HEAD
       type: $type
       equipments: $equipments
       selectedEquipmentValues: $selectedEquipmentValues
     ) {
+=======
+    ) {
+      id
+>>>>>>> dev
       title
       price
       location
@@ -45,15 +61,22 @@ const CREATE_AD = gql`
 `;
 
 export default function CreateAdComponent() {
+<<<<<<< HEAD
+=======
+  const [fileAd, setFileAd] = useState<File | null>(null);
+>>>>>>> dev
   const [publishAdInfo, setPublishAdInfo] = useState<CreateAdMutationVariables>(
     {
       title: "",
       description: "",
       location: "",
       price: 0,
+<<<<<<< HEAD
       equipments: EquipmentTypeEnum.ExceptionalServices,
       selectedEquipmentValues: [{ equipmentType: EquipmentTypeEnum.ExceptionalServices, selectedValues: [] }],
       type: undefined,
+=======
+>>>>>>> dev
     }
   );
 
@@ -67,10 +90,28 @@ export default function CreateAdComponent() {
     }));
   }
 
+<<<<<<< HEAD
   const [createAd] = useMutation<CreateAdMutation, CreateAdMutationVariables>(
     CREATE_AD
   );
 
+=======
+  const uploadFile = async (id: string) => {
+    if (fileAd) {
+      const body = new FormData();
+      body.append("file", fileAd, `${id}.jpg`);
+      await fetch("/file-hosting", {
+        method: "POST",
+        body,
+      });
+    }
+  };
+
+  const [createAd] = useMutation<CreateAdMutation, CreateAdMutationVariables>(
+    CREATE_AD
+  );
+
+>>>>>>> dev
   const createNewAd = async () => {
     try {
       const { data } = await createAd({
@@ -79,6 +120,7 @@ export default function CreateAdComponent() {
           description: publishAdInfo.description,
           location: publishAdInfo.location,
           price: publishAdInfo.price,
+<<<<<<< HEAD
           equipments: publishAdInfo.equipments,
           selectedEquipmentValues: [{ equipmentType: EquipmentTypeEnum.ExceptionalServices, selectedValues: [] }],
           type: publishAdInfo.type,
@@ -95,6 +137,17 @@ export default function CreateAdComponent() {
 
 
 
+=======
+        },
+      });
+      if (data) {
+        const { id } = data.createAd;
+        await uploadFile(id);
+      }
+    } catch (error) {}
+  };
+
+>>>>>>> dev
   return (
     <form style={{ margin: "auto", marginTop: "5rem", width: "50%" }}>
       <FormControl m={2} isRequired>
@@ -109,10 +162,58 @@ export default function CreateAdComponent() {
         onChange={handleChange}
       />
       <FormControl m={2} isRequired>
+<<<<<<< HEAD
+=======
+        <Box
+          position="relative"
+          overflow="hidden"
+          borderWidth="2px"
+          borderColor="gray.200"
+          borderRadius="md"
+        >
+          <Button
+            as="label"
+            htmlFor="fileUpload"
+            borderWidth="2px"
+            borderColor="gray.200"
+            borderRadius="md"
+            bg="white"
+            color="gray.700"
+            py={2}
+            px={4}
+            _hover={{
+              bg: "gray.100",
+              color: "gray.900",
+            }}
+            _focus={{
+              outline: "none",
+              boxShadow: "outline",
+            }}
+          >
+            {fileAd ? fileAd.name : "Choisir un fichier"}
+          </Button>
+          <Input
+            type="file"
+            name="file"
+            id="fileUpload"
+            onChange={(event) => {
+              const { files } = event.target;
+              if (files) {
+                console.log(files[0]);
+                setFileAd(files[0]);
+              }
+            }}
+            position="absolute"
+            opacity={0}
+            zIndex={-1}
+          />
+        </Box>
+>>>>>>> dev
         <FormLabel>L'adresse du bien</FormLabel>
         <Input type="text" name="location" onChange={handleChange} />
       </FormControl>
       <FormLabel m={2}>A présent, fixez le prix d'une nuit</FormLabel>
+<<<<<<< HEAD
 
       <Input type="number" m={2} name="price" onChange={handleChange} />
 
@@ -133,6 +234,9 @@ export default function CreateAdComponent() {
           </Radio>
         ))}
       </Stack>
+=======
+      <Input type="number" m={2} name="price" onChange={handleChange} />
+>>>>>>> dev
       <Button
         m={2}
         variant="solid"

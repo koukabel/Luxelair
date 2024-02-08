@@ -1,5 +1,21 @@
+<<<<<<< HEAD
 import { Arg, Args, ArgsType, Field, Float, InputType, Mutation, Query, Resolver, registerEnumType } from "type-graphql";
 import Ad, { EquipmentTypeEnum, HousingTypeEnum } from "../entities/ad";
+=======
+import {
+	Args,
+	ArgsType,
+	Field,
+	Float,
+	Int,
+	Mutation,
+	Query,
+	Resolver,
+	Arg,
+	ID,
+} from "type-graphql";
+import Ad from "../entities/ad";
+>>>>>>> dev
 import { MinLength, Min } from "class-validator";
 import { EquipmentResolver } from "./EquipementResolver";
 
@@ -22,6 +38,7 @@ export class EquipmentValueInput {
 
 @ArgsType()
 export class editOrCreateAd {
+<<<<<<< HEAD
     @Field()
     @MinLength(2)
     title!: string;
@@ -47,10 +64,35 @@ export class editOrCreateAd {
 
     @Field(() => HousingTypeEnum, { nullable: true })
     type!: HousingTypeEnum;
+=======
+	@Field()
+	@MinLength(2)
+	title!: string;
+
+	@Field({ nullable: true })
+	description!: string;
+
+	@Field()
+	location!: string;
+
+	@Field(() => Float)
+	@Min(0)
+	price!: number;
+
+	@Field({ nullable: true })
+	image!: string;
+
+	// @Field({ nullable: true })
+	// equipment!: string;
+
+	// @Field()
+	// type!: string;
+>>>>>>> dev
 }
 
 @Resolver()
 export class AdResolver {
+<<<<<<< HEAD
     @Query(() => [Ad])
     ads() {
         return Ad.getAds(); 
@@ -73,4 +115,19 @@ export class AdResolver {
       }
       return Ad.createAd(args);
   }
+=======
+	@Query(() => [Ad])
+	ads() {
+		return Ad.getAds();
+	}
+	@Query(() => Ad)
+	ad(@Arg("id", () => ID) id: string) {
+		return Ad.getAdById(id);
+	}
+
+	@Mutation(() => Ad)
+	createAd(@Args() args: editOrCreateAd) {
+		return Ad.createAd(args);
+	}
+>>>>>>> dev
 }
