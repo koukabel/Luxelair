@@ -82,9 +82,7 @@ export default function CreateAdComponent() {
         const { id } = data.createAd;
         await uploadFile(id);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (
