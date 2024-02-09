@@ -1,5 +1,6 @@
 import { Query, Resolver, Arg, registerEnumType } from "type-graphql";
 import Ad, { EquipmentTypeEnum, exceptionalServicesEnum,  SecurityEquipementEnum, EssentialEquipmentsEnum } from "../entities/ad";
+
 registerEnumType(EquipmentTypeEnum, {
     name: "EquipmentTypeEnum",
 });
@@ -22,7 +23,7 @@ export class EquipmentResolver {
     }
 
     @Query(() => [String])
-    async equipmentValues(
+    async getEquipmentsList(
         @Arg("equipmentTypes", () => [EquipmentTypeEnum]) equipmentTypes: EquipmentTypeEnum[]
     ): Promise<string[]> {
         const allValues: string[] = [];

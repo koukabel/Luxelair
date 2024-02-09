@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# LuxeLair
-=======
 # LUXELAIR
->>>>>>> dev
 
 ## Development
 

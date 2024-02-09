@@ -3,14 +3,14 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import Card from "../components/Card";
 import { Image } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
-import { AdsQuery } from "@/gql/graphql";
+import { Ad, AdsQuery } from "@/gql/graphql";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 
 const GET_ADS = gql`
 	query Ads {
-		ads {
+		getAds {
 			location
 			price
 			title
@@ -21,7 +21,7 @@ const GET_ADS = gql`
 
 export default function HomePage() {
   const { data } = useQuery<AdsQuery>(GET_ADS);
-
+console.log(data)
   return (
     <ChakraProvider>
       <Navbar />
@@ -47,25 +47,8 @@ export default function HomePage() {
       </Box>
 
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
-<<<<<<< HEAD
-       
-        {
-        data?.ads ? (
-            data.ads.map((ad) => (
-            <Card 
-            id={ad.id}
-            price={ad.price}
-            location={ad.location}
-            //image={ad.image}
-          
-            />
-        )
-       )) : null}
-
-
-=======
-        {data?.ads
-          ? data.ads.map((ad) => (
+        {data?.getAds
+          ? data.getAds.map((ad) => (
               <Card
                 id={ad.id}
                 price={ad.price}
@@ -75,7 +58,6 @@ export default function HomePage() {
               />
             ))
           : null}
->>>>>>> dev
       </SimpleGrid>
       <Footer />
     </ChakraProvider>

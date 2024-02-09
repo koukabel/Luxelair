@@ -1,6 +1,6 @@
 import { ObjectType, Field, ID, Float } from "type-graphql";
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
-import { editOrCreateAd } from "../resolvers/AdResolver";
+import { editOrCreateAdArgs } from "../resolvers/AdResolver";
 import Booking from './booking';
 
 export enum HousingTypeEnum {
@@ -172,7 +172,7 @@ class Ad extends BaseEntity {
         return ad;
     }
 
-    static async createAd(adInformations : editOrCreateAd): Promise<Ad> {
+    static async createAd(adInformations : editOrCreateAdArgs): Promise<Ad> {
         const newAd = new Ad(adInformations);
         const savedAd = await newAd.save();
         return savedAd;
