@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { editOrCreateUser } from "../resolvers/UserResolver";
-//import { compare, hash } from "bcrypt";
+import { hash } from "bcrypt";
 import Booking from "./booking";
 
 
@@ -60,10 +60,9 @@ class User extends BaseEntity {
       }
       
         static async createNewUser(userInfo: editOrCreateUser): Promise<User> {
-          //  userInfo.password = await hash(userInfo.password, 8);
+           userInfo.password = await hash(userInfo.password, 8);
         
             const newUser = new User(userInfo);
-            // TODO: return user-friendly error message when email already used
             const savedUser = await newUser.save();
             return savedUser;
           }
