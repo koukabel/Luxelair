@@ -14,10 +14,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\nmutation Login($email: String!, $password: String!) {\n  signIn(email: $email, password: $password) {\n    email\n    id\n    firstName\n    lastName\n  }\n}\n": types.LoginDocument,
-    "\n    mutation CreateAd(\n        $title: String!, \n        $location: String!, \n        $price: Float!, \n        $description: String) {\n    createAd(title: $title, location: $location, price: $price, description: $description) {\n      title\n      location\n      price\n      description\n    }\n  } \n": types.CreateAdDocument,
-    "\nquery GetMyProfile {\n  myProfile {\n    email\n    id\n    firstName\n    lastName\n  }\n}\n": types.GetMyProfileDocument,
+    "\n  mutation CreateAd(\n    $title: String!\n    $location: String!\n    $price: Float!\n    $description: String\n  ) {\n    createAd(\n      title: $title\n      location: $location\n      price: $price\n      description: $description\n    ) {\n      id\n      title\n      location\n      price\n      description\n    }\n  }\n": types.CreateAdDocument,
+    "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n": types.GetMyProfileDocument,
     "\nmutation CreateUser($email: String!, $password: String!, $lastName: String, $firstName: String) {\n    createUser(email: $email, password: $password, lastName: $lastName, firstName: $firstName) {\n      email\n      firstName\n      id\n      lastName\n    }\n  }\n": types.CreateUserDocument,
-    "\n  query Ads {\n    ads {\n      location\n      price\n      title\n      id\n    }\n  }\n": types.AdsDocument,
+    "\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n": types.AdDocument,
+    "\n\tquery Ads {\n\t\tads {\n\t\t\tlocation\n\t\t\tprice\n\t\t\ttitle\n\t\t\tid\n\t\t}\n\t}\n": types.AdsDocument,
 };
 
 /**
@@ -41,11 +42,11 @@ export function graphql(source: "\nmutation Login($email: String!, $password: St
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation CreateAd(\n        $title: String!, \n        $location: String!, \n        $price: Float!, \n        $description: String) {\n    createAd(title: $title, location: $location, price: $price, description: $description) {\n      title\n      location\n      price\n      description\n    }\n  } \n"): (typeof documents)["\n    mutation CreateAd(\n        $title: String!, \n        $location: String!, \n        $price: Float!, \n        $description: String) {\n    createAd(title: $title, location: $location, price: $price, description: $description) {\n      title\n      location\n      price\n      description\n    }\n  } \n"];
+export function graphql(source: "\n  mutation CreateAd(\n    $title: String!\n    $location: String!\n    $price: Float!\n    $description: String\n  ) {\n    createAd(\n      title: $title\n      location: $location\n      price: $price\n      description: $description\n    ) {\n      id\n      title\n      location\n      price\n      description\n    }\n  }\n"): (typeof documents)["\n  mutation CreateAd(\n    $title: String!\n    $location: String!\n    $price: Float!\n    $description: String\n  ) {\n    createAd(\n      title: $title\n      location: $location\n      price: $price\n      description: $description\n    ) {\n      id\n      title\n      location\n      price\n      description\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\nquery GetMyProfile {\n  myProfile {\n    email\n    id\n    firstName\n    lastName\n  }\n}\n"): (typeof documents)["\nquery GetMyProfile {\n  myProfile {\n    email\n    id\n    firstName\n    lastName\n  }\n}\n"];
+export function graphql(source: "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n"): (typeof documents)["\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -53,7 +54,11 @@ export function graphql(source: "\nmutation CreateUser($email: String!, $passwor
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Ads {\n    ads {\n      location\n      price\n      title\n      id\n    }\n  }\n"): (typeof documents)["\n  query Ads {\n    ads {\n      location\n      price\n      title\n      id\n    }\n  }\n"];
+export function graphql(source: "\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery Ads {\n\t\tads {\n\t\t\tlocation\n\t\t\tprice\n\t\t\ttitle\n\t\t\tid\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery Ads {\n\t\tads {\n\t\t\tlocation\n\t\t\tprice\n\t\t\ttitle\n\t\t\tid\n\t\t}\n\t}\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

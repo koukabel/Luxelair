@@ -23,13 +23,14 @@ const GET_MY_PROFIL = gql`
   }
 `;
 
+
 export default function Navbar() {
   const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
 
   return (
     <Flex alignItems="center">
       <Link href="/">
-        <Image src="logoWhite.png" boxSize="150px" objectFit="contain" />
+        <Image src="../logoWhite.png" boxSize="150px" objectFit="contain" />
       </Link>
       <Heading className="mainHeading">LUXELAIR</Heading>
       <Spacer />
@@ -104,5 +105,6 @@ export default function Navbar() {
     // </Button>
 
     // </Flex>
+
   );
 }
