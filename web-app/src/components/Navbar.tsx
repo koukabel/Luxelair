@@ -1,10 +1,6 @@
 import React from "react";
 import {
-  Stack,
-  Box,
   Flex,
-  Input,
-  Text,
   Image,
   Button,
   Heading,
@@ -13,32 +9,54 @@ import {
   Link,
   Avatar,
 } from "@chakra-ui/react";
+import { gql, useQuery } from "@apollo/client";
+import { GetMyProfileQuery } from "@/gql/graphql";
 
+const GET_MY_PROFIL = gql`
+  query GetMyProfile {
+    myProfile {
+      email
+      id
+      firstName
+      lastName
+    }
+  }
+`;
 
 export default function Navbar() {
+  const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+
   return (
     <Flex alignItems="center">
-		<Link href="/">
-      <Image src="logoWhite.png" boxSize="150px" objectFit="contain" />
+      <Link href="/">
+        <Image src="logoWhite.png" boxSize="150px" objectFit="contain" />
       </Link>
-	  <Heading className="mainHeading">
-        LUXELAIR
-      </Heading>
+      <Heading className="mainHeading">LUXELAIR</Heading>
       <Spacer />
-      <Flex direction="row" alignItems="center" gap={5}  padding="10">
+      <Flex direction="row" alignItems="center" gap={5} padding="10">
         <Link
-          cursor={'pointer'}
+          cursor={"pointer"}
           fontWeight="light"
           fontSize="16px"
-          href="/CreateAdForm"
+          href={data?.myProfile ? "/CreateAdForm" : "/login"}
         >
           Mettre ma propriété sur Luxelair
         </Link>
-
-        <Avatar cursor='pointer' bg="#B4770A" />
+        {data?.myProfile ? (
+          <Avatar cursor="pointer" bg="#B4770A" />
+        ) : (
+          <Link
+            cursor={"pointer"}
+            fontWeight="light"
+            fontSize="16px"
+            href="/login"
+          >
+            Connexion
+          </Link>
+        )}
       </Flex>
     </Flex>
-    
+
     // <Flex justify="center" width="100%">
     // 	<Stack direction="row" spacing={4}></Stack>
     // 		<Input

@@ -15,19 +15,70 @@ import {
   FormHelperText,
   InputRightElement
 } from "@chakra-ui/react";
+import { gql, useMutation } from "@apollo/client";
 import { FaUserAlt, FaLock } from "react-icons/fa";
+import { LoginMutation, LoginMutationVariables } from "@/gql/graphql";
+import { useRouter } from "next/router";
+
+const Login = gql`
+mutation Login($email: String!, $password: String!) {
+  signIn(email: $email, password: $password) {
+    email
+    id
+    firstName
+    lastName
+  }
+}
+`;
 
 interface props {
     onSignUpClick: () => void; 
   }
 
-
 export default function Authentification({ onSignUpClick } : props) {
+    const router = useRouter();
     const CFaUserAlt = chakra(FaUserAlt);
     const CFaLock = chakra(FaLock);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowClick = () => setShowPassword(!showPassword);
+
+  const [loginUser, setloginUser] = useState<LoginMutationVariables>({
+    email: "",
+    password: ""
+  });
+
+  function handleChange(e: any) {
+    const { name, value } = e.target;
+    setloginUser((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
+
+  const [login] = useMutation<
+    LoginMutation,
+    LoginMutationVariables
+  >(Login);
+
+  const signIn = async () => {
+    try {
+      const { data } = await login({
+        variables: {
+          email: loginUser.email,
+          password: loginUser.password,
+        }
+      });
+
+   if (data && data.signIn) {
+    router.push("/")
+   }
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
 
   return (
     <Flex
@@ -47,7 +98,10 @@ export default function Authentification({ onSignUpClick } : props) {
         <Avatar bg="teal.500" />
         <Heading color="teal.400">Welcome</Heading>
         <Box minW={{ base: "90%", md: "468px" }}>
-          <form>
+          <form         onSubmit={(event) => {
+          event.preventDefault();
+          signIn();
+        }}>
             <Stack
               spacing={4}
               p="1rem"
@@ -60,7 +114,7 @@ export default function Authentification({ onSignUpClick } : props) {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input type="email" placeholder="email address" />
+                  <Input type="email" name="email" placeholder="email" onChange={handleChange} />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -72,7 +126,9 @@ export default function Authentification({ onSignUpClick } : props) {
                   />
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Password"
+                    placeholder="Mot de passe"
+                    name="password"
+                    onChange={handleChange}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
@@ -91,7 +147,7 @@ export default function Authentification({ onSignUpClick } : props) {
                 colorScheme="teal"
                 width="full"
               >
-                Login
+                Se connecter
               </Button>
             </Stack>
           </form>
