@@ -16,25 +16,15 @@ import {
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
 import { gql, useMutation } from "@apollo/client";
-import { CreateUserMutationVariables, CreateUserMutation } from "@/gql/graphql";
+import { CreateUserMutation, CreateUserMutationVariables } from "@/gql/graphql";
 
 const CREATE_USER = gql`
-  mutation CreateUser(
-    $email: String!
-    $password: String!
-    $firstName: String
-    $lastName: String
-  ) {
-    createUser(
-      email: $email
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-    ) {
+mutation CreateUser($email: String!, $password: String!, $lastName: String, $firstName: String) {
+    createUser(email: $email, password: $password, lastName: $lastName, firstName: $firstName) {
       email
       firstName
+      id
       lastName
-      password
     }
   }
 `;
