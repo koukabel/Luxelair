@@ -8,7 +8,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { editOrCreateUser, signIn } from "../resolvers/UserResolver";
+import { CreateUser, UpdateUser, signIn } from "../resolvers/UserResolver";
 import Booking from "./booking";
 import { compare, hash } from "bcrypt";
 import UserSession from "./userSession";
@@ -36,6 +36,7 @@ class User extends BaseEntity {
   // role!: string;
 
   @Column()
+  @Field()
   hashedPassword!: string;
 
   @Column({ nullable: true, default: "" })
@@ -61,7 +62,7 @@ class User extends BaseEntity {
   @JoinTable()
   bookings!: Booking[];
 
-  constructor(user?: editOrCreateUser) {
+  constructor(user?: CreateUser) {
     super();
     if (user) {
       this.email = user.email;
@@ -76,7 +77,7 @@ class User extends BaseEntity {
     return users;
   }
 
-  static async createNewUser(userInfo: editOrCreateUser): Promise<User> {
+  static async createNewUser(userInfo: CreateUser): Promise<User> {
     userInfo.password = await hash(userInfo.password, 8);
 
     const newUser = new User(userInfo);
@@ -86,16 +87,13 @@ class User extends BaseEntity {
 
   static async editUserInfo(
     id: string,
-    { password, ...userInfo }: editOrCreateUser
+    { ...userInfo }: UpdateUser
   ): Promise<User> {
     const userToUpdate = await User.findOneBy({ id: id });
     if (!userToUpdate) {
       throw new Error("User does not exist");
     }
-    await User.update(id, {
-      hashedPassword: await hash(password, 8),
-      ...userInfo,
-    });
+    await User.update(id, userInfo);
     await userToUpdate?.reload();
     return userToUpdate;
   }
