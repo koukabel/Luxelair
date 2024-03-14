@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n    query GetHousingTypes {\n        getHousingTypes\n      }\n  ": types.GetHousingTypesDocument,
+    "\n    query GetHousingTypes {\n      getHousingTypes\n    }\n  ": types.GetHousingTypesDocument,
     "\n  query getEquipments($equipmentTypes: [EquipmentTypeEnum!]!) {\n    getEquipmentsList(equipmentTypes: $equipmentTypes)\n  }\n": types.GetEquipmentsDocument,
     "\n\tquery Ad($adId: ID!) {\n\t\tad(id: $adId) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tprice\n\t\t\tlocation\n\t\t\tdescription\n\t\t}\n\t}\n": types.AdDocument,
     "\n\tquery Ads {\n\t\tgetAds {\n\t\t\tlocation\n\t\t\tprice\n\t\t\ttitle\n\t\t\tid\n\t\t}\n\t}\n": types.AdsDocument,
@@ -36,7 +36,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetHousingTypes {\n        getHousingTypes\n      }\n  "): (typeof documents)["\n    query GetHousingTypes {\n        getHousingTypes\n      }\n  "];
+export function graphql(source: "\n    query GetHousingTypes {\n      getHousingTypes\n    }\n  "): (typeof documents)["\n    query GetHousingTypes {\n      getHousingTypes\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

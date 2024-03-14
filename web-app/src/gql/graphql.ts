@@ -23,9 +23,10 @@ export type Ad = {
   bookings: Array<Booking>;
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  image: Scalars['String']['output'];
+  image?: Maybe<Scalars['String']['output']>;
   location: Scalars['String']['output'];
   price: Scalars['Float']['output'];
+  selectedEquipmentValues?: Maybe<Array<Scalars['String']['output']>>;
   title: Scalars['String']['output'];
 };
 
@@ -50,11 +51,6 @@ export enum EquipmentTypeEnum {
   SecurityEquipement = 'SecurityEquipement'
 }
 
-export type EquipmentValueInput = {
-  equipmentType: EquipmentTypeEnum;
-  selectedValues?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
 export enum HousingTypeEnum {
   Appartement = 'Appartement',
   Chalet = 'Chalet',
@@ -74,11 +70,10 @@ export type Mutation = {
 
 export type MutationCreateAdArgs = {
   description?: InputMaybe<Scalars['String']['input']>;
-  equipments?: InputMaybe<Array<EquipmentTypeEnum>>;
   image?: InputMaybe<Scalars['String']['input']>;
   location: Scalars['String']['input'];
   price: Scalars['Float']['input'];
-  selectedEquipmentValues?: InputMaybe<Array<EquipmentValueInput>>;
+  selectedEquipmentValues?: InputMaybe<Array<Scalars['String']['input']>>;
   title: Scalars['String']['input'];
   type?: InputMaybe<HousingTypeEnum>;
 };

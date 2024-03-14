@@ -1,6 +1,4 @@
-import { EquipmentTypeEnum, EquipmentValueInput } from "@/gql/graphql";
 import { gql, useQuery } from "@apollo/client";
-
 
 import {
   Card,
@@ -8,9 +6,13 @@ import {
   Heading,
   SimpleGrid,
   Box,
-  VStack,
-  CardBody,
+  VStack
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
+interface props {
+  onSelectedEquipmentChange: (selectedValues: string[]) => void;
+}
 
 const GET_EQUIPEMENTS = gql`
   query getEquipments($equipmentTypes: [EquipmentTypeEnum!]!) {
@@ -18,7 +20,8 @@ const GET_EQUIPEMENTS = gql`
   }
 `;
 
-export default function Equipements() {
+
+const Equipements: React.FC<props> = ({ onSelectedEquipmentChange}) =>  {
   const { loading, error, data } = useQuery(GET_EQUIPEMENTS, {
     variables: {
       equipmentTypes: [
@@ -30,12 +33,14 @@ export default function Equipements() {
   });
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error.message}</p>;
-console.log(data)
-  const selectedEquipements: string[] = [];
 
-  const saveEquipements = (equipement: string) => {
-    selectedEquipements.push(equipement);
-  };
+  const [selectedEquipmentValues, setSelectedEquipmentValues] = useState<string[]>([]);
+  
+
+    function saveEquipementsList (equipment: string){
+      setSelectedEquipmentValues(prevValues => [...prevValues, equipment]);
+      onSelectedEquipmentChange([...selectedEquipmentValues, equipment]);
+};
 
   return (
     <VStack>
@@ -59,7 +64,7 @@ console.log(data)
                 <Card
                   key={equipment}
                   cursor="pointer"
-                  onClick={() => saveEquipements(equipment)}
+                  onClick={() => saveEquipementsList(equipment)}
                 >
                   <CardHeader>
                     <Heading size="sm">{equipment}</Heading>
@@ -72,3 +77,6 @@ console.log(data)
     </VStack>
   );
 }
+
+
+export default Equipements; 

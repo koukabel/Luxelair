@@ -2,7 +2,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { gql, useMutation } from "@apollo/client";
 import FirstStep from "@/components/adCreationComponents/FirstStep/FirstStep";
 import ControlButtons from "@/components/adCreationComponents/FirstStep/ControlButtons";
 import { useState } from "react";
@@ -11,20 +10,38 @@ import HouseType from "@/components/adCreationComponents/FirstStep/HouseType";
 import SecondStep from "@/components/adCreationComponents/SecondStep/SecondStep";
 import Location from "@/components/adCreationComponents/FirstStep/Location";
 import UploadAdImage from "@/components/adCreationComponents/SecondStep/UploadAdImage";
-import AdditionalInformation from "@/components/adCreationComponents/FirstStep/AdditionalInformation";
+import AdTitle from "@/components/adCreationComponents/SecondStep/AdTitle";
+import AdDescription from "@/components/adCreationComponents/SecondStep/AdDescription";
+import ThirdStep from "@/components/adCreationComponents/ThirdStep/ThirdStep";
 import { MutationCreateAdArgs } from "@/gql/graphql";
+import AdPrice from "@/components/adCreationComponents/ThirdStep/AdPrice";
+import FinalStep from "@/components/adCreationComponents/ThirdStep/FinalStep";
+import { gql, useMutation } from "@apollo/client";
+import router from "next/router";
 
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
-  const [publishAdInfo, setPublishAdInfo] = useState<MutationCreateAdArgs>(
-    {
-      title: "",
-      description: "",
-      location: "",
-      price: 0,
-    }
-  );
+  const [publishAdInfo, setPublishAdInfo] = useState<MutationCreateAdArgs>({
+    title: "",
+    description: "",
+    location: "",
+    price: 0,
+    image: null,
+    selectedEquipmentValues: [],
+    type: null,
+  });
+
+  const handleChange = (fieldName: string, newValue: string | number) => {
+    setPublishAdInfo({
+      ...publishAdInfo,
+      [fieldName]: newValue,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
 
   const handleNext = () => {
     setProgressValue((prevProgress) => prevProgress + 10);
@@ -36,29 +53,112 @@ export default function CreateAdForm() {
     setCurrentComponent((currentComponent) => currentComponent - 1);
   };
 
-  //const CREATE_AD = gql`
-  //     mutation Mutation($title: String!, $location: String!, $price: Float!, $description: String, $type: HousingTypeEnum, $equipments: [EquipmentTypeEnum!], $selectedEquipmentValues: [EquipmentValueInput!]) {
-  //createAd(title: $title, location: $location, price: $price, description: $description, type: $type, equipments: $equipments, selectedEquipmentValues: $selectedEquipmentValues) {
-  //   title
-  // price
-  //location
-  //description
-  // }
-  //}
-  //   `;
+  const CREATE_AD = gql`
+    mutation CreateAd(
+      $title: String!
+      $location: String!
+      $price: Float!
+      $description: String
+      $selectedEquipmentValues: [String!]
+      $type: HousingTypeEnum
+    ) {
+      createAd(
+        title: $title
+        location: $location
+        price: $price
+        description: $description
+        selectedEquipmentValues: $selectedEquipmentValues
+        type: $type
+      ) {
+        description
+        location
+        price
+        selectedEquipmentValues
+        title
+      }
+    }
+  `;
 
-  console.log(publishAdInfo.location)
+  const [createAd] = useMutation<CreateAdMutation, CreateAdMutationVariables>(
+    CREATE_AD
+  );
+
+  const createArticle = async () => {
+    const { data } = await createAdMutation({
+      variables: {
+        title: publishAdInfo.title,
+        price: publishAdInfo.price as number,
+        location: publishAdInfo.location,
+        description: publishAdInfo.description,
+        selectedEquipmentValues: publishAdInfo.selectedEquipmentValues,
+        type: publishAdInfo.type,
+      },
+    });
+
+    if (data && data.createAd.id) {
+      // const { id } = data.createAd;
+      // await uploadImage(id);
+      console.log(publishAdInfo);
+      //router.push(`/articles/${data.createAd.id}?publishConfirmation=true`);
+    }
+  };
 
   return (
     <ChakraProvider>
       <Navbar />
       {currentComponent === 1 && <FirstStep />}
-      {currentComponent === 2 && <Equipements />}
-      {currentComponent === 3 && <HouseType />}
+      {currentComponent === 2 && (
+        <Equipements
+          onSelectedEquipmentChange={(selectedValues) =>
+            setPublishAdInfo({
+              ...publishAdInfo,
+              selectedEquipmentValues: selectedValues,
+            })
+          }
+        />
+      )}
+      {currentComponent === 3 && (
+        <HouseType
+          onSelectedTypeChange={(housingType) =>
+            setPublishAdInfo({
+              ...publishAdInfo,
+              type: housingType,
+            })
+          }
+        />
+      )}
+
       {currentComponent === 4 && <SecondStep />}
-      {currentComponent === 5 && <UploadAdImage />}
-      {currentComponent === 6 && <AdditionalInformation />}
-      {currentComponent === 7 && <Location location={publishAdInfo.location}  />}
+      {currentComponent === 5 && <UploadAdImage image={""} />}
+      {currentComponent === 6 && (
+        <Location
+          onLocationChange={(newLocation) =>
+            setPublishAdInfo({ ...publishAdInfo, location: newLocation })
+          }
+        />
+      )}
+
+      {currentComponent === 7 && (
+        <AdTitle
+          value={publishAdInfo.title}
+          onChange={(newValue: string) => handleChange("title", newValue)}
+        />
+      )}
+      {currentComponent === 8 && (
+        <AdDescription
+          value={publishAdInfo.title}
+          onChange={(newValue: string) => handleChange("description", newValue)}
+        />
+      )}
+      {currentComponent === 9 && <ThirdStep />}
+      {currentComponent === 10 && (
+        <AdPrice
+          value={publishAdInfo.price}
+          onChange={(newValue: number) => handleChange("price", newValue)}
+        />
+      )}
+
+      {currentComponent === 11 && <FinalStep onSubmit={() => handleSubmit} />}
       <ControlButtons
         handleNext={handleNext}
         handlePrevious={handlePrevious}

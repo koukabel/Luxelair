@@ -1,7 +1,10 @@
 import { Box, Heading, VStack, Text, Button, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import { BsCloudUpload } from "react-icons/bs";
-export default function UploadAdImage() {
+interface props {
+  image: string
+}
+const UploadAdImage: React.FC<props> = ({image }) =>  {
     const [fileAd, setFileAd] = useState<File | null>(null);
     const uploadFile = async (id: string) => {
               if (fileAd) {
@@ -75,3 +78,5 @@ export default function UploadAdImage() {
     </VStack>
   );
 }
+
+export default UploadAdImage;
