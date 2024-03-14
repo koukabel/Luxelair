@@ -9,8 +9,8 @@ import {
   Link,
   Avatar,
 } from "@chakra-ui/react";
-import { gql, useQuery } from "@apollo/client";
-import { GetMyProfileQuery } from "@/gql/graphql";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { GetMyProfileQuery, SignOutMutation } from "@/gql/graphql";
 
 const GET_MY_PROFIL = gql`
   query GetMyProfile {
@@ -23,9 +23,19 @@ const GET_MY_PROFIL = gql`
   }
 `;
 
+const SIGN_OUT = gql `
+mutation SignOut {
+  signOut
+}
+`;
 
 export default function Navbar() {
   const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+  const [signOut] = useMutation<SignOutMutation>(SIGN_OUT);
+
+  const handleSignOut = async () => {
+      await signOut();
+  };
 
   return (
     <Flex alignItems="center">
@@ -44,6 +54,16 @@ export default function Navbar() {
           Mettre ma propriété sur Luxelair
         </Link>
         {data?.myProfile ? (
+          <>
+           <Link
+            cursor={"pointer"}
+            fontWeight="light"
+            fontSize="16px"
+            onClick={handleSignOut}
+            href="/login"
+          >
+            Déconnexion
+          </Link>
            <Link
            cursor={"pointer"}
            fontWeight="light"
@@ -52,6 +72,7 @@ export default function Navbar() {
          >
           <Avatar cursor="pointer" bg="#B4770A" />
           </Link>
+          </>
         ) : (
           <Link
             cursor={"pointer"}
