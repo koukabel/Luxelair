@@ -3,10 +3,34 @@ import Navbar from "@/components/Navbar";
 import VoyagerBanner from "@/components/profile/VoyagerBanner";
 import { ChakraProvider, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import VoyagerVerify from "@/components/profile/VoyagerVerify";
-import { Link } from "@chakra-ui/react";
-import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { gql, useQuery } from "@apollo/client";
+import { UserQueryVariables, UserQuery } from "@/gql/graphql";
+
+
+const GET_USER = gql`
+query User($userId: ID!) {
+	user(id: $userId) {
+	  id
+	  lastName
+	  location
+	  phoneNumber
+	  firstName
+	  email
+	  description
+	  city
+	}
+  }
+`;
+
 
 export default function Voyager() {
+	const router = useRouter();
+	const { id } = router.query;
+	const { data } = useQuery<UserQuery, UserQueryVariables>(GET_USER, {
+		variables: { userId: id as string },
+	});
+	if (data) {
 	return (
 		<ChakraProvider>
 			<Navbar />
@@ -20,4 +44,4 @@ export default function Voyager() {
 			<Footer />
 		</ChakraProvider>
 	);
-}
+}}

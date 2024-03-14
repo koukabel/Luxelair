@@ -13,8 +13,12 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import ProfileImg from "../ProfileVoyageurImg";
+import { gql, useQuery } from "@apollo/client";
+import { GetMyProfileQuery } from "@/gql/graphql";
+
 
 export default function VoyageurVerify() {
+
 	return (
 		<>
 			<Flex justifyContent="left">
@@ -24,7 +28,7 @@ export default function VoyageurVerify() {
 							<Flex justifyContent="space-between" width="100%">
 								<Container>
 									<Text align="center" size="md">
-										Vérification effectué par Béatrice
+										Vérification effectué par 
 									</Text>
 								</Container>
 							</Flex>

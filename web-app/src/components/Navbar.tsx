@@ -44,7 +44,14 @@ export default function Navbar() {
           Mettre ma propriété sur Luxelair
         </Link>
         {data?.myProfile ? (
+           <Link
+           cursor={"pointer"}
+           fontWeight="light"
+           fontSize="16px"
+           href={`/profile/voyageur/${data?.myProfile.id}`}
+         >
           <Avatar cursor="pointer" bg="#B4770A" />
+          </Link>
         ) : (
           <Link
             cursor={"pointer"}
