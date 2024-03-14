@@ -13,7 +13,11 @@ import UploadAdImage from "@/components/adCreationComponents/SecondStep/UploadAd
 import AdTitle from "@/components/adCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/adCreationComponents/SecondStep/AdDescription";
 import ThirdStep from "@/components/adCreationComponents/ThirdStep/ThirdStep";
-import { MutationCreateAdArgs } from "@/gql/graphql";
+import {
+  CreateAdMutation,
+  CreateAdMutationVariables,
+  MutationCreateAdArgs,
+} from "@/gql/graphql";
 import AdPrice from "@/components/adCreationComponents/ThirdStep/AdPrice";
 import FinalStep from "@/components/adCreationComponents/ThirdStep/FinalStep";
 import { gql, useMutation } from "@apollo/client";
@@ -22,25 +26,22 @@ import router from "next/router";
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
-  const [publishAdInfo, setPublishAdInfo] = useState<MutationCreateAdArgs>({
-    title: "",
-    description: "",
-    location: "",
-    price: 0,
-    image: null,
-    selectedEquipmentValues: [],
-    type: null,
-  });
+  const [publishAdInfo, setPublishAdInfo] = useState<CreateAdMutationVariables>(
+    {
+      title: "",
+      description: "",
+      location: "",
+      price: 0,
+      selectedEquipmentValues: [],
+      type: null,
+    }
+  );
 
   const handleChange = (fieldName: string, newValue: string | number) => {
     setPublishAdInfo({
       ...publishAdInfo,
       [fieldName]: newValue,
     });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
   };
 
   const handleNext = () => {
@@ -83,24 +84,37 @@ export default function CreateAdForm() {
     CREATE_AD
   );
 
-  const createArticle = async () => {
-    const { data } = await createAdMutation({
-      variables: {
-        title: publishAdInfo.title,
-        price: publishAdInfo.price as number,
-        location: publishAdInfo.location,
-        description: publishAdInfo.description,
-        selectedEquipmentValues: publishAdInfo.selectedEquipmentValues,
-        type: publishAdInfo.type,
-      },
-    });
+  const publishAd = async () => {
+    try {
+      const { data } = await createAd({
+        variables: {
+          title: publishAdInfo.title,
+          price: publishAdInfo.price as number,
+          location: publishAdInfo.location,
 
-    if (data && data.createAd.id) {
-      // const { id } = data.createAd;
-      // await uploadImage(id);
-      console.log(publishAdInfo);
-      //router.push(`/articles/${data.createAd.id}?publishConfirmation=true`);
+          description: publishAdInfo.description,
+          selectedEquipmentValues: publishAdInfo.selectedEquipmentValues,
+          type: publishAdInfo.type,
+        },
+      });
+
+      if (data) {
+        const { id } = data.createAd;
+        // await uploadImage(id);
+        console.log("published");
+        // router.push(`/articles/${data.createAd.id}?publishConfirmation=true`);
+        //}
+      }
+    } catch (error) {
+      console.error("Error publishing ad:", error);
     }
+  };
+
+  const handleSubmit = () => {
+    //event.preventDefault();
+    console.log(publishAdInfo);
+    console.log('hi')
+    publishAd();
   };
 
   return (
@@ -158,7 +172,7 @@ export default function CreateAdForm() {
         />
       )}
 
-      {currentComponent === 11 && <FinalStep onSubmit={() => handleSubmit} />}
+      {currentComponent === 11 && <FinalStep  onSubmit={handleSubmit}  />}
       <ControlButtons
         handleNext={handleNext}
         handlePrevious={handlePrevious}

@@ -7,7 +7,7 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm";
-import { editOrCreateAdArgs } from "../resolvers/AdResolver";
+import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
 
 export enum HousingTypeEnum {
@@ -170,7 +170,7 @@ class Ad extends BaseEntity {
     return ad;
   }
 
-  static async createAd(adInformations: editOrCreateAdArgs): Promise<Ad> {
+  static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);
     const savedAd = await newAd.save();
     return savedAd;

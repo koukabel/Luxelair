@@ -17,7 +17,7 @@ export class EquipmentValueInput {
 }
 
 @ArgsType()
-export class editOrCreateAdArgs {
+export class editOrCreateAd {
     @Field()
     @MinLength(2)
     title!: string;
@@ -60,10 +60,8 @@ export class AdResolver {
     }
 
     @Mutation(() => Ad)
-    async createAd(@Args() args: editOrCreateAdArgs) {
-      const ad = new Ad(args);
-      const savedAd = await Ad.createAd(ad);
-      return savedAd;
+     createAd(@Args() args: editOrCreateAd) {
+      return Ad.createAd(args);
 
   }
 }

@@ -1,5 +1,5 @@
 import { Box, Heading, Textarea, VStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Props {
   value: string;

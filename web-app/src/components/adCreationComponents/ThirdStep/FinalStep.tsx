@@ -1,6 +1,5 @@
 import { Button, Heading, VStack } from "@chakra-ui/react";
 
-
 interface Props {
   onSubmit: () => void;
 }
