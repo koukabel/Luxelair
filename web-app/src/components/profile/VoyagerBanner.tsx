@@ -11,8 +11,26 @@ import {
 } from "@chakra-ui/react";
 import ProfileVoyageurImg from "../ProfileVoyageurImg";
 import EditProfile from "./EditProfile";
+import { gql, useQuery } from "@apollo/client";
+import { GetMyProfilQuery } from "@/gql/graphql";
+
+const GET_MY_PROFIL = gql`
+query GetMyProfil {
+	myProfile {
+	  email
+	  firstName
+	  id
+	  lastName
+	  city
+	  location
+	  phoneNumber
+	  description
+	}
+  }
+`;
 
 export default function Banner() {
+	const { data, error } = useQuery<GetMyProfilQuery>(GET_MY_PROFIL);
 	return (
 		<>
 			<Flex gap={"20"}>
@@ -21,7 +39,7 @@ export default function Banner() {
 						<CardBody>
 							 <ProfileVoyageurImg /> 
 							<Stack mt="6" spacing="3">
-								<Heading size="md">Cédric | Voyageur</Heading>
+								<Heading size="md">{data?.myProfile.firstName} | Voyageur</Heading>
 								<Text>7 commentaires</Text>
 								<Text>7 années sur Luxelair</Text>
 							</Stack>
@@ -30,13 +48,11 @@ export default function Banner() {
 					</Card>
 				</Flex>
 				<Flex flexDirection={"column"}>
-					<Heading>Information sur Cédric</Heading>
-					<EditProfile />
-					<Text fontSize="2xl">Je vis à Paris</Text>
+					<Heading>Information sur {data?.myProfile.firstName}</Heading>
+					<EditProfile /> 
+					<Text fontSize="2xl">Je vis à {data?.myProfile.city}</Text>
 					<Text fontSize="1xl">
-						Bonjour, je m'appelle Cédric <br /> Voyager dans les plus beaux
-						lieux du monde <br /> en toute simplicité, c'est ma passion
-						<br />A bientot sur Luxelair
+					{data?.myProfile.description}
 					</Text>
 				</Flex>
 			</Flex>

@@ -38,6 +38,22 @@ class User extends BaseEntity {
   @Column()
   hashedPassword!: string;
 
+  @Column({ nullable: true, default: "" })
+  @Field()
+  phoneNumber?: string;
+
+  @Column({ nullable: true, default: "" })
+  @Field()
+  location?: string;
+
+  @Column({ nullable: true, default: "" })
+  @Field()
+  city?: string;
+
+  @Column({ nullable: true, default: "" })
+  @Field()
+  description?: string;
+
   @OneToMany(() => UserSession, (session) => session.user)
   sessions!: UserSession[];
 
@@ -70,13 +86,16 @@ class User extends BaseEntity {
 
   static async editUserInfo(
     id: string,
-    userInfo: editOrCreateUser
+    { password, ...userInfo }: editOrCreateUser
   ): Promise<User> {
     const userToUpdate = await User.findOneBy({ id: id });
     if (!userToUpdate) {
       throw new Error("User does not exist");
     }
-    await User.update(id, userInfo);
+    await User.update(id, {
+      hashedPassword: await hash(password, 8),
+      ...userInfo,
+    });
     await userToUpdate?.reload();
     return userToUpdate;
   }
@@ -111,6 +130,14 @@ class User extends BaseEntity {
       return null;
     }
     return session.user;
+  }
+
+  static async getUserById(id: string): Promise<User> {
+    const user = await User.findOneBy({ id: id });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    return user;
   }
 }
 

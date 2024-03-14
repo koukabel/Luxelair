@@ -13,7 +13,8 @@ import {
   Avatar,
   FormControl,
   FormHelperText,
-  InputRightElement
+  InputRightElement,
+  useToast
 } from "@chakra-ui/react";
 import { gql, useMutation } from "@apollo/client";
 import { FaUserAlt, FaLock } from "react-icons/fa";
@@ -40,6 +41,7 @@ export default function Authentification({ onSignUpClick } : props) {
     const CFaUserAlt = chakra(FaUserAlt);
     const CFaLock = chakra(FaLock);
   const [showPassword, setShowPassword] = useState(false);
+  const toast = useToast(); 
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -63,22 +65,50 @@ export default function Authentification({ onSignUpClick } : props) {
 
   const signIn = async () => {
     try {
+      const loadingToastId = toast({
+        title: "Chargement...",
+        status: "info",
+        duration: 1000,
+        isClosable: false,
+      });
+        setTimeout(async () => {
+        try {
       const { data } = await login({
         variables: {
           email: loginUser.email,
           password: loginUser.password,
         }
       });
+      if (data && data.signIn) {
+        toast.close(loadingToastId);
+        toast({
+          title: "Connexion réussie",
+          description: "Vous êtes maintenant connecté(e).",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
 
-   if (data && data.signIn) {
-    router.push("/")
-   }
-
-    } catch (error) {
-      console.log(error);
+      setTimeout(() => {
+        router.push(`/profile/voyageur/${data.signIn.id}`)
+      }, 2000);
     }
-
-  };
+  } catch (error) {
+    toast.close(loadingToastId);
+      toast({
+      title: "Erreur lors de la connexion",
+      description:
+        "Une erreur s'est produite lors de connexion. Veuillez réessayer.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+}, 1000);
+} catch (error) {
+console.log(error);
+}
+};
 
   return (
     <Flex
@@ -95,8 +125,8 @@ export default function Authentification({ onSignUpClick } : props) {
         justifyContent="center"
         alignItems="center"
       >
-        <Avatar bg="teal.500" />
-        <Heading color="teal.400">Welcome</Heading>
+        <Avatar bg="#B4770A" />
+        <Heading color="#B4770A">Connectez-vous</Heading>
         <Box minW={{ base: "90%", md: "468px" }}>
           <form         onSubmit={(event) => {
           event.preventDefault();
@@ -144,8 +174,10 @@ export default function Authentification({ onSignUpClick } : props) {
                 borderRadius={0}
                 type="submit"
                 variant="solid"
-                colorScheme="teal"
+                bg="#000000"
                 width="full"
+                color="white"
+                _hover={{ bg: "#B4770A" }}
               >
                 Se connecter
               </Button>

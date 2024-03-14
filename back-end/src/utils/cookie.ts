@@ -14,5 +14,6 @@ export function setUserSessionIdInCookie(
   });
 }
 export function getUserSessionIdFromCookie(req: IncomingMessage) {
-  return parse(req.headers.cookie || "").userSessionId as string | undefined;
+  const userSessionId = parse(req.headers.cookie || "").userSessionId;
+  return userSessionId || undefined;
 }
