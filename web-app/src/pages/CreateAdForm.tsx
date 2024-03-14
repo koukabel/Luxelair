@@ -113,7 +113,7 @@ export default function CreateAdForm() {
   const handleSubmit = () => {
     //event.preventDefault();
     console.log(publishAdInfo);
-    console.log('hi')
+    console.log("hi");
     publishAd();
   };
 
@@ -172,7 +172,7 @@ export default function CreateAdForm() {
         />
       )}
 
-      {currentComponent === 11 && <FinalStep  onSubmit={handleSubmit}  />}
+      {currentComponent === 11 && <FinalStep onSubmit={handleSubmit} />}
       <ControlButtons
         handleNext={handleNext}
         handlePrevious={handlePrevious}

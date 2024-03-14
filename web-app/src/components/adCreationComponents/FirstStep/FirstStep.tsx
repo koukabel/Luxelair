@@ -3,13 +3,6 @@ import {
   Stack,
   Image,
   Text,
-  Flex,
-  Box,
-  Spacer,
-  Grid,
-  SimpleGrid,
-  Container,
-  HStack,
   Card,
   CardBody,
 } from "@chakra-ui/react";

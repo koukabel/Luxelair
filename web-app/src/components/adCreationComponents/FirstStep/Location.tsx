@@ -1,6 +1,5 @@
 import React from "react";
 import { Heading, VStack, Text, Image, Input, Button } from "@chakra-ui/react";
-import { IoLocationSharp } from "react-icons/io5";
 
 interface LocationProps {
   onLocationChange: (newLocation: string) => void;
@@ -30,7 +29,6 @@ const Location: React.FC<LocationProps> = ({ onLocationChange }) => {
         borderRadius={"10"}
         onChange={handleLocationChange}
       />
-      {/* <IoLocationSharp  />  */}
       <Image src="map.png" alt="map" />
     </VStack>
   );

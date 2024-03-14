@@ -1,7 +1,6 @@
 import { HousingTypeEnum } from "@/gql/graphql";
 import { gql, useQuery } from "@apollo/client";
 import { Box, Card, CardBody, CardHeader, Heading, SimpleGrid, VStack } from "@chakra-ui/react";
-import { useState } from "react";
 import { FaHouse } from "react-icons/fa6";
 
 interface HouseTypeProps {
