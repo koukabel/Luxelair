@@ -51,8 +51,8 @@ export class AdResolver {
   }
 
   @Query(() => [Ad])
-  search(@Arg("title") title: string) {
-    return Ad.searchAd(title);
+  search(@Arg("location") location: string) {
+    return Ad.searchAd(location);
   }
 
   @Mutation(() => Ad)
