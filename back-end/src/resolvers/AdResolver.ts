@@ -1,17 +1,31 @@
 import {
+  Arg,
   Args,
   ArgsType,
   Field,
   Float,
-  Int,
+  ID,
+  InputType,
   Mutation,
   Query,
   Resolver,
-  Arg,
-  ID,
+  registerEnumType,
 } from "type-graphql";
-import Ad from "../entities/ad";
+import Ad, { EquipmentTypeEnum, HousingTypeEnum } from "../entities/ad";
 import { MinLength, Min } from "class-validator";
+
+registerEnumType(HousingTypeEnum, {
+  name: "HousingTypeEnum",
+});
+
+registerEnumType(EquipmentTypeEnum, {
+  name: "EquipmentTypeEnum",
+});
+
+@InputType()
+export class EquipmentValueInput {
+  selectedValues?: string[];
+}
 
 @ArgsType()
 export class editOrCreateAd {
@@ -32,9 +46,13 @@ export class editOrCreateAd {
   @Field({ nullable: true })
   image!: string;
 
+  @Field(() => [String], { nullable: true })
+  selectedEquipmentValues?: string[];
   // @Field({ nullable: true })
   // equipment!: string;
 
+  @Field(() => HousingTypeEnum, { nullable: true })
+  type!: HousingTypeEnum;
   // @Field()
   // type!: string;
 }
@@ -42,12 +60,22 @@ export class editOrCreateAd {
 @Resolver()
 export class AdResolver {
   @Query(() => [Ad])
-  ads() {
+  getAds() {
     return Ad.getAds();
   }
+
   @Query(() => Ad)
   ad(@Arg("id", () => ID) id: string) {
     return Ad.getAdById(id);
+  }
+
+  @Query(() => [HousingTypeEnum])
+  getHousingTypes() {
+    return Object.values(HousingTypeEnum);
+  }
+  @Query(() => [Ad])
+  ads() {
+    return Ad.getAds();
   }
 
   @Query(() => [Ad])

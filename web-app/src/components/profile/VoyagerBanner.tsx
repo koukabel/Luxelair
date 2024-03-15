@@ -9,24 +9,25 @@ import {
 	Stack,
 	Text,
 } from "@chakra-ui/react";
-import ProfileVoyageurImg from "../ProfileVoyageurImg";
+import ProfileVoyageurImg from "../ProfileTravelerImg";
 import EditProfile from "./EditProfile";
 import { gql, useQuery } from "@apollo/client";
 import { GetMyProfilQuery } from "@/gql/graphql";
+import VoyageurVerify from "./VoyagerVerify";
 
 const GET_MY_PROFIL = gql`
-query GetMyProfil {
-	myProfile {
-	  email
-	  firstName
-	  id
-	  lastName
-	  city
-	  location
-	  phoneNumber
-	  description
+	query GetMyProfil {
+		myProfile {
+			email
+			firstName
+			id
+			lastName
+			city
+			location
+			phoneNumber
+			description
+		}
 	}
-  }
 `;
 
 export default function Banner() {
@@ -37,23 +38,23 @@ export default function Banner() {
 				<Flex>
 					<Card maxW="sm" backgroundColor="#C3C3C3" w={300}>
 						<CardBody>
-							 <ProfileVoyageurImg /> 
+							<ProfileVoyageurImg />
 							<Stack mt="6" spacing="3">
-								<Heading size="md">{data?.myProfile.firstName} | Voyageur</Heading>
+								<Heading size="md">
+									{data?.myProfile.firstName} | Voyageur
+								</Heading>
 								<Text>7 commentaires</Text>
 								<Text>7 années sur Luxelair</Text>
 							</Stack>
 						</CardBody>
-						<CardFooter></CardFooter>
 					</Card>
 				</Flex>
+				<VoyageurVerify />
 				<Flex flexDirection={"column"}>
 					<Heading>Information sur {data?.myProfile.firstName}</Heading>
-					<EditProfile /> 
+					<EditProfile />
 					<Text fontSize="2xl">Je vis à {data?.myProfile.city}</Text>
-					<Text fontSize="1xl">
-					{data?.myProfile.description}
-					</Text>
+					<Text fontSize="1xl">{data?.myProfile.description}</Text>
 				</Flex>
 			</Flex>
 		</>

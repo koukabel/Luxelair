@@ -33,7 +33,7 @@ mutation Login($email: String!, $password: String!) {
 `;
 
 interface props {
-    onSignUpClick: () => void; 
+    onSignUpClick: () => void;
   }
 
 export default function Authentification({ onSignUpClick } : props) {
@@ -41,7 +41,7 @@ export default function Authentification({ onSignUpClick } : props) {
     const CFaUserAlt = chakra(FaUserAlt);
     const CFaLock = chakra(FaLock);
   const [showPassword, setShowPassword] = useState(false);
-  const toast = useToast(); 
+  const toast = useToast();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -90,7 +90,7 @@ export default function Authentification({ onSignUpClick } : props) {
         });
 
       setTimeout(() => {
-        router.push(`/profile/voyageur/${data.signIn.id}`)
+        router.push(`/profile/traveler/${data.signIn.id}`)
       }, 2000);
     }
   } catch (error) {

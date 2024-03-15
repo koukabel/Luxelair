@@ -16,7 +16,7 @@ import { Context } from "..";
 import { setUserSessionIdInCookie } from "../utils/cookie";
 
 @ArgsType()
-export class editOrCreateUser {
+export class CreateUser {
   @Field()
   firstName!: string;
 
@@ -33,6 +33,22 @@ export class editOrCreateUser {
   @Field()
   @MinLength(12)
   password!: string;
+}
+
+@ArgsType()
+export class UpdateUser {
+  @Field()
+  firstName!: string;
+
+  @Field()
+  lastName!: string;
+
+  @Field()
+  @IsEmail()
+  email!: string;
+
+  // @Field()
+  // role: string;
 
   @Field({ nullable: true })
   phoneNumber?: string;
@@ -65,11 +81,11 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  createUser(@Args() args: editOrCreateUser) {
+  createUser(@Args() args: CreateUser) {
     return User.createNewUser(args);
   }
   @Mutation(() => User)
-  updateUser(@Arg("id", () => ID) id: string, @Args() args: editOrCreateUser) {
+  updateUser(@Arg("id", () => ID) id: string, @Args() args: UpdateUser) {
     return User.editUserInfo(id, args);
   }
 
@@ -78,6 +94,12 @@ export class UserResolver {
     const { user, session } = await User.login(args);
     setUserSessionIdInCookie(context.res, session);
     return user;
+  }
+
+  @Mutation(() => Boolean)
+  async signOut(@Ctx() context: Context): Promise<Boolean> {
+    setUserSessionIdInCookie(context.res, null);
+    return true;
   }
 
   @Query(() => User)
