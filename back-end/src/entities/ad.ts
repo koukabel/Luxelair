@@ -171,12 +171,14 @@ class Ad extends BaseEntity {
     return ad;
   }
 
-  static async searchAd(title: string): Promise<Ad[]> {
-    const adTitle = await Ad.find({ where: { title: Like(`%${title}%`) } });
-    if (!adTitle) {
+  static async searchAd(location: string): Promise<Ad[]> {
+    const adLocation = await Ad.find({
+      where: { location: Like(`%${location}%`) },
+    });
+    if (!adLocation) {
       throw new Error("Ad does not exist");
     }
-    return adTitle || [];
+    return adLocation || [];
   }
 
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {

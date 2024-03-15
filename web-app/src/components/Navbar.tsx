@@ -23,13 +23,24 @@ const GET_MY_PROFIL = gql`
 	}
 `;
 
+const LOGOUT = gql `
+mutation SignOut {
+  signOut
+}
+`;
+
 export default function Navbar() {
 	const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+  const [signOut] = useMutation<SignOutMutation>(LOGOUT);
+
+  const handleSignOut = async () => {
+      await signOut();
+  };
 
 	return (
 		<Flex alignItems="center">
 			<Link href="/">
-				<Image src="../logoWhite.png" boxSize="150px" objectFit="contain" />
+				<Image src="../../logoWhite.png" boxSize="150px" objectFit="contain" />
 			</Link>
 			<Heading className="mainHeading">LUXELAIR</Heading>
 			<Spacer />
@@ -43,6 +54,16 @@ export default function Navbar() {
 					Mettre ma propriété sur Luxelair
 				</Link>
 				{data?.myProfile ? (
+           <>
+           <Link
+            cursor={"pointer"}
+            fontWeight="light"
+            fontSize="16px"
+            onClick={handleSignOut}
+            href="/login"
+          >
+            Déconnexion
+          </Link>
 					<Link
 						cursor={"pointer"}
 						fontWeight="light"
@@ -51,6 +72,7 @@ export default function Navbar() {
 					>
 						<Avatar cursor="pointer" bg="#B4770A" />
 					</Link>
+          </>
 				) : (
 					<Link
 						cursor={"pointer"}
