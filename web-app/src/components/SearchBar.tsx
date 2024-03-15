@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 const SEARCH_AD = gql `
-query SearchAd($title: String!) {
-  search(title: $title) {
+query SearchAd($location: String!) {
+  search(location: $location) {
     title
     price
     location
@@ -19,14 +19,14 @@ query SearchAd($title: String!) {
 `;
 
 export default function SearchBar() {
-  const [searchTitle, setSearchTitle] = useState(""); 
+  const [searchLocation, setSearchLocation] = useState(""); 
   const [searchAd] = useLazyQuery<SearchAdQuery>(SEARCH_AD);
 
   const router = useRouter(); 
 
   const handleSearch = () => {
-    searchAd({ variables: { title: searchTitle } });
-    router.push(`/search-results?title=${searchTitle}`);
+    searchAd({ variables: { location: searchLocation } });
+    router.push(`/search-results?location=${searchLocation}`);
   };
 
   return (
@@ -38,8 +38,8 @@ export default function SearchBar() {
           fontFamily="Montserrat"
           fontWeight="regular"
           fontSize="12px"
-          value={searchTitle}
-          onChange={(e) => setSearchTitle(e.target.value)}
+          value={searchLocation}
+          onChange={(e) => setSearchLocation(e.target.value)}
         />
         <Input
           placeholder="Départ"

@@ -8,8 +8,8 @@ import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 
 const SEARCH_AD = gql `
-query SearchAd($title: String!) {
-  search(title: $title) {
+query SearchAd($location: String!) {
+  search(location: $location) {
     title
     price
     location
@@ -22,16 +22,16 @@ query SearchAd($title: String!) {
 
 export default function SearchResultsPage() {
   const router = useRouter();
-  const { title } = router.query;
+  const { location } = router.query;
   const { data } = useQuery<SearchAdQuery>(SEARCH_AD, {
-    variables: { title: title as string },
+    variables: { location: location as string },
   });
 
   return (
     <ChakraProvider>
               <Navbar />
       <SearchBar />
-      <h1>Résultats de la recherche pour : {title}</h1>
+      <h1>Résultats de la recherche pour : {location}</h1>
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
         {data?.search
           ? data.search.map((ad) => (
@@ -40,7 +40,6 @@ export default function SearchResultsPage() {
                 price={ad.price}
                 location={ad.location}
                 image={`/file-hosting/${ad.id}.jpg`}
-                title={ad.title}
                 // description={ad.description}
               />
             ))
