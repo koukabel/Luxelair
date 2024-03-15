@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import ProfileHoteImg from "../ProfileHoteImg";
 import EditProfile from "./EditProfile";
+import HostVerify from "./HostVerify";
 
 export default function Banner() {
 	return (
@@ -29,6 +30,8 @@ export default function Banner() {
 						<CardFooter></CardFooter>
 					</Card>
 				</Flex>
+				<HostVerify />
+
 				<Flex flexDirection={"column"}>
 					<Heading>Information sur Béatrice</Heading>
 					<EditProfile />

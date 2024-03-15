@@ -24,7 +24,7 @@ query User($userId: ID!) {
 `;
 
 
-export default function Voyager() {
+export default function Traveler() {
 	const router = useRouter();
 	const { id } = router.query;
 	const { data } = useQuery<UserQuery, UserQueryVariables>(GET_USER, {
