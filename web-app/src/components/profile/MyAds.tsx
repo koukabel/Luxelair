@@ -33,14 +33,18 @@ const annonces = [
 	},
 ];
 
-export default function MyAds() {
+interface props {
+	categorieName: string;
+}
+
+const MyAds: React.FC<props> = ({categorieName}) => {
 	return (
 		<>
 			<Box padding="5">
 				<Heading as="h2" size="xl" marginBottom="5">
-					Mes Annonces en ligne
+					{categorieName}
 				</Heading>
-				<SimpleGrid columns={[1, null, 4]} spacing="80px">
+				<SimpleGrid columns={[1, null, 4]} spacing="120px">
 					{annonces.map(({ id, titre, description, image }) => (
 						<Box key={id} borderWidth="1px" borderRadius="lg" overflow="hidden">
 							<Image
@@ -73,3 +77,5 @@ export default function MyAds() {
 		</>
 	);
 }
+
+export default MyAds;

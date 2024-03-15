@@ -1,11 +1,14 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import VoyagerBanner from "@/components/profile/VoyagerBanner";
+import HoteBanner from "@/components/profile/HostBanner";
+import HostComments from "@/components/profile/HostComments";
 import { ChakraProvider, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import VoyagerVerify from "@/components/profile/VoyagerVerify";
+import MyAds from "@/components/profile/MyAds";
+import { Divider } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { UserQueryVariables, UserQuery } from "@/gql/graphql";
+import VoyagerBanner from "@/components/profile/VoyagerBanner"
 
 
 const GET_USER = gql`
@@ -31,17 +34,24 @@ export default function Traveler() {
 		variables: { userId: id as string },
 	});
 	if (data) {
-	return (
-		<ChakraProvider>
-			<Navbar />
-			<Stack spacing={4} m="auto" width="84%" mt={5} textAlign="left">
-				<Flex flexDirection={"column"} justifyContent={"space-around"}>
-					<VoyagerBanner />
-				</Flex>
-				<VoyagerVerify />
-			</Stack>
-
-			<Footer />
-		</ChakraProvider>
-	);
+		return (
+			<ChakraProvider>
+				<Navbar />
+				<Stack m="auto" width="84%" mt={5} textAlign="left">
+					<Flex
+						flexDirection={"column"}
+						justifyContent={"space-around"}
+						gap={"8"}
+					>
+						<VoyagerBanner />
+						<Divider />
+						<MyAds categorieName="Mes réservations" />
+						<Divider />
+						<HostComments />
+					</Flex>
+				</Stack>
+	
+				<Footer />
+			</ChakraProvider>
+		);
 }}

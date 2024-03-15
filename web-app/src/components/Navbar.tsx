@@ -47,7 +47,7 @@ export default function Navbar() {
 						cursor={"pointer"}
 						fontWeight="light"
 						fontSize="16px"
-						href={`/profile/voyageur/${data?.myProfile.id}`}
+						href={`/profile/traveler/${data?.myProfile.id}`}
 					>
 						<Avatar cursor="pointer" bg="#B4770A" />
 					</Link>
