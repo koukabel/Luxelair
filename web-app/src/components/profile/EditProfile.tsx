@@ -209,7 +209,7 @@ import {
 				<Input
 				  name="email"
 				  value={updateUser.email ? updateUser.email : ""}
-				  placeholder="Votre email"
+				  placeholder=" Entrez votre email"
 				  type="email"
 				  onChange={handleChange}
 				/>
@@ -229,7 +229,7 @@ import {
 				<Input
 				  name="phoneNumber"
 				  value={updateUser.phoneNumber ? updateUser.phoneNumber : ""}
-				  placeholder="Votre numéro de téléphone"
+				  placeholder="Entrez votre numéro de téléphone"
 				  type="tel"
 				  onChange={handleChange}
 				/>
@@ -240,17 +240,17 @@ import {
 				<Input
 				  name="location"
 				  value={updateUser.location ? updateUser.location : ""}
-				  placeholder="Votre adresse"
+				  placeholder="Entrez votre adresse"
 				  type="addresse"
 				  onChange={handleChange}
 				/>
 			  </FormControl>
 			  <FormControl>
-				<FormLabel>Mon lieu de résidence</FormLabel>
+				<FormLabel>Ville de résidence</FormLabel>
 				<Input
 				  name="city"
 				  value={updateUser.city ? updateUser.city : ""}
-				  placeholder="Entrez votre lieu de résidence"
+				  placeholder="Entrez votre ville de résidence"
 				  onChange={handleChange}
 				/>
 			  </FormControl>
