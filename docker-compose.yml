@@ -10,6 +10,13 @@ services:
     volumes:
       - ./back-end:/app
       - /app/node_modules
+    develop:
+      watch:
+        - action: rebuild
+          path: ./back-end
+          target: /app
+        - action: rebuild
+          path: ./back-end/package.json
 
   file-hosting:
     build: ./file-hosting
@@ -32,6 +39,13 @@ services:
     volumes:
       - ./web-app:/app
       - /app/node_modules
+    develop:
+      watch:
+        - action: rebuild
+          path: ./web-app
+          target: /app
+        - action: rebuild
+          path: ./web-app/package.json
 
   database:
     image: postgres:15

@@ -19,6 +19,7 @@ const authChecker: AuthChecker<Context> = ({ context }) => {
   return Boolean(context.user);
 };
 
+import { EquipmentResolver } from "./resolvers/EquipementResolver";
 const dataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
@@ -29,7 +30,7 @@ const dataSource = new DataSource({
 const buildSchemaAsync = async () => {
   const { buildSchema } = await import("type-graphql");
   return buildSchema({
-    resolvers: [AdResolver, UserResolver, BookingResolver],
+    resolvers: [AdResolver, UserResolver, BookingResolver, EquipmentResolver],
     validate: true,
     authChecker,
   });

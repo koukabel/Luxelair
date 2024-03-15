@@ -17,7 +17,7 @@ import Payment from "@/components/annonces/Payment";
 import ProfileImg from "@/components/annonces/ProfileImg";
 import { useQuery, gql } from "@apollo/client";
 import { useRouter } from "next/router";
-import { AdQuery, AdQueryVariables } from "@/gql/graphql";
+import { AdsQuery, AdsQueryVariables } from "@/gql/graphql";
 
 const GET_AD = gql`
 	query Ad($adId: ID!) {
@@ -34,7 +34,7 @@ const GET_AD = gql`
 export default function Ad() {
 	const router = useRouter();
 	const { id } = router.query;
-	const { data } = useQuery<AdQuery, AdQueryVariables>(GET_AD, {
+	const { data } = useQuery(GET_AD, {
 		variables: { adId: id as string },
 	});
 	if (data) {
