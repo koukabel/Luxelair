@@ -1,4 +1,4 @@
-import { Box, Heading, Textarea, VStack } from '@chakra-ui/react';
+import { Box, Heading, Textarea, VStack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -16,7 +16,7 @@ const AdTitle: React.FC<Props> = ({ value, onChange }) => {
   }
   
   return (
-    <VStack height={'41vh'}>
+    <VStack height={'50vh'}>
       <Box
         display={'flex'}
         flexDirection={'column'}
@@ -25,10 +25,10 @@ const AdTitle: React.FC<Props> = ({ value, onChange }) => {
         <Heading p={10} textAlign={'left'}>
           À présent, donnez un titre à votre annonce
         </Heading>
-        <p>
+        <Text fontSize='md' textAlign={'center'} color={'gray'} p={'10px'}>
           Les titres courts sont généralement les plus efficaces. Ne vous
           inquiétez pas, vous pourrez toujours le modifier plus tard.
-        </p>
+        </Text>
         <Textarea
           value={title} 
           onChange={handleInputChange} 

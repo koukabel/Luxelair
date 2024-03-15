@@ -6,6 +6,7 @@ import {
   EditableInput,
   EditablePreview,
   Flex,
+  Text,
   Heading,
   IconButton,
   Input,
@@ -48,7 +49,8 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
         <Heading p={10} textAlign={"left"}>
           À présent, fixez votre prix
         </Heading>
-        <p>Vous pouvez le modifier à tout moment.</p>
+
+        <Text fontSize='md' textAlign={'center'} color={"gray"}>Vous pouvez le modifier à tout moment.</Text>
         <Editable
           textAlign="center"
           defaultValue={price.toString()}
@@ -65,7 +67,8 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
           $
           <EditableControls />
         </Editable>
-        <p>Prix à payer par le voyageur {parseFloat(price) + 1}$</p>
+        <Text fontSize='md' textAlign={'center'} p={'30px'}>Prix à payer par le voyageur {parseFloat(price) + 1}$</Text>
+     
       </Box>
     </VStack>
   );

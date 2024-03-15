@@ -1,4 +1,4 @@
-import { Box, Heading, Textarea, VStack } from '@chakra-ui/react';
+import { Box, Heading, Textarea, VStack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
 interface Props {
@@ -26,9 +26,7 @@ const AdDecription: React.FC<Props> = ({ value, onChange }) => {
         Créez votre description
 
         </Heading>
-        <p>
-        Racontez ce qui rend votre logement unique.
-        </p>
+        <Text fontSize='md' textAlign={'center'} color={"gray"}>Racontez ce qui rend votre logement unique.</Text>
         <Textarea
           value={decription} 
           onChange={handleInputChange} 

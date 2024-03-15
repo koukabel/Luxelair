@@ -2,24 +2,25 @@ import { HousingTypeEnum } from "@/gql/graphql";
 import { gql, useQuery } from "@apollo/client";
 import { Box, Card, CardBody, CardHeader, Heading, SimpleGrid, VStack } from "@chakra-ui/react";
 import { FaHouse } from "react-icons/fa6";
+import { useState } from "react";
 
 interface HouseTypeProps {
   onSelectedTypeChange: (housingType: HousingTypeEnum) => void;
 }
 
-
 const HouseType: React.FC<HouseTypeProps> = ({ onSelectedTypeChange }) => {
-  const GET_House_TYPES = gql`
+  const GET_HOUSE_TYPES = gql`
     query GetHousingTypes {
       getHousingTypes
     }
   `;
 
-  const { data } = useQuery(GET_House_TYPES);
+  const { data } = useQuery(GET_HOUSE_TYPES);
+  const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null);
 
-  const saveHousingType = (selectedType: HousingTypeEnum) => {
-    onSelectedTypeChange(selectedType);
-    console.log(selectedType)
+  const saveHousingType = (type: HousingTypeEnum) => {
+    setSelectedType(type);
+    onSelectedTypeChange(type);
   };
 
   return (
@@ -31,8 +32,7 @@ const HouseType: React.FC<HouseTypeProps> = ({ onSelectedTypeChange }) => {
         justifyContent={"center"}
       >
         <Heading p={10} textAlign={"left"}>
-          Parmi les propositions suivantes, laquelle décrit le mieux votre
-          logement ?
+          Parmi les propositions suivantes, laquelle décrit le mieux votre logement ?
         </Heading>
         <SimpleGrid
           p={20}
@@ -45,13 +45,13 @@ const HouseType: React.FC<HouseTypeProps> = ({ onSelectedTypeChange }) => {
                   key={type}
                   cursor="pointer"
                   onClick={() => saveHousingType(type)}
+                  bg={selectedType === type ? "lightGray" : "white"} 
                 >
                   <CardHeader>
                     <FaHouse />
                   </CardHeader>
                   <CardBody>
-                    {" "}
-                    <Heading size="sm">{type}</Heading>{" "}
+                    <Heading size="sm">{type}</Heading>
                   </CardBody>
                 </Card>
               ))

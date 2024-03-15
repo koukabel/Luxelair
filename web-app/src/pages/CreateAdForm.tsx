@@ -16,7 +16,6 @@ import ThirdStep from "@/components/adCreationComponents/ThirdStep/ThirdStep";
 import {
   CreateAdMutation,
   CreateAdMutationVariables,
-  MutationCreateAdArgs,
 } from "@/gql/graphql";
 import AdPrice from "@/components/adCreationComponents/ThirdStep/AdPrice";
 import FinalStep from "@/components/adCreationComponents/ThirdStep/FinalStep";
@@ -101,9 +100,7 @@ export default function CreateAdForm() {
       if (data) {
         const { id } = data.createAd;
         // await uploadImage(id);
-        console.log("published");
-        // router.push(`/articles/${data.createAd.id}?publishConfirmation=true`);
-        //}
+        router.push('/');
       }
     } catch (error) {
       console.error("Error publishing ad:", error);
@@ -112,8 +109,6 @@ export default function CreateAdForm() {
 
   const handleSubmit = () => {
     //event.preventDefault();
-    console.log(publishAdInfo);
-    console.log("hi");
     publishAd();
   };
 
@@ -160,7 +155,7 @@ export default function CreateAdForm() {
       )}
       {currentComponent === 8 && (
         <AdDescription
-          value={publishAdInfo.title}
+          value={publishAdInfo.description}
           onChange={(newValue: string) => handleChange("description", newValue)}
         />
       )}

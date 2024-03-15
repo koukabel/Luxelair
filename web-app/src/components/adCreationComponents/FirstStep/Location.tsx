@@ -13,7 +13,7 @@ const Location: React.FC<LocationProps> = ({ onLocationChange }) => {
   return (
     <VStack p={"10"}>
       <Heading>Où est situé votre logement ?</Heading>
-      <Text>
+      <Text fontSize='md' textAlign={'center'} color={'gray'} p={'10px'}>
         Votre adresse est uniquement communiquée aux voyageurs une fois leur
         réservation effectuée.{" "}
       </Text>
