@@ -20,7 +20,7 @@ query SearchAd($title: String!) {
 
 export default function SearchBar() {
   const [searchTitle, setSearchTitle] = useState(""); 
-  const [searchAd, { data }] = useLazyQuery<SearchAdQuery>(SEARCH_AD);
+  const [searchAd] = useLazyQuery<SearchAdQuery>(SEARCH_AD);
 
   const router = useRouter(); 
 

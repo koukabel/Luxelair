@@ -7,10 +7,9 @@ interface props {
 	location: string;
 	price: number;
 	image: string;
-	title: string;
 }
 
- const Card: React.FC<props> = ({id, location, title, price , image}) => {
+ const Card: React.FC<props> = ({id, location, price , image}) => {
   
   return (
 	<Link href={`/ad/${id}`}>
@@ -32,7 +31,7 @@ interface props {
 					lineHeight="tight"
 					noOfLines={1}
 				>
-					{title}
+					{location}
 				</Box>
 
 				<Box>
