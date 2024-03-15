@@ -6,6 +6,7 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  Like,
 } from "typeorm";
 import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
@@ -168,6 +169,14 @@ class Ad extends BaseEntity {
       throw new Error("Ad does not exist");
     }
     return ad;
+  }
+
+  static async searchAd(title: string): Promise<Ad[]> {
+    const adTitle = await Ad.find({ where: { title: Like(`%${title}%`) } });
+    if (!adTitle) {
+      throw new Error("Ad does not exist");
+    }
+    return adTitle || [];
   }
 
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {

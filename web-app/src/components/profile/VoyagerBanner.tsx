@@ -13,6 +13,7 @@ import ProfileVoyageurImg from "../ProfileTravelerImg";
 import EditProfile from "./EditProfile";
 import { gql, useQuery } from "@apollo/client";
 import { GetMyProfilQuery } from "@/gql/graphql";
+import VoyageurVerify from "./VoyagerVerify";
 
 const GET_MY_PROFIL = gql`
 	query GetMyProfil {
@@ -46,9 +47,9 @@ export default function Banner() {
 								<Text>7 années sur Luxelair</Text>
 							</Stack>
 						</CardBody>
-						<CardFooter></CardFooter>
 					</Card>
 				</Flex>
+				<VoyageurVerify />
 				<Flex flexDirection={"column"}>
 					<Heading>Information sur {data?.myProfile.firstName}</Heading>
 					<EditProfile />

@@ -20,7 +20,7 @@ export default function Host() {
 				>
 					<HoteBanner />
 					<Divider />
-					<MyAds />
+					<MyAds categorieName="Mes annonces en ligne"/>
 					<Divider />
 					<HostComments />
 				</Flex>

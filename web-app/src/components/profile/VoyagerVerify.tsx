@@ -13,18 +13,36 @@ import {
 	Text,
 } from "@chakra-ui/react";
 // import ProfileImg from "../ProfileVoyageurImg";
+import { gql, useQuery } from "@apollo/client";
+import { GetMyProfilQuery } from "@/gql/graphql";
+
+const GET_MY_PROFIL = gql`
+	query GetMyProfil {
+		myProfile {
+			email
+			firstName
+			id
+			lastName
+			city
+			location
+			phoneNumber
+			description
+		}
+	}
+`;
 
 export default function VoyageurVerify() {
+	const { data, error } = useQuery<GetMyProfilQuery>(GET_MY_PROFIL);
 	return (
 		<>
 			<Flex justifyContent="left">
-				<Card maxW="lm" width={"30%"}>
+				<Card maxW="lm" width={"300px"}>
 					<CardBody>
 						<Flex flexDirection="column" width="100%" gap="4">
 							<Flex justifyContent="space-between" width="100%">
 								<Container>
 									<Text align="center" size="md">
-										Vérification effectué par Cédric
+										Vérification effectué par {data?.myProfile.firstName}
 									</Text>
 								</Container>
 							</Flex>
