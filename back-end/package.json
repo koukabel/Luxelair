@@ -11,7 +11,7 @@
     "start:watch": "nodemon dist/index.js",
     "dev": "npm run build && (npm run build:watch & npm run start:watch)"
   },
-  "author": "Arnaud Renaud",
+  "author": "luxelair team",
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
