@@ -14,9 +14,9 @@ interface Props {
 }
 
 const GET_EQUIPEMENTS = gql`
-  query getEquipments($equipmentTypes: [EquipmentTypeEnum!]!) {
-    getEquipmentsList(equipmentTypes: $equipmentTypes)
-  }
+query Query {
+  getEquipmentTypes
+}
 `;
 
 const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {

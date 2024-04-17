@@ -46,16 +46,16 @@ export class editOrCreateAd {
   @Field({ nullable: true })
   image!: string;
 
-  @Field(() => [String], { nullable: true })
-  selectedEquipmentValues?: string[];
-  // @Field({ nullable: true })
-  // equipment!: string;
+  @Field(() =>[String], { nullable: true })
+  equipements!: string[];
 
   @Field(() => HousingTypeEnum, { nullable: true })
-  type!: HousingTypeEnum;
-  // @Field()
-  // type!: string;
+  housingType!: HousingTypeEnum;
 }
+
+
+  
+
 
 @Resolver()
 export class AdResolver {
@@ -73,6 +73,13 @@ export class AdResolver {
   getHousingTypes() {
     return Object.values(HousingTypeEnum);
   }
+
+  @Query(() => [String])
+  getEquipmentTypes() {
+    return Object.values(EquipmentTypeEnum);
+  }
+
+
   @Query(() => [Ad])
   ads() {
     return Ad.getAds();
