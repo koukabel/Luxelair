@@ -98,7 +98,7 @@ export default function CreateAdForm() {
       });
 
       if (data) {
-        const { id } = data.createAd;
+        // const { id } = data.createAd;
         // await uploadImage(id);
         router.push('/');
       }
@@ -153,12 +153,12 @@ export default function CreateAdForm() {
           onChange={(newValue: string) => handleChange("title", newValue)}
         />
       )}
-      {currentComponent === 8 && (
+      {/* {currentComponent === 8 && (
         <AdDescription
           value={publishAdInfo.description}
           onChange={(newValue: string) => handleChange("description", newValue)}
         />
-      )}
+      )} */}
       {currentComponent === 9 && <ThirdStep />}
       {currentComponent === 10 && (
         <AdPrice
