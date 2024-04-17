@@ -18,15 +18,19 @@ import ProfileImg from "@/components/ProfileTravelerImg";
 import { gql } from "@apollo/client";
 
 const GET_AD = gql`
-	query Ad($adId: ID!) {
-		ad(id: $adId) {
-			id
-			title
-			price
-			location
-			description
-		}
+query getAd($adId: ID!) {
+	ad(id: $adId) {
+		id
+		title
+		price
+		location
+		description
+		image 
+		equipements
+		housingType
+		
 	}
+}
 `;
 
 export default function Ad() {

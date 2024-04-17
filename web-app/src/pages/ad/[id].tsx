@@ -6,6 +6,7 @@ import {
 	Stack,
 	Flex,
 	Container,
+	Box
 } from "@chakra-ui/react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -14,21 +15,23 @@ import Rating from "@/components/annonces/Rating";
 import TagAd from "@/components/annonces/TagAd";
 import Toggle from "@/components/annonces/Toggle";
 import Payment from "@/components/annonces/Payment";
-import ProfileImg from "@/components/annonces/ProfileImg";
 import { useQuery, gql } from "@apollo/client";
 import { useRouter } from "next/router";
 import { AdsQuery, AdsQueryVariables } from "@/gql/graphql";
 
 const GET_AD = gql`
-	query Ad($adId: ID!) {
-		ad(id: $adId) {
-			id
-			title
-			price
-			location
-			description
-		}
+query ad($adId: ID!) {
+	ad(id: $adId) {
+	  title
+	  price
+	  id
+	  image
+	  location
+	  housingType
+	  equipements
+	  description
 	}
+  }
 `;
 
 export default function Ad() {
@@ -46,7 +49,14 @@ export default function Ad() {
 				<Slider />
 				<Stack spacing={4} m="auto" width="84%" mt={5} textAlign="left">
 					<Flex justifyContent="flex-start">
-						<ProfileImg />
+					<Box>
+			<Image
+				borderRadius="full"
+				boxSize="80px"
+				src={ad.image}
+				alt="Dan Abramov"
+			/>
+		</Box>
 					</Flex>
 					<TagAd />
 					<Text fontSize="2xl">{ad.title}</Text>
@@ -60,7 +70,7 @@ export default function Ad() {
 						alignItems="center"
 					>
 						<Container alignContent={"center"}>
-							<Toggle description={ad.description} />
+							<Toggle description={ad.description} equipements={ad.equipements}/>
 						</Container>
 						<Container alignContent={"center"}>
 							<Payment price={ad.price} />

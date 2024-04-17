@@ -9,8 +9,9 @@ import {
 
 interface props {
 	description: string;
+	equipements: []
 }
-const Toggle: React.FC<props> = ({ description }) => {
+const Toggle: React.FC<props> = ({ description, equipements }) => {
 	return (
 		<Accordion defaultIndex={[0]} allowMultiple>
 			<AccordionItem>
@@ -35,11 +36,11 @@ const Toggle: React.FC<props> = ({ description }) => {
 					</AccordionButton>
 				</h2>
 				<AccordionPanel pb={4}>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat.
-				</AccordionPanel>
+  {equipements.map((equipement: string, index: number) => (
+    <li key={index}>{equipement}</li>
+  ))}
+</AccordionPanel>
+
 			</AccordionItem>
 		</Accordion>
 	);

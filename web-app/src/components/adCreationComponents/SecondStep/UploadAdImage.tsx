@@ -14,6 +14,7 @@ const UploadAdImage: React.FC<props> = ({image }) =>  {
                   method: "POST",
                   body,
                 });
+                console.log('uploaded')
               }
             };
           
@@ -67,12 +68,14 @@ const UploadAdImage: React.FC<props> = ({image }) =>  {
                 if (files) {
                   console.log(files[0]);
                   setFileAd(files[0]);
+                  uploadFile;
                 }
               }}
               position="absolute"
               opacity={0}
               zIndex={-1}
             />
+          
         </VStack>
       </Box>
     </VStack>

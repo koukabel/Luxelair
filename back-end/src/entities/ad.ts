@@ -61,7 +61,6 @@ export enum EquipmentTypeEnum {
   Chef_prive = "Chef_prive",
 }
 
-
 @Entity()
 @ObjectType()
 class Ad extends BaseEntity {
@@ -85,23 +84,21 @@ class Ad extends BaseEntity {
   @Field()
   location!: string;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
+  @Column()
+  @Field()
   image!: string;
 
-
   @Column("simple-array", { nullable: true }) //  "simple-array" is a type for string arrays
-@Field(() => [String], { nullable: true }) // Return an array of strings
-equipements!: string[];
+  @Field(() => [String], { nullable: true }) // Return an array of strings
+  equipements!: string[];
 
   @Column({
     type: "enum",
     enum: HousingTypeEnum,
     default: null,
   })
-  @Field(() => HousingTypeEnum, { nullable: true }) 
+  @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
-
 
   @JoinTable()
   @ManyToMany(() => Booking, (booking) => booking.ads)
@@ -138,8 +135,7 @@ equipements!: string[];
           "Les équipements sélectionnés ne peuvent pas être vides"
         );
       }
-      this.equipements = ad.equipements
-      ;
+      this.equipements = ad.equipements;
 
       if (!ad.housingType) {
         throw new Error("Le type ne peut pas être vide");

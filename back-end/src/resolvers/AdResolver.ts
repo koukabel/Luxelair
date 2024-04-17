@@ -33,7 +33,7 @@ export class editOrCreateAd {
   @MinLength(2)
   title!: string;
 
-  @Field({ nullable: true })
+  @Field()
   description!: string;
 
   @Field()
@@ -43,7 +43,7 @@ export class editOrCreateAd {
   @Min(0)
   price!: number;
 
-  @Field({ nullable: true })
+  @Field()
   image!: string;
 
   @Field(() =>[String], { nullable: true })

@@ -13,26 +13,25 @@ import UploadAdImage from "@/components/adCreationComponents/SecondStep/UploadAd
 import AdTitle from "@/components/adCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/adCreationComponents/SecondStep/AdDescription";
 import ThirdStep from "@/components/adCreationComponents/ThirdStep/ThirdStep";
-import {
-  CreateAdMutation,
-  CreateAdMutationVariables,
-} from "@/gql/graphql";
+
 import AdPrice from "@/components/adCreationComponents/ThirdStep/AdPrice";
 import FinalStep from "@/components/adCreationComponents/ThirdStep/FinalStep";
 import { gql, useMutation } from "@apollo/client";
 import router from "next/router";
+import { CreateMutation, CreateMutationVariables } from "@/gql/graphql";
 
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
-  const [publishAdInfo, setPublishAdInfo] = useState<CreateAdMutationVariables>(
+  const [publishAdInfo, setPublishAdInfo] = useState<CreateMutationVariables>(
     {
       title: "",
       description: "",
       location: "",
       price: 0,
-      selectedEquipmentValues: [],
-      type: null,
+      equipements: [],
+      image: "",
+      housingType: null,
     }
   );
 
@@ -54,32 +53,20 @@ export default function CreateAdForm() {
   };
 
   const CREATE_AD = gql`
-    mutation CreateAd(
-      $title: String!
-      $location: String!
-      $price: Float!
-      $description: String
-      $selectedEquipmentValues: [String!]
-      $type: HousingTypeEnum
-    ) {
-      createAd(
-        title: $title
-        location: $location
-        price: $price
-        description: $description
-        selectedEquipmentValues: $selectedEquipmentValues
-        type: $type
-      ) {
-        description
-        location
-        price
-        selectedEquipmentValues
-        title
-      }
+  mutation create($title: String!, $location: String!, $price: Float!, $description: String!, $image: String!, $equipements: [String!], $housingType: HousingTypeEnum) {
+    createAd(title: $title, location: $location, price: $price, description: $description, image: $image, equipements: $equipements, housingType: $housingType) {
+      description
+      equipements
+      housingType
+      title
+      price
+      location
+      image
     }
+  }
   `;
 
-  const [createAd] = useMutation<CreateAdMutation, CreateAdMutationVariables>(
+  const [createAd] = useMutation<CreateMutation, CreateMutationVariables>(
     CREATE_AD
   );
 
@@ -90,21 +77,23 @@ export default function CreateAdForm() {
           title: publishAdInfo.title,
           price: publishAdInfo.price as number,
           location: publishAdInfo.location,
-
+          image: publishAdInfo.image,
           description: publishAdInfo.description,
-          selectedEquipmentValues: publishAdInfo.selectedEquipmentValues,
-          type: publishAdInfo.type,
+          equipements: publishAdInfo.equipements,
+          housingType: publishAdInfo.housingType,
         },
       });
 
-      if (data) {
-        const { id } = data.createAd;
-        // await uploadImage(id);
-        router.push('/');
-      }
+    //   if (data) {
+    //     const { id } = data.createAd;
+    //     // await uploadImage(id);
+    //     router.push('/');
+    //   }
     } catch (error) {
       console.error("Error publishing ad:", error);
     }
+  
+
   };
 
   const handleSubmit = () => {
@@ -121,7 +110,7 @@ export default function CreateAdForm() {
           onSelectedEquipmentChange={(selectedValues) =>
             setPublishAdInfo({
               ...publishAdInfo,
-              selectedEquipmentValues: selectedValues,
+              equipements: selectedValues,
             })
           }
         />
@@ -131,14 +120,15 @@ export default function CreateAdForm() {
           onSelectedTypeChange={(housingType) =>
             setPublishAdInfo({
               ...publishAdInfo,
-              type: housingType,
+              housingType: housingType,
             })
           }
         />
       )}
 
       {currentComponent === 4 && <SecondStep />}
-      {currentComponent === 5 && <UploadAdImage image={""} />}
+      {currentComponent === 5 && <UploadAdImage  value={publishAdInfo.image}
+          onChange={(newValue: string) => handleChange("image", newValue)} />}
       {currentComponent === 6 && (
         <Location
           onLocationChange={(newLocation) =>
