@@ -40,21 +40,22 @@ export default function Ad() {
 	const { data } = useQuery(GET_AD, {
 		variables: { adId: id as string },
 	});
+
 	if (data) {
 		const { ad } = data;
-
+console.log(ad)
 		return (
 			<ChakraProvider>
 				<Navbar />
-				<Slider />
+				<Slider image={ad.image}/>
 				<Stack spacing={4} m="auto" width="84%" mt={5} textAlign="left">
 					<Flex justifyContent="flex-start">
 					<Box>
 			<Image
 				borderRadius="full"
 				boxSize="80px"
-				src={ad.image}
-				alt="Dan Abramov"
+				src={""}
+				alt=""
 			/>
 		</Box>
 					</Flex>
