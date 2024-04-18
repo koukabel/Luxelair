@@ -1,13 +1,16 @@
 import { LuSettings2 } from "react-icons/lu";
+import{ Button, Flex, IconButton} from "@chakra-ui/react";
 const FilterButton = () => {
   return (
-    // <IconButton
-    //   colorScheme="gray"
-    //   aria-label="Filtres"
-    //   icon={<SearchIcon />}
-    //   onClick={handleSearch}
-    // />
-    <LuSettings2 />
+    <Flex>
+    <IconButton
+      colorScheme="gray"
+      aria-label="Filtres"
+     
+      icon={ <LuSettings2 />}
+      pl='10px'
+    />
+   </Flex>
   );
 };
 
