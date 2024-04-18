@@ -67,7 +67,7 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
           $
           <EditableControls />
         </Editable>
-        <Text fontSize='md' textAlign={'center'} p={'30px'}>Prix à payer par le voyageur {parseFloat(price) + 1}$</Text>
+        <Text fontSize='md' textAlign={'center'} p={'30px'}>Prix à payer par le voyageur {price + 1}$</Text>
      
       </Box>
     </VStack>
