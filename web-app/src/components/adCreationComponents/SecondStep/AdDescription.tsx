@@ -7,7 +7,7 @@ interface Props {
 }
 
 const AdDecription: React.FC<Props> = ({ value, onChange }) => {
-  const [decription, setDecription] = useState(value);
+  const [decription, setDecription] = useState(value || '');
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     const newValue = e.target.value;

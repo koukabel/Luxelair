@@ -33,7 +33,7 @@ export class editOrCreateAd {
   @MinLength(2)
   title!: string;
 
-  @Field({ nullable: true })
+  @Field()
   description!: string;
 
   @Field()
@@ -47,14 +47,10 @@ export class editOrCreateAd {
   image!: string;
 
   @Field(() => [String], { nullable: true })
-  selectedEquipmentValues?: string[];
-  // @Field({ nullable: true })
-  // equipment!: string;
+  equipements!: string[];
 
   @Field(() => HousingTypeEnum, { nullable: true })
-  type!: HousingTypeEnum;
-  // @Field()
-  // type!: string;
+  housingType!: HousingTypeEnum;
 }
 
 @Resolver()
@@ -73,6 +69,12 @@ export class AdResolver {
   getHousingTypes() {
     return Object.values(HousingTypeEnum);
   }
+
+  @Query(() => [String])
+  getEquipmentTypes() {
+    return Object.values(EquipmentTypeEnum);
+  }
+
   @Query(() => [Ad])
   ads() {
     return Ad.getAds();

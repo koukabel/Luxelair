@@ -21,60 +21,44 @@ export enum HousingTypeEnum {
   Chateau = "Chateau",
 }
 
-export enum EssentialEquipmentsEnum {
+export enum EquipmentTypeEnum {
   Ustensiles = "Ustensiles",
-  Vaisselle = "couverts et verres",
-  Micro_ondes = "micro-ondes",
-  Réfrigérateur = "Réfrigérateur",
-  Cuisinière = "Cuisinière",
+  Vaisselle = "Couverts_et_verres",
+  Micro_ondes = "Micro_ondes",
+  Refrigerateur = "Refrigerateur",
+  Cuisiniere = "Cuisiniere",
   Bouilloire = "Bouilloire",
-  Cafetière = "Cafetière",
-  Grille_pain = "Grille pain",
+  Cafetiere = "Cafetiere",
+  Grille_pain = "Grille_pain",
   Literie = "Literie",
-  Serviettes_de_bain = "Serviettes de bain",
-  Papier_toilette = "Papier toilette",
+  Serviettes_de_bain = "Serviettes_de_bain",
+  Papier_toilette = "Papier_toilette",
   Savon = "Savon",
   Shampooing = "Shampooing",
-  Sèche_cheveux = "Sèche cheveux",
-  Lave_linge = "Lave linge",
-  Sèche_linge = "Sèche linge ",
-}
-
-export enum SecurityEquipementEnum {
-  Détecteurs_fumée_monoxyde = "Détecteur de fumée et de monoxyde de carbone",
+  Seche_cheveux = "Seche_cheveux",
+  Lave_linge = "Lave_linge",
+  Seche_linge = "Seche_linge ",
+  Detecteurs_fumee_monoxyde = "Detecteur_de_fumee_et_de_monoxyde_de_carbone",
   Extincteur = "Extincteur",
-}
-
-export enum exceptionalServicesEnum {
-  Télévision = "Télévision",
-  WiFi = "Wifi",
+  Television = "Television",
+  WiFi = "WiFi",
   Climatisation = "Climatisation",
   Chauffage = "Chauffage",
-  Fer_planche_à_repasser = "Fer et place à rep",
-  Canapés = "Canapé",
+  Fer_planche_a_repasser = "Fer_et_place_a_repasser",
+  Canapes = "Canapes",
   Fauteuils = "Fauteuils",
-  Tables = "Tables et chaises",
-  Espace_travail = "Espace de travail",
+  Tables = "Tables_et_chaises",
+  Espace_travail = "Espace_de_travail",
   Placards = "Placards",
-  Pool = "piscine",
+  Pool = "Piscine",
   Parking = "Parking",
   Ascenseur = "Ascenseur",
   Balcon = "Balcon",
   Jacuzzi = "Jacuzzi",
   Rooftop = "Rooftop",
-  Piste_Datterissage = "piste-datterissage",
-  Court_de_tennis = "cours-de-tennis",
-  Chef_privé = "Chef privé",
-}
-
-export enum EquipmentTypeEnum {
-  SecurityEquipement = "SecurityEquipementEnum",
-  ExceptionalServices = "exceptionalServicesEnum",
-  EssentialEquipmentsEnum = "EssentialEquipmentsEnum",
-  Bathroom = "BathroomEnum",
-  Electronics = "ElectronicsEnum",
-  Kitchen = "KitchenEnum",
-  Forniture = "FornitureEnum",
+  Piste_datterissage = "Piste_datterissage",
+  Court_de_tennis = "Court_de_tennis",
+  Chef_prive = "Chef_prive",
 }
 
 @Entity()
@@ -100,19 +84,21 @@ class Ad extends BaseEntity {
   @Field()
   location!: string;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
+  @Column({ default: "" })
+  @Field()
   image!: string;
 
-  @Field(() => [String], { nullable: true })
-  selectedEquipmentValues?: string[];
+  @Column("simple-array", { nullable: true }) //  "simple-array" is a type for string arrays
+  @Field(() => [String], { nullable: true }) // Return an array of strings
+  equipements!: string[];
 
   @Column({
     type: "enum",
     enum: HousingTypeEnum,
     default: null,
   })
-  type!: HousingTypeEnum;
+  @Field(() => HousingTypeEnum, { nullable: true })
+  housingType!: HousingTypeEnum;
 
   @JoinTable()
   @ManyToMany(() => Booking, (booking) => booking.ads)
@@ -144,17 +130,17 @@ class Ad extends BaseEntity {
         this.image = ad.image;
       }
 
-      if (!ad.selectedEquipmentValues) {
+      if (ad.equipements === undefined || ad.equipements.length === 0) {
         throw new Error(
           "Les équipements sélectionnés ne peuvent pas être vides"
         );
       }
-      this.selectedEquipmentValues = ad.selectedEquipmentValues;
+      this.equipements = ad.equipements;
 
-      if (!ad.type) {
+      if (!ad.housingType) {
         throw new Error("Le type ne peut pas être vide");
       }
-      this.type = ad.type;
+      this.housingType = ad.housingType;
     }
   }
 

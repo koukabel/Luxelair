@@ -1,21 +1,23 @@
-import { Box, Heading, VStack, Text, Button, Input } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, Heading, Input, VStack, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { BsCloudUpload } from "react-icons/bs";
-interface props {
-  image: string
+
+interface ImageUploaderProps {
+  onFileSelect: (file: File | null) => void;
 }
-const UploadAdImage: React.FC<props> = ({image }) =>  {
-    const [fileAd, setFileAd] = useState<File | null>(null);
-    const uploadFile = async (id: string) => {
-              if (fileAd) {
-                const body = new FormData();
-                body.append("file", fileAd, `${id}.jpg`);
-                await fetch("/file-hosting", {
-                  method: "POST",
-                  body,
-                });
-              }
-            };
+
+const ImageUploader: React.FC<ImageUploaderProps> = ({ onFileSelect }) => {
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    if (files && files.length > 0) {
+      const selectedFile = files[0];
+      setFile(selectedFile);
+      onFileSelect(selectedFile);
+    }
+  };
+
           
   return (
     <VStack>
@@ -56,27 +58,29 @@ const UploadAdImage: React.FC<props> = ({image }) =>  {
                 boxShadow: "outline",
               }}
             >
-              {fileAd ? fileAd.name : " Télécharger depuis votre appareil"}
+              {/* {fileAd ? fileAd.name : " Télécharger depuis votre appareil"} */}
             </Button>
             <Input
               type="file"
               name="file"
-              id="fileUpload"
-              onChange={(event) => {
-                const { files } = event.target;
-                if (files) {
-                  console.log(files[0]);
-                  setFileAd(files[0]);
-                }
-              }}
+              id="fileUpload"   
+              onChange={handleFileSelect}
               position="absolute"
               opacity={0}
               zIndex={-1}
             />
+          
         </VStack>
       </Box>
     </VStack>
   );
 }
 
-export default UploadAdImage;
+export default ImageUploader;
+
+
+
+
+
+
+
