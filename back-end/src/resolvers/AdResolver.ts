@@ -43,19 +43,15 @@ export class editOrCreateAd {
   @Min(0)
   price!: number;
 
-  @Field()
+  @Field({ nullable: true })
   image!: string;
 
-  @Field(() =>[String], { nullable: true })
+  @Field(() => [String], { nullable: true })
   equipements!: string[];
 
   @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
 }
-
-
-  
-
 
 @Resolver()
 export class AdResolver {
@@ -78,7 +74,6 @@ export class AdResolver {
   getEquipmentTypes() {
     return Object.values(EquipmentTypeEnum);
   }
-
 
   @Query(() => [Ad])
   ads() {

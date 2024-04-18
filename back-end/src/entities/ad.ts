@@ -84,7 +84,7 @@ class Ad extends BaseEntity {
   @Field()
   location!: string;
 
-  @Column()
+  @Column({ default: "" })
   @Field()
   image!: string;
 
