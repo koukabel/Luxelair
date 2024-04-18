@@ -33,12 +33,12 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
     const { isEditing, getSubmitButtonProps, getCancelButtonProps, getEditButtonProps } = useEditableControls();
     return isEditing ? (
       <ButtonGroup justifyContent='center' size='sm'>
-        <IconButton icon={<CheckIcon />}  {...getSubmitButtonProps()} />
-        <IconButton icon={<CloseIcon />} {...getCancelButtonProps()} />
+        <IconButton aria-label="" icon={<CheckIcon />}  {...getSubmitButtonProps()} />
+        <IconButton aria-label="" icon={<CloseIcon />} {...getCancelButtonProps()} />
       </ButtonGroup>
     ) : (
       <Flex justifyContent='center'>
-        <IconButton size='sm' icon={<EditIcon />} {...getEditButtonProps()} />
+        <IconButton aria-label="" size='sm' icon={<EditIcon />} {...getEditButtonProps()} />
       </Flex>
     );
   }
@@ -67,7 +67,7 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
           $
           <EditableControls />
         </Editable>
-        <Text fontSize='md' textAlign={'center'} p={'30px'}>Prix à payer par le voyageur {parseFloat(price) + 1}$</Text>
+        <Text fontSize='md' textAlign={'center'} p={'30px'}>Prix à payer par le voyageur {price + 1}$</Text>
      
       </Box>
     </VStack>

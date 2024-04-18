@@ -37,7 +37,6 @@ export default function Ad() {
 	return (
 		<ChakraProvider>
 			<Navbar />
-			<Slider />
 			<Stack spacing={4} m="auto" width="84%" mt={5} textAlign="left">
 				<Flex justifyContent="flex-start">
 					<ProfileImg />

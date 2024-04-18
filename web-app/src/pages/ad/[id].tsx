@@ -47,7 +47,6 @@ console.log(ad)
 		return (
 			<ChakraProvider>
 				<Navbar />
-				<Slider image={ad.image}/>
 				<Stack spacing={4} m="auto" width="84%" mt={5} textAlign="left">
 					<Flex justifyContent="flex-start">
 					<Box>
