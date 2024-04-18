@@ -107,7 +107,7 @@ export default function CreateAdForm() {
       if (data) {
         const { id } = data.createAd;
         await uploadImage(id);
-        router.push("/");
+        router.push(`/ad/${data.createAd.id}`)
       }
     } catch (error) {
       console.error("Error publishing ad:", error);

@@ -25,7 +25,6 @@ query ad($adId: ID!) {
 	  title
 	  price
 	  id
-	  image
 	  location
 	  housingType
 	  equipements
@@ -47,6 +46,18 @@ console.log(ad)
 		return (
 			<ChakraProvider>
 				<Navbar />
+				<Flex justifyContent="center">
+			<Box
+				w="84vw"
+				h="400px"
+				bgSize="cover"
+				bgPosition="center"
+				rounded="10px"
+				position="relative"
+			>
+				<Image src={`/file-hosting/${id}.jpg`} alt=""/>
+				</Box>
+				</Flex>
 				<Stack spacing={4} m="auto" width="84%" mt={5} textAlign="left">
 					<Flex justifyContent="flex-start">
 					<Box>

@@ -58,7 +58,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onFileSelect }) => {
                 boxShadow: "outline",
               }}
             >
-              {/* {fileAd ? fileAd.name : " Télécharger depuis votre appareil"} */}
+             {file ? file.name : " Télécharger depuis votre appareil"} 
             </Button>
             <Input
               type="file"
