@@ -40,7 +40,7 @@ export default function Navbar() {
 	return (
 		<Flex alignItems="center">
 			<Link href="/">
-				<Image src="../../logoWhite.png" boxSize="150px" objectFit="contain" />
+				<Image src="/logoWhite.png" boxSize="150px" objectFit="contain" />
 			</Link>
 			<Heading className="mainHeading">LUXELAIR</Heading>
 			<Spacer />
