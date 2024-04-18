@@ -5,7 +5,7 @@ import { Flex, Input, Box } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
+import FilterButton from "./FilterButton";
 const SEARCH_AD = gql `
 query SearchAd($location: String!) {
   search(location: $location) {
@@ -73,6 +73,7 @@ export default function SearchBar() {
           icon={<SearchIcon />}
           onClick={handleSearch}
         />
+        <FilterButton/>
       </Flex>
     </Box>
   );
