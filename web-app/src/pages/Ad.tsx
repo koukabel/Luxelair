@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import Slider from "@/components/Slider";
 import Rating from "@/components/Rating";
 // import TagAd from "./components/TagAd";
 import Toggle from "@/components/Toggle";
