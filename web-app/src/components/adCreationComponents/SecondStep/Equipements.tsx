@@ -14,21 +14,14 @@ interface Props {
 }
 
 const GET_EQUIPEMENTS = gql`
-  query getEquipments($equipmentTypes: [EquipmentTypeEnum!]!) {
-    getEquipmentsList(equipmentTypes: $equipmentTypes)
-  }
+query getEquipements {
+  getEquipmentTypes
+}
 `;
 
 const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
-  const { loading, error, data } = useQuery(GET_EQUIPEMENTS, {
-    variables: {
-      equipmentTypes: [
-        "EssentialEquipmentsEnum",
-        "ExceptionalServices",
-        "SecurityEquipement",
-      ],
-    },
-  });
+  const { loading, error, data } = useQuery(GET_EQUIPEMENTS);
+console.log(data)
 
   const [selectedEquipmentValues, setSelectedEquipmentValues] = useState<string[]>([]);
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
@@ -55,7 +48,7 @@ console.log(selectedEquipmentValues)
           spacing={4}
           templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
         >
-          {data?.getEquipmentsList && data.getEquipmentsList.map((equipment: string) => (
+          {data?.getEquipmentTypes && data.getEquipmentTypes.map((equipment: string) => (
             <Card
               key={equipment}
               cursor="pointer"
