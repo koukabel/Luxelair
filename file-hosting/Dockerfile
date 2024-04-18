@@ -11,5 +11,5 @@ FROM base as dev
 CMD npm run dev
 
 FROM base as prod
-CMD npm run start
 RUN npm run build
+CMD npm run start
