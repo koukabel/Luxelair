@@ -1,9 +1,10 @@
 import { LuSettings2 } from "react-icons/lu";
 import{ Button, Flex, IconButton, HStack, Box, AbsoluteCenter, Text, VStack} from "@chakra-ui/react";
 import { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
+import { gql, useQuery, useLazyQuery } from "@apollo/client";
 import { FaHouse } from "react-icons/fa6";
-import { HousingTypeEnum } from "@/gql/graphql";
+import { FilterTypeQuery, HousingTypeEnum } from "@/gql/graphql";
 import { TbBuildingCottage } from "react-icons/tb";
 import { BsBuildings } from "react-icons/bs";
 import { LuHotel } from "react-icons/lu";
@@ -19,12 +20,28 @@ const FilterSection = () => {
   }
 `;
 
-const { data } = useQuery(GET_HOUSE_TYPES);
-const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null); // State to track the selected type
 
-  const filterByHouseType = (type: HousingTypeEnum) => {
-    setSelectedType(type); 
-  };
+const FILTER_BY_HOUSETYPE = gql`
+query filterType($type: String!) {
+  filterByHouseType(type: $type) {
+    housingType
+    id
+  }
+}`;
+
+
+const { data } = useQuery(GET_HOUSE_TYPES);
+const [filteredAds] = useLazyQuery<FilterTypeQuery>(FILTER_BY_HOUSETYPE);
+
+const router = useRouter(); 
+const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null); 
+
+const searchByHouseType = (type: HousingTypeEnum) => {
+  setSelectedType(type);
+  filteredAds({ variables: { type } }); 
+  router.push(`/search-results-by-type?type=${type}`);
+};
+
 const getIconForType = (type: HousingTypeEnum) => {
   switch (type) {
     case HousingTypeEnum.Chalet:
@@ -51,11 +68,11 @@ const getIconForType = (type: HousingTypeEnum) => {
 
 return (
 
-  <HStack spacing='24px' w="100%" h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
+  <HStack spacing='24px' h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
   <Flex alignItems='center'>
-  {data?.getHousingTypes && data.getHousingTypes.map((type, index) => (
+  {data?.getHousingTypes && data.getHousingTypes.map((type: HousingTypeEnum, index: number) => (
           <VStack pr='50px'>
-            <Box onClick={() => filterByHouseType(type)}  key={index} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
+            <Box onClick={() => searchByHouseType(type)}  key={index} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
               {getIconForType(type)}
               <Text fontSize='xs' textAlign="center">{type}</Text> 
             </Box>
@@ -77,3 +94,7 @@ return (
 };
 
 export default FilterSection;
+function filteredAds(arg0: { variables: { type: HousingTypeEnum; }; }) {
+  throw new Error("Function not implemented.");
+}
+
