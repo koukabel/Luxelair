@@ -15,7 +15,7 @@ export enum HousingTypeEnum {
   Chalet = "Chalet",
   Appartement = "Appartement",
   Maison = "Maison",
-  Hotel_particulier = "Hôtel_particulier",
+  Hotel_particulier = "Hôtel particulier",
   Chateau = "Chateau",
   Logement_sur_l_eau = "Logement sur l'eau",
   Bateau="Bateau", 
@@ -168,6 +168,18 @@ class Ad extends BaseEntity {
     return adLocation || [];
   }
 
+
+    static async filterAdByType(housingType: string): Promise<Ad[]> {
+      const searchHouseType = await Ad.find({
+        where: { housingType: Like(`%${housingType}%`) },
+      });
+      if (searchHouseType.length === 0) { 
+        throw new Error("Ad does not exist");
+      }
+    
+      return searchHouseType;
+    }
+  
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);
     const savedAd = await newAd.save();

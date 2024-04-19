@@ -1,5 +1,6 @@
 import { LuSettings2 } from "react-icons/lu";
-import{ Button, Flex, IconButton, HStack, Box, AbsoluteCenter, Text} from "@chakra-ui/react";
+import{ Button, Flex, IconButton, HStack, Box, AbsoluteCenter, Text, VStack} from "@chakra-ui/react";
+import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { FaHouse } from "react-icons/fa6";
 import { HousingTypeEnum } from "@/gql/graphql";
@@ -19,38 +20,58 @@ const FilterSection = () => {
 `;
 
 const { data } = useQuery(GET_HOUSE_TYPES);
+const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null); // State to track the selected type
 
-const iconMap: Record<HousingTypeEnum, React.ReactNode> = {
-  [HousingTypeEnum.Chalet]: <TbBuildingCottage />, 
-  [HousingTypeEnum.Appartement]: <BsBuildings/>, 
-  [HousingTypeEnum.HotelParticulier]: <LuHotel/>, 
-   [HousingTypeEnum.Maison]: <BsHouseDoor/>
-   [HousingTypeEnum.Chateau]: <MdOutlineCastle/>
-  // [HousingTypeEnum.Bateau]: <MdOutlineDirectionsBoatFilled/>
-  // [HousingTypeEnum.Tour]: <PiCastleTurret/>
-  // [HousingTypeEnum.Logement_sur_l_eau]:  <MdOutlineHouseboat/>
-
+  const filterByHouseType = (type: HousingTypeEnum) => {
+    setSelectedType(type); 
+  };
+const getIconForType = (type: HousingTypeEnum) => {
+  switch (type) {
+    case HousingTypeEnum.Chalet:
+      return <TbBuildingCottage />;
+    case HousingTypeEnum.Appartement:
+      return <BsBuildings />;
+    case HousingTypeEnum.HotelParticulier:
+      return <LuHotel />;
+    case HousingTypeEnum.Maison:
+      return <BsHouseDoor />;
+    case HousingTypeEnum.Chateau:
+      return <MdOutlineCastle />;
+    case HousingTypeEnum.Bateau:
+      return <MdOutlineDirectionsBoatFilled />;
+    case HousingTypeEnum.Tour:
+      return <PiCastleTurret />;
+    case HousingTypeEnum.LogementSurLEau:
+      return <MdOutlineHouseboat />;
+    default:
+      return <FaHouse />;
+  }
 };
 
 
 return (
-  <HStack spacing='24px' w="100%" h="10vh">
-    {data?.getHousingTypes && data.getHousingTypes.map((type) => (
-      <Box w='100px' h='8vh'  key={type} cursor="pointer">
 
-        <FaHouse/>
-        <Text fontSize='xs' textAlign="center">{type} </Text> 
-      </Box>
-    ))}
-    <Flex>
-      <IconButton
-        colorScheme="gray"
-        aria-label="Filtres"
-        icon={<LuSettings2 />}
-        pl='10px'
-      />
-    </Flex>
-  </HStack>
+  <HStack spacing='24px' w="100%" h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
+  <Flex alignItems='center'>
+  {data?.getHousingTypes && data.getHousingTypes.map((type, index) => (
+          <VStack pr='50px'>
+            <Box onClick={() => filterByHouseType(type)}  key={index} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
+              {getIconForType(type)}
+              <Text fontSize='xs' textAlign="center">{type}</Text> 
+            </Box>
+          </VStack>
+        ))}
+ 
+    <IconButton
+      colorScheme="gray"
+      aria-label="Filtres"
+      icon={<LuSettings2 />}
+      pl='10px'
+   
+    />
+  </Flex>
+</HStack>
+
 );
 
 };

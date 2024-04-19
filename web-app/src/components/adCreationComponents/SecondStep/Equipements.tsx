@@ -21,7 +21,6 @@ query getEquipements {
 
 const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
   const { loading, error, data } = useQuery(GET_EQUIPEMENTS);
-console.log(data)
 
   const [selectedEquipmentValues, setSelectedEquipmentValues] = useState<string[]>([]);
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
