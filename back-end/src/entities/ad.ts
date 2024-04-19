@@ -169,16 +169,16 @@ class Ad extends BaseEntity {
   }
 
 
-    static async filterAdByType(housingType: string): Promise<Ad[]> {
-      const searchHouseType = await Ad.find({
-        where: { housingType: Like(`%${housingType}%`) },
-      });
-      if (searchHouseType.length === 0) { 
-        throw new Error("Ad does not exist");
-      }
-    
-      return searchHouseType;
+  static async filterAdByType(housingType: HousingTypeEnum): Promise<Ad[]> {
+    const searchHouseType = await Ad.find({
+      where: { housingType }
+    });
+  
+    if (searchHouseType.length === 0) {
+      throw new Error("Ad does not exist");
     }
+    return searchHouseType || [];
+  }
   
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);

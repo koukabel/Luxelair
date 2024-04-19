@@ -85,12 +85,12 @@ export class AdResolver {
     return Ad.searchAd(location);
   }
 
-
   @Query(() => [Ad])
-async filterByHouseType(@Arg("type") housingType: string): Promise<Ad[]> {
-  return await Ad.filterAdByType(housingType);
-}
-
+  async filterByHouseType(
+    @Arg("type") housingType: HousingTypeEnum
+  ): Promise<Ad[]> {
+    return await Ad.filterAdByType(housingType);
+  }
 
   @Mutation(() => Ad)
   createAd(@Args() args: editOrCreateAd) {
