@@ -7,7 +7,8 @@ import { Ad, AdsQuery } from "@/gql/graphql";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
-
+import FilterSection from "@/components/FilterSection"
+import { Divider } from '@chakra-ui/react'
 const GET_ADS = gql`
 	query Ads {
 		getAds {
@@ -25,7 +26,9 @@ console.log(data)
   return (
     <ChakraProvider>
       <Navbar />
-      <SearchBar />
+      <SearchBar />    
+      <Divider/>
+      <FilterSection/>
       <Box pos="relative">
         <Image
           margin="auto"
