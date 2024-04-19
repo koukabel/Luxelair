@@ -25,7 +25,7 @@ const documents = {
     "\n\tquery GetMyProfil {\n\t\tmyProfile {\n\t\t\temail\n\t\t\tfirstName\n\t\t\tid\n\t\t\tlastName\n\t\t\tcity\n\t\t\tlocation\n\t\t\tphoneNumber\n\t\t\tdescription\n\t\t}\n\t}\n": types.GetMyProfilDocument,
     "\nquery getAd($adId: ID!) {\n\tad(id: $adId) {\n\t\tid\n\t\ttitle\n\t\tprice\n\t\tlocation\n\t\tdescription\n\t\timage \n\t\tequipements\n\t\thousingType\n\t\t\n\t}\n}\n": types.GetAdDocument,
     "\n    mutation adCreation(\n      $title: String!\n      $description: String!\n      $location: String!\n      $price: Float!\n      $equipements: [String!]\n      $housingType: HousingTypeEnum\n    ) {\n      createAd(\n        title: $title\n        description: $description\n        location: $location\n        price: $price\n        equipements: $equipements\n        housingType: $housingType\n      ) {\n        id\n      }\n    }\n  ": types.AdCreationDocument,
-    "\nquery ad($adId: ID!) {\n\tad(id: $adId) {\n\t  title\n\t  price\n\t  id\n\t  image\n\t  location\n\t  housingType\n\t  equipements\n\t  description\n\t}\n  }\n": types.AdDocument,
+    "\nquery ad($adId: ID!) {\n\tad(id: $adId) {\n\t  title\n\t  price\n\t  id\n\t  location\n\t  housingType\n\t  equipements\n\t  description\n\t}\n  }\n": types.AdDocument,
     "\n\tquery Ads {\n\t\tgetAds {\n\t\t\tlocation\n\t\t\tprice\n\t\t\ttitle\n\t\t\tid\n\t\t}\n\t}\n": types.AdsDocument,
     "\nquery User($userId: ID!) {\n\tuser(id: $userId) {\n\t  id\n\t  lastName\n\t  location\n\t  phoneNumber\n\t  firstName\n\t  email\n\t  description\n\t  city\n\t}\n  }\n": types.UserDocument,
 };
@@ -95,7 +95,7 @@ export function graphql(source: "\n    mutation adCreation(\n      $title: Strin
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\nquery ad($adId: ID!) {\n\tad(id: $adId) {\n\t  title\n\t  price\n\t  id\n\t  image\n\t  location\n\t  housingType\n\t  equipements\n\t  description\n\t}\n  }\n"): (typeof documents)["\nquery ad($adId: ID!) {\n\tad(id: $adId) {\n\t  title\n\t  price\n\t  id\n\t  image\n\t  location\n\t  housingType\n\t  equipements\n\t  description\n\t}\n  }\n"];
+export function graphql(source: "\nquery ad($adId: ID!) {\n\tad(id: $adId) {\n\t  title\n\t  price\n\t  id\n\t  location\n\t  housingType\n\t  equipements\n\t  description\n\t}\n  }\n"): (typeof documents)["\nquery ad($adId: ID!) {\n\tad(id: $adId) {\n\t  title\n\t  price\n\t  id\n\t  location\n\t  housingType\n\t  equipements\n\t  description\n\t}\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

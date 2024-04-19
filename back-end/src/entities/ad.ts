@@ -15,12 +15,10 @@ export enum HousingTypeEnum {
   Chalet = "Chalet",
   Appartement = "Appartement",
   Maison = "Maison",
-
   Hotel_particulier = "Hôtel_particulier",
   Chateau = "Chateau",
   Logement_sur_l_eau = "Logement sur l'eau",
   Bateau="Bateau", 
-  Ferme="Ferme", 
   Tour="Tour"
 }
 
