@@ -13,6 +13,8 @@ import { PiCastleTurret } from "react-icons/pi";
 import { MdOutlineDirectionsBoatFilled } from "react-icons/md";
 import { MdOutlineHouseboat } from "react-icons/md";
 import { MdOutlineCastle } from "react-icons/md";
+import FilterDialog from "./FilterDialog";
+import { useDisclosure} from "@chakra-ui/react";
 const FilterSection = () => {
   const GET_HOUSE_TYPES = gql`
   query GetHousingTypes {
@@ -36,6 +38,7 @@ const [filteredAds] = useLazyQuery<FilterTypeQuery>(FILTER_BY_HOUSETYPE);
 const router = useRouter(); 
 const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null); 
 
+const { isOpen, onOpen, onClose } = useDisclosure()
 const searchByHouseType = (type: HousingTypeEnum) => {
   setSelectedType(type);
   filteredAds({ variables: { type } }); 
@@ -65,7 +68,6 @@ const getIconForType = (type: HousingTypeEnum) => {
   }
 };
 
-
 return (
 
   <HStack spacing='24px' h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
@@ -79,13 +81,12 @@ return (
           </VStack>
         ))}
  
-    <IconButton
-      colorScheme="gray"
-      aria-label="Filtres"
-      icon={<LuSettings2 />}
-      pl='10px'
-   
-    />
+     <Button leftIcon={<LuSettings2 />} colorScheme='gray' variant='outline' pl='10px' fontSize='sm' onClick={onOpen}>
+    Filtres
+  </Button>
+  {isOpen && <FilterDialog isOpen={isOpen} onClose={onClose} />}
+
+
   </Flex>
 </HStack>
 
@@ -94,7 +95,5 @@ return (
 };
 
 export default FilterSection;
-function filteredAds(arg0: { variables: { type: HousingTypeEnum; }; }) {
-  throw new Error("Function not implemented.");
-}
+
 

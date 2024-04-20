@@ -13,11 +13,7 @@ interface Props {
   onSelectedEquipmentChange: (selectedValues: string[]) => void;
 }
 
-const GET_EQUIPEMENTS = gql`
-query getEquipements {
-  getEquipmentTypes
-}
-`;
+
 
 const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
   const { loading, error, data } = useQuery(GET_EQUIPEMENTS);
@@ -30,7 +26,6 @@ const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
     onSelectedEquipmentChange([...selectedEquipmentValues, equipment]);
     setSelectedCards(prevSelectedCards => new Set(prevSelectedCards).add(equipment));
   }
-console.log(selectedEquipmentValues)
   return (
     <VStack>
       <Box

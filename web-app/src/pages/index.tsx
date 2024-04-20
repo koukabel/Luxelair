@@ -7,7 +7,7 @@ import { Ad, AdsQuery } from "@/gql/graphql";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
-import FilterSection from "@/components/FilterSection"
+import FilterSection from "@/components/filters/FilterSection"
 import { Divider } from '@chakra-ui/react'
 const GET_ADS = gql`
 	query Ads {
