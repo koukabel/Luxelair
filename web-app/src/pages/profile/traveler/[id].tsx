@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
 import HoteBanner from "@/components/profile/HostBanner";
 import HostComments from "@/components/profile/HostComments";
 import { ChakraProvider, Flex, Heading, Stack, Text } from "@chakra-ui/react";

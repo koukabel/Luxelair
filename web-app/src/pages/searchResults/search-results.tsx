@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { Box, SimpleGrid, ChakraProvider } from "@chakra-ui/react";
-import Card from "../components/Card";
+import Card from "../../components/Ad/Card";
 import { gql, useQuery } from "@apollo/client";
 import { SearchAdQuery } from "@/gql/graphql";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import SearchBar from "@/components/SearchBar";
+import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/Navbar/Navbar";
+import SearchBar from "@/components/Navbar/SearchBar";
 
 const SEARCH_AD = gql `
 query SearchAd($location: String!) {

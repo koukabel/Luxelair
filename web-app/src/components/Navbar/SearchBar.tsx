@@ -26,7 +26,7 @@ export default function SearchBar() {
 
   const handleSearch = () => {
     searchAd({ variables: { location: searchLocation } });
-    router.push(`/search-results?location=${searchLocation}`);
+    router.push(`/searchResults/search-results?location=${searchLocation}`);
   };
 
   return (

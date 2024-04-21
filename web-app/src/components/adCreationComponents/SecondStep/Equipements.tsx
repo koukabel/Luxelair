@@ -13,7 +13,11 @@ interface Props {
   onSelectedEquipmentChange: (selectedValues: string[]) => void;
 }
 
-
+const GET_EQUIPEMENTS = gql`
+query getEquipements {
+  getEquipmentTypes
+}
+`;
 
 const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
   const { loading, error, data } = useQuery(GET_EQUIPEMENTS);

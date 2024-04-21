@@ -8,8 +8,8 @@ import {
 	Container,
 	Box
 } from "@chakra-ui/react";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/Navbar/Navbar";
 import Slider from "@/components/annonces/Slider";
 import Rating from "@/components/annonces/Rating";
 import TagAd from "@/components/annonces/TagAd";

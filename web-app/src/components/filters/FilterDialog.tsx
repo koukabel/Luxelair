@@ -44,14 +44,12 @@ query getEquipements {
                             divider={<StackDivider borderColor='gray.200' />}
                             spacing={4}
                             align='stretch'
-                        >             <Box>
+                        >             <Flex direction='column'>
                                 <Heading as='h5' size='md' pt='10px' fontWeight='500'>Fourchette de prix </Heading>
                                 <Text fontSize='sm' pt='10px'
                                 >Prix par nuit, frais et taxes compris</Text>
+                                 <PriceRangeSlider />
                                 <HStack>
-                                    <HStack class="priceRange" pt='10px' >
-                                        <PriceRangeSlider min={0} max={10000}  onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}/>
-                                    </HStack>
                                     <InputGroup>
                                         <InputLeftElement pointerEvents='none' color='gray.300' fontSize='sm'>
                                             €
@@ -65,7 +63,7 @@ query getEquipements {
                                         <Input placeholder='Maximum' fontSize='xs' />
                                     </InputGroup>
                                 </HStack>
-                            </Box>
+                            </Flex>
                             <Box>
                                 <Heading as='h5' size='md' fontWeight='500'>  Équipements </Heading>
                                 <Grid templateColumns='repeat(2, 1fr)' gap={2}>

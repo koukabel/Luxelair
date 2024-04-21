@@ -1,6 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
 import FirstStep from "@/components/adCreationComponents/FirstStep/FirstStep";
 import ControlButtons from "@/components/adCreationComponents/FirstStep/ControlButtons";
 import { SetStateAction, useState } from "react";

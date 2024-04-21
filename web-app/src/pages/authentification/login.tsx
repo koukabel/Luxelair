@@ -2,9 +2,9 @@ import {
   ChakraProvider,
 } from "@chakra-ui/react";
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import Authentification from "@/components/Authentification";
-import Register from "@/components/Register";
+import Navbar from "@/components/Navbar/Navbar";
+import Authentification from "@/components/Authentification/Authentification";
+import Register from "@/components/Authentification/Register";
 import { useState } from "react";
 
 export default function login() {
