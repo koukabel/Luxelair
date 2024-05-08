@@ -57,4 +57,53 @@ describe("User", () => {
       });
     });
   });
+
+  describe("createNewUser", () => {
+    it("return new user", async () => {
+      const user = await User.createNewUser({
+        email: "test@email.com",
+        firstName: "Testfirstname",
+        lastName: "Testlastname",
+        password: "testpassword456",
+      });
+      await expect(user).toMatchObject({
+        email: "test@email.com",
+        firstName: "Testfirstname",
+        lastName: "Testlastname",
+      });
+    });
+  });
+  describe("getUsers", () => {
+    it("return all users in database", async () => {
+      const newUsers = await Promise.all([
+        User.createNewUser({
+          email: "user1@example.com",
+          firstName: "John",
+          lastName: "Doe",
+          password: "passwordtest1",
+        }),
+        User.createNewUser({
+          email: "user2@example.com",
+          firstName: "User2",
+          lastName: "User2",
+          password: "passwordtest2",
+        }),
+        User.createNewUser({
+          email: "user3@example.com",
+          firstName: "User3",
+          lastName: "User3",
+          password: "passwordtest3",
+        }),
+      ]);
+      const users = await User.getUsers();
+      const sortedUsers = users
+        .slice()
+        .sort((a, b) => a.email.localeCompare(b.email));
+      const sortedNewUsers = newUsers
+        .slice()
+        .sort((a, b) => a.email.localeCompare(b.email));
+
+      expect(sortedUsers).toEqual(sortedNewUsers);
+    });
+  });
 });
