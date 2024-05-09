@@ -23,6 +23,17 @@ import {
 import ImageUploader from "@/components/adCreationComponents/SecondStep/UploadAdImage";
 import Login from "./login";
 
+export const GET_MY_PROFIL = gql`
+  query GetMyProfile {
+    myProfile {
+      email
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
@@ -123,17 +134,6 @@ export default function CreateAdForm() {
   const handleSubmit = () => {
     publishAd();
   };
-
-  const GET_MY_PROFIL = gql`
-    query GetMyProfile {
-      myProfile {
-        email
-        id
-        firstName
-        lastName
-      }
-    }
-  `;
 
   const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
 
