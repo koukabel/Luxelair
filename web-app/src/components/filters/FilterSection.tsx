@@ -41,8 +41,8 @@ const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null);
 const { isOpen, onOpen, onClose } = useDisclosure()
 const searchByHouseType = (type: HousingTypeEnum) => {
   setSelectedType(type);
-  filteredAds({ variables: { type } }); 
-  router.push(`/search-results-by-type?type=${type}`);
+  filteredAds({ variables: { type: selectedType } }); 
+  router.push(`/searchResults/type-results?type=${type}`);
 };
 
 const getIconForType = (type: HousingTypeEnum) => {
@@ -74,8 +74,9 @@ return (
   <Flex alignItems='center'>
   {data?.getHousingTypes && data.getHousingTypes.map((type: HousingTypeEnum, index: number) => (
           <VStack pr='50px'>
-            <Box onClick={() => searchByHouseType(type)}  key={index} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
+            <Box onClick={() => searchByHouseType(type)} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
               {getIconForType(type)}
+
               <Text fontSize='xs' textAlign="center">{type}</Text> 
             </Box>
           </VStack>
