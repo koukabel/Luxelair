@@ -8,6 +8,7 @@ import ControlButtons from "@/components/AdCreationComponents/FirstStep/ControlB
 import Equipements from "@/components/AdCreationComponents/SecondStep/Equipements";
 import HouseType from "@/components/AdCreationComponents/FirstStep/HouseType";
 import SecondStep from "@/components/AdCreationComponents/SecondStep/SecondStep";
+import ImageUploader from "@/components/AdCreationComponents/SecondStep/ImageUploader";
 import Location from "@/components/AdCreationComponents/FirstStep/Location";
 import AdTitle from "@/components/AdCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/AdCreationComponents/SecondStep/AdDescription";
@@ -21,7 +22,7 @@ import {
   AdCreationMutationVariables,
   GetMyProfileQuery,
 } from "@/gql/graphql";
-import ImageUploader from "@/components/adCreationComponents/SecondStep/ImageUploader";
+
 import Login from "@/pages/authentication/login";
 
 export const GET_MY_PROFIL = gql`

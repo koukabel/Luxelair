@@ -87,7 +87,7 @@ export default function Authentication({ onSignUpClick }: props) {
             });
 
             setTimeout(() => {
-              router.push(`/profile/traveler/${data.signIn.id}`);
+              router.push(`/profil/traveler/${data.signIn.id}`);
             }, 2000);
           }
         } catch (error) {
