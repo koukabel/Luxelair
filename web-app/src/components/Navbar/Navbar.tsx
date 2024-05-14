@@ -1,40 +1,31 @@
 import React from "react";
-import {
-	Flex,
-	Image,
-	Button,
-	Heading,
-	MenuButton,
-	Spacer,
-	Link,
-	Avatar,
-} from "@chakra-ui/react";
+import { Flex, Image, Heading, Spacer, Link, Avatar } from "@chakra-ui/react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { GetMyProfileQuery, SignOutMutation } from "@/gql/graphql";
 
 const GET_MY_PROFIL = gql`
-	query GetMyProfile {
-		myProfile {
-			email
-			id
-			firstName
-			lastName
-		}
-	}
+  query GetMyProfile {
+    myProfile {
+      email
+      id
+      firstName
+      lastName
+    }
+  }
 `;
 
-const LOGOUT = gql `
-mutation SignOut {
-  signOut
-}
+const LOGOUT = gql`
+  mutation SignOut {
+    signOut
+  }
 `;
 
 export default function Navbar() {
-	const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+  const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
   const [signOut] = useMutation<SignOutMutation>(LOGOUT);
 
   const handleSignOut = async () => {
-      await signOut();
+    await signOut();
   };
 
 	return (

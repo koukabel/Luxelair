@@ -78,7 +78,7 @@ class User extends BaseEntity {
   }
 
   static async createNewUser(userInfo: CreateUser): Promise<User> {
-    userInfo.password = await hash(userInfo.password, 8);
+    userInfo.password = await hash(userInfo.password, 10);
 
     const newUser = new User(userInfo);
     const savedUser = await newUser.save();

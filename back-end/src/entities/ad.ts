@@ -163,10 +163,10 @@ class Ad extends BaseEntity {
     const adLocation = await Ad.find({
       where: { location: Like(`%${location}%`) },
     });
-    if (!adLocation) {
-      throw new Error("Ad does not exist");
+    if (adLocation.length === 0) {
+      throw new Error("Location does not exist");
     }
-    return adLocation || [];
+    return adLocation;
   }
 
 

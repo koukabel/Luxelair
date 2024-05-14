@@ -1,4 +1,4 @@
-import { AbsoluteCenter, ChakraProvider, Heading } from "@chakra-ui/react";
+import { ChakraProvider, Heading } from "@chakra-ui/react";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import Card from "../components/Ad/Card";
 import { Image } from "@chakra-ui/react";
@@ -10,14 +10,14 @@ import SearchBar from "@/components/Navbar/SearchBar";
 import FilterSection from "@/components/Filters/FilterSection"
 import { Divider } from '@chakra-ui/react'
 const GET_ADS = gql`
-	query Ads {
-		getAds {
-			location
-			price
-			title
-			id
-		}
-	}
+  query Ads {
+    getAds {
+      location
+      price
+      title
+      id
+    }
+  }
 `;
 
 export default function HomePage() {
@@ -56,7 +56,6 @@ export default function HomePage() {
                 price={ad.price}
                 location={ad.location}
                 image={`/file-hosting/${ad.id}.jpg`}
-                // description={ad.description}
               />
             ))
           : null}

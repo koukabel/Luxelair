@@ -28,8 +28,6 @@ export default function SearchHousingTypePage() {
     },
   });
 
-
-console.log(data)
   return (
     <ChakraProvider>
       <Navbar />
