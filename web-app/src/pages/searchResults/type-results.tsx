@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ChakraProvider, Box } from "@chakra-ui/react";
+import { ChakraProvider, Box, Heading } from "@chakra-ui/react";
 import { useQuery, gql } from "@apollo/client";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
@@ -27,12 +27,12 @@ export default function SearchHousingTypePage() {
     <ChakraProvider>
       <Navbar />
       <SearchBar />
-      <Box m="4">
-         <h1>Résultats de la recherche pour logements de type : {type}</h1>
+      <Box m="30px">
+         <Heading as='h4' size='md'>Résultats de la recherche pour logements de type : {type}</Heading>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
-          <p>Error: {error.message}</p>
+          <p>Aucun logement sur Luxelair ne correspond à vos critères</p>
         ) : (
           <Box>
             {data?.filterByHouseType 

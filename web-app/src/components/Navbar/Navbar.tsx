@@ -68,7 +68,7 @@ export default function Navbar() {
 						cursor={"pointer"}
 						fontWeight="light"
 						fontSize="16px"
-						href={`/profile/traveler/${data?.myProfile.id}`}
+						href={`/profil/traveler/${data?.myProfile.id}`}
 					>
 						<Avatar cursor="pointer" bg="#B4770A" />
 					</Link>
@@ -78,7 +78,7 @@ export default function Navbar() {
 						cursor={"pointer"}
 						fontWeight="light"
 						fontSize="16px"
-						href="/login"
+						href="/authentication/login"
 					>
 						Connexion
 					</Link>

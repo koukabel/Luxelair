@@ -1,14 +1,14 @@
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
-import HoteBanner from "@/components/profile/HostBanner";
-import HostComments from "@/components/profile/HostComments";
+import HoteBanner from "@/components/profil/HostBanner";
+import HostComments from "@/components/profil/HostComments";
 import { ChakraProvider, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import MyAds from "@/components/profile/MyAds";
+import MyAds from "@/components/profil/MyAds";
 import { Divider } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { gql, useQuery } from "@apollo/client";
 import { UserQueryVariables, UserQuery } from "@/gql/graphql";
-import VoyagerBanner from "@/components/profile/VoyagerBanner"
+import VoyagerBanner from "@/components/profil/VoyagerBanner"
 
 
 const GET_USER = gql`

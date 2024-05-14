@@ -1,7 +1,7 @@
 import {
   ChakraProvider,
 } from "@chakra-ui/react";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import Authentification from "@/components/Authentification/Authentification";
 import Register from "@/components/Authentification/Register";
