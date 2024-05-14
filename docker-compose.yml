@@ -57,6 +57,11 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
 
+  test-database:
+    image: postgres:15
+    environment:
+      - POSTGRES_PASSWORD=password
+
 volumes:
   database-data:
   file-hosting-public:
