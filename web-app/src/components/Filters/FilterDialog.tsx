@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
-
+import { useRouter } from "next/router";
 import { Divider, Input, InputGroup, InputLeftElement, Flex, Heading, Text, HStack, VStack, StackDivider, Box, Grid, Checkbox, Link, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogCloseButton, AlertDialogBody, AlertDialogFooter, Button } from '@chakra-ui/react';
 import PriceRangeSlider from './PriceRangeSlider';
+import { QueryFilerByPriceArgs } from "@/gql/graphql";
 
 const FilterDialog = ({ onClose, isOpen }) => {
     const GET_EQUIPEMENTS = gql`
@@ -16,29 +17,47 @@ const FilterDialog = ({ onClose, isOpen }) => {
         filerByPrice(max: $max, min: $min) {
           id
         }
-      
-}`;
+    }`;
+
+    const router = useRouter(); 
     const min = 500;
     const max = 10000;
-    const { loading, error, data } = useQuery(GET_EQUIPEMENTS);
-    //const [filteredAdsByPrice] = useLazyQuery<FilterTypeQuery>(FILTER_BY_PRICE_RANGE);
     const cancelRef = useRef();
+    const { data } = useQuery(GET_EQUIPEMENTS);
+  
+    const [filteredAdsByPrice] = useLazyQuery<QueryFilerByPriceArgs>(FILTER_BY_PRICE_RANGE);
     const [newSliderValue, setNewSliderValue] = useState([min, max]);
+    const [limit, setLimit] = useState(8);
+    const [checkboxes, setCheckboxes] = useState({});
 
     const handleSliderValueChange = (newSliderValue) => {
         console.log("New Slider Value:", newSliderValue);
-        setNewSliderValue(newSliderValue); // Update the newSliderValue state
+        setNewSliderValue(newSliderValue); 
     };
 
-    const [limit, setLimit] = useState(8);
     const handleSeeMore = () => {
         setLimit(prevLimit => prevLimit + 8);
     };
 
-    function showResults() {
+    const handleFilterByPrice = () => {
+        const [minPrice, maxPrice] = newSliderValue;
+        filteredAdsByPrice({ variables: { min: minPrice, max: maxPrice } });
+        router.push(`/searchResults/price-results?price=${minPrice},${maxPrice}`);
+    };
 
+    const handleClearAll = () => {
+       
+        setNewSliderValue([min, max]);
+        setCheckboxes({});
+    };
 
-    }
+    const handleCheckboxChange = (equipment) => {
+        setCheckboxes(prevState => ({
+            ...prevState,
+            [equipment]: !prevState[equipment]
+        }));
+    };
+    
     return (
         <>
             <AlertDialog
@@ -82,7 +101,15 @@ const FilterDialog = ({ onClose, isOpen }) => {
                                 <Heading as='h5' size='md' fontWeight='500'>  Équipements </Heading>
                                 <Grid templateColumns='repeat(2, 1fr)' gap={2}>
                                     {data?.getEquipmentTypes && data.getEquipmentTypes.slice(0, limit).map((equipment: string) => (
-                                        <Checkbox pt='20px' size='sm' colorScheme='gray' spacing='1rem' key={equipment}>
+                                        <Checkbox 
+                                            pt='20px' 
+                                            size='sm' 
+                                            colorScheme='gray' 
+                                            spacing='1rem' 
+                                            key={equipment}
+                                            isChecked={checkboxes[equipment]}
+                                            onChange={() => handleCheckboxChange(equipment)}
+                                        >
                                             {equipment}
                                         </Checkbox>
                                     ))}
@@ -93,10 +120,10 @@ const FilterDialog = ({ onClose, isOpen }) => {
                     </AlertDialogBody>
                     <Divider />
                     <AlertDialogFooter justifyContent="space-between">
-                        <Button ref={cancelRef} bg="white">
+                        <Button ref={cancelRef} bg="white" onClick={handleClearAll}>
                             Tout effacer
                         </Button>
-                        <Button bg='#B4770A' ml={3} onClick={onClose} color='white' onClick={showResults}>
+                        <Button bg='#B4770A' ml={3} onClick={onClose} color='white' onClick={handleFilterByPrice}>
                             Afficher les logements
                         </Button>
                     </AlertDialogFooter>

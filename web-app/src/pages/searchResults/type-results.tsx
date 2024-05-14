@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ChakraProvider, Box, Heading } from "@chakra-ui/react";
+import { ChakraProvider, Box, Heading, Text } from "@chakra-ui/react";
 import { useQuery, gql } from "@apollo/client";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
@@ -25,31 +25,32 @@ export default function SearchHousingTypePage() {
 
   return (
     <ChakraProvider>
-      <Navbar />
-      <SearchBar />
-      <Box m="30px">
-         <Heading as='h4' size='md'>Résultats de la recherche pour logements de type : {type}</Heading>
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>Aucun logement sur Luxelair ne correspond à vos critères</p>
-        ) : (
-          <Box>
-            {data?.filterByHouseType 
-           ? data.filterByHouseType.map((ad) => (
-            <Card
-            id={ad.id}
-            price={ad.price}
-            location={ad.location}
-            image={`/file-hosting/${ad.id}.jpg`}
-          />
+    <Navbar />
+    <SearchBar />
+    <Box m="30px">
+      <Heading as='h4' size='md'>Résultats de la recherche pour logements de type : {type}</Heading>
+      {loading ? (
+        <Text fontSize='md'>Loading...</Text>
+      ) : error ? (
+        <Text pt="30px" fontSize='md'>Aucun logement sur Luxelair ne correspond à vos critères</Text>
+      ) : (
+        <Box>
+          {data?.filterByHouseType 
+            ? data.filterByHouseType.map((ad) => (
+              <Card
+                key={ad.id} 
+                id={ad.id}
+                price={ad.price}
+                location={ad.location}
+                image={`/file-hosting/${ad.id}.jpg`}
+              />
             ))
             : null}
-          </Box>
-        )}
-    
-      </Box>
-      <Footer />
-    </ChakraProvider>
-  );
+        </Box>
+      )}
+    </Box>
+    <Footer />
+  </ChakraProvider>
+  
+  )
 }

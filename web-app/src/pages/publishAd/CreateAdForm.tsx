@@ -1,23 +1,23 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import FirstStep from "@/components/adCreationComponents/FirstStep/FirstStep";
-import ControlButtons from "@/components/adCreationComponents/FirstStep/ControlButtons";
+import FirstStep from "@/components/AdCreationComponents/FirstStep/FirstStep";
+import ControlButtons from "@/components/AdCreationComponents/FirstStep/ControlButtons";
 import { SetStateAction, useState } from "react";
-import Equipements from "@/components/adCreationComponents/SecondStep/Equipements";
-import HouseType from "@/components/adCreationComponents/FirstStep/HouseType";
-import SecondStep from "@/components/adCreationComponents/SecondStep/SecondStep";
-import Location from "@/components/adCreationComponents/FirstStep/Location";
-import AdTitle from "@/components/adCreationComponents/SecondStep/AdTitle";
-import AdDescription from "@/components/adCreationComponents/SecondStep/AdDescription";
-import ThirdStep from "@/components/adCreationComponents/ThirdStep/ThirdStep";
+import Equipements from "@/components/AdCreationComponents/SecondStep/Equipements";
+import HouseType from "@/components/AdCreationComponents/FirstStep/HouseType";
+import SecondStep from "@/components/AdCreationComponents/SecondStep/SecondStep";
+import Location from "@/components/AdCreationComponents/FirstStep/Location";
+import AdTitle from "@/components/AdCreationComponents/SecondStep/AdTitle";
+import AdDescription from "@/components/AdCreationComponents/SecondStep/AdDescription";
+import ThirdStep from "@/components/AdCreationComponents/ThirdStep/ThirdStep";
 import { Input } from "@chakra-ui/react";
-import AdPrice from "@/components/adCreationComponents/ThirdStep/AdPrice";
-import FinalStep from "@/components/adCreationComponents/ThirdStep/FinalStep";
+import AdPrice from "@/components/AdCreationComponents/ThirdStep/AdPrice";
+import FinalStep from "@/components/AdCreationComponents/ThirdStep/FinalStep";
 import { gql, useMutation } from "@apollo/client";
 import router from "next/router";
 import { AdCreationMutation, AdCreationMutationVariables } from "@/gql/graphql";
-import ImageUploader from "@/components/adCreationComponents/SecondStep/UploadAdImage";
+import ImageUploader from "@/components/AdCreationComponents/SecondStep/UploadAdImage";
 
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);

@@ -10,11 +10,11 @@ import {
 } from "@chakra-ui/react";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
-import Slider from "@/components/annonces/Slider";
-import Rating from "@/components/annonces/Rating";
-import TagAd from "@/components/annonces/TagAd";
-import Toggle from "@/components/annonces/Toggle";
-import Payment from "@/components/annonces/Payment";
+import Slider from "@/components/Annonces/Slider";
+import Rating from "@/components/Annonces/Rating";
+import TagAd from "@/components/Annonces/TagAd";
+import Toggle from "@/components/Annonces/Toggle";
+import Payment from "@/components/Annonces/Payment";
 import { useQuery, gql } from "@apollo/client";
 import { useRouter } from "next/router";
 import { AdsQuery, AdsQueryVariables } from "@/gql/graphql";
@@ -42,7 +42,6 @@ export default function Ad() {
 
 	if (data) {
 		const { ad } = data;
-console.log(ad)
 		return (
 			<ChakraProvider>
 				<Navbar />
