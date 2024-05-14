@@ -3,7 +3,7 @@ import {
 } from "@chakra-ui/react";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
-import Authentification from "@/components/Authentication/Authentification";
+import Authentication from "@/components/Authentication/Authentication";
 import Register from "@/components/Authentication/Register";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ export default function login() {
   return (
     <ChakraProvider>
       <Navbar />
-      {isSignUp ? <Register /> : <Authentification onSignUpClick={toggleSignUp} />}
+      {isSignUp ? <Register /> : <Authentication onSignUpClick={toggleSignUp} />}
       <Footer />
     </ChakraProvider>
   );

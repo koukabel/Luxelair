@@ -36,7 +36,7 @@ interface props {
   onSignUpClick: () => void;
 }
 
-export default function Authentification({ onSignUpClick }: props) {
+export default function Authentication({ onSignUpClick }: props) {
   const router = useRouter();
   const CFaUserAlt = chakra(FaUserAlt);
   const CFaLock = chakra(FaLock);
