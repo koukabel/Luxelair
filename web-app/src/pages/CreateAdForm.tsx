@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import FirstStep from "@/components/adCreationComponents/FirstStep/FirstStep";
 import ControlButtons from "@/components/adCreationComponents/FirstStep/ControlButtons";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import Equipements from "@/components/adCreationComponents/SecondStep/Equipements";
 import HouseType from "@/components/adCreationComponents/FirstStep/HouseType";
 import SecondStep from "@/components/adCreationComponents/SecondStep/SecondStep";
@@ -11,25 +11,41 @@ import Location from "@/components/adCreationComponents/FirstStep/Location";
 import AdTitle from "@/components/adCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/adCreationComponents/SecondStep/AdDescription";
 import ThirdStep from "@/components/adCreationComponents/ThirdStep/ThirdStep";
-import { Input } from "@chakra-ui/react";
 import AdPrice from "@/components/adCreationComponents/ThirdStep/AdPrice";
 import FinalStep from "@/components/adCreationComponents/ThirdStep/FinalStep";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import router from "next/router";
-import { AdCreationMutation, AdCreationMutationVariables } from "@/gql/graphql";
+import {
+  AdCreationMutation,
+  AdCreationMutationVariables,
+  GetMyProfileQuery,
+} from "@/gql/graphql";
 import ImageUploader from "@/components/adCreationComponents/SecondStep/UploadAdImage";
+import Login from "./login";
+
+export const GET_MY_PROFIL = gql`
+  query GetMyProfile {
+    myProfile {
+      email
+      id
+      firstName
+      lastName
+    }
+  }
+`;
 
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
-  const [publishAdInfo, setPublishAdInfo] = useState<AdCreationMutationVariables>({
-    title: "",
-    description: "",
-    location: "",
-    price: 0,
-    equipements: [],
-    housingType: null,
-  });
+  const [publishAdInfo, setPublishAdInfo] =
+    useState<AdCreationMutationVariables>({
+      title: "",
+      description: "",
+      location: "",
+      price: 0,
+      equipements: [],
+      housingType: null,
+    });
   const [fileInForm, setFileInForm] = useState<File | null>(null);
 
   const handleChange = (fieldName: string, newValue: string | number) => {
@@ -71,9 +87,10 @@ export default function CreateAdForm() {
     }
   `;
 
-  const [createAd] = useMutation<AdCreationMutation, AdCreationMutationVariables>(
-    CREATE_AD
-  );
+  const [createAd] = useMutation<
+    AdCreationMutation,
+    AdCreationMutationVariables
+  >(CREATE_AD);
 
   const uploadImage = async (id: string) => {
     const { readAndCompressImage } = await import("browser-image-resizer");
@@ -107,7 +124,7 @@ export default function CreateAdForm() {
       if (data) {
         const { id } = data.createAd;
         await uploadImage(id);
-        router.push(`/ad/${data.createAd.id}`)
+        router.push(`/ad/${data.createAd.id}`);
       }
     } catch (error) {
       console.error("Error publishing ad:", error);
@@ -118,7 +135,11 @@ export default function CreateAdForm() {
     publishAd();
   };
 
-  return (
+  const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+
+  return !data?.myProfile ? (
+    <Login />
+  ) : (
     <ChakraProvider>
       <Navbar />
       {currentComponent === 1 && <FirstStep />}
@@ -144,8 +165,11 @@ export default function CreateAdForm() {
       )}
 
       {currentComponent === 4 && <SecondStep />}
-      {currentComponent === 5 && 
-      <ImageUploader onFileSelect={(file: File | null) => setFileInForm(file)}  />}
+      {currentComponent === 5 && (
+        <ImageUploader
+          onFileSelect={(file: File | null) => setFileInForm(file)}
+        />
+      )}
 
       {currentComponent === 6 && (
         <Location
