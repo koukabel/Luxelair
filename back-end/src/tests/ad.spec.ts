@@ -79,7 +79,14 @@ describe("Ad", () => {
     it("when location is match", async () => {
       const ads = newAds.filter((ad) => ad.location === "Paris");
       const search = await Ad.searchAd("Paris");
-      expect(search).toEqual(ads);
+      const sortedAds = ads
+        .slice()
+        .sort((a, b) => a.title.localeCompare(b.title));
+      const sortedSearch = search
+        .slice()
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+      expect(sortedAds).toEqual(sortedSearch);
     });
   });
 
