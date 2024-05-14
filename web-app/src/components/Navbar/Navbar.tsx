@@ -40,7 +40,7 @@ export default function Navbar() {
 					cursor={"pointer"}
 					fontWeight="light"
 					fontSize="16px"
-					href={data?.myProfile ? "/publishAd/CreateAdForm" : "/authentification/login"}
+					href={data?.myProfile ? "/publishAd/CreateAdForm" : "/authentication/login"}
 				>
 					Mettre ma propriété sur Luxelair
 				</Link>
