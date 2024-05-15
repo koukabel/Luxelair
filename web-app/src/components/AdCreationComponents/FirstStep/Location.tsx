@@ -29,7 +29,7 @@ const Location: React.FC<LocationProps> = ({ onLocationChange }) => {
         borderRadius={"10"}
         onChange={handleLocationChange}
       />
-      <Image src="map.png" alt="map" />
+    
     </VStack>
   );
 };

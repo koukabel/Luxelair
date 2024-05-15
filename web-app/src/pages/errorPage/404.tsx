@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
 import { ChakraProvider, Flex, Text, Link } from "@chakra-ui/react";
 
 export default function custom404() {

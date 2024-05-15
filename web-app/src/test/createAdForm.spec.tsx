@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import CreateAdForm from "@/pages/CreateAdForm";
+import CreateAdForm from "@/pages/publishAd/CreateAdForm";
 import { GetMyProfileQuery } from "@/gql/graphql";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { GET_MY_PROFIL } from "@/pages/CreateAdForm";
+import { GET_MY_PROFIL } from "@/pages/publishAd/CreateAdForm";
 import exp from "constants";
 
 jest.mock("next/router", () => ({ useRouter: jest.fn() }));

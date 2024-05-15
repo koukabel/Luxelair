@@ -21,7 +21,6 @@ query getEquipements {
 
 const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
   const { loading, error, data } = useQuery(GET_EQUIPEMENTS);
-console.log(data)
 
   const [selectedEquipmentValues, setSelectedEquipmentValues] = useState<string[]>([]);
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
@@ -31,7 +30,6 @@ console.log(data)
     onSelectedEquipmentChange([...selectedEquipmentValues, equipment]);
     setSelectedCards(prevSelectedCards => new Set(prevSelectedCards).add(equipment));
   }
-console.log(selectedEquipmentValues)
   return (
     <VStack>
       <Box

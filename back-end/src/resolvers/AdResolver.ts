@@ -85,6 +85,26 @@ export class AdResolver {
     return Ad.searchAd(location);
   }
 
+  @Query(() => [Ad])
+  async filterByHouseType(
+    @Arg("type") housingType: HousingTypeEnum
+  ): Promise<Ad[]> {
+    return await Ad.filterAdByType(housingType);
+  }
+
+  @Query(() => [Ad])
+  async filerByPrice(
+    @Arg("min", () => Number) min: number,
+    @Arg("max", () => Number) max: number
+  ): Promise<Ad[]> {
+    return await Ad.filterAdByPrice(min, max);
+  }
+
+  @Query(() => [Ad])
+  async filterByEquipements(@Arg("equipement") equip: string): Promise<Ad[]> {
+    return await Ad.filterAdByEquipments(equip);
+  }
+
   @Mutation(() => Ad)
   createAd(@Args() args: editOrCreateAd) {
     return Ad.createAd(args);

@@ -36,7 +36,7 @@ interface props {
   onSignUpClick: () => void;
 }
 
-export default function Authentification({ onSignUpClick }: props) {
+export default function Authentication({ onSignUpClick }: props) {
   const router = useRouter();
   const CFaUserAlt = chakra(FaUserAlt);
   const CFaLock = chakra(FaLock);
@@ -87,7 +87,7 @@ export default function Authentification({ onSignUpClick }: props) {
             });
 
             setTimeout(() => {
-              router.push(`/profile/traveler/${data.signIn.id}`);
+              router.push(`/profil/traveler/${data.signIn.id}`);
             }, 2000);
           }
         } catch (error) {

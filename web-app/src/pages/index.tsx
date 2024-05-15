@@ -1,13 +1,14 @@
 import { ChakraProvider, Heading } from "@chakra-ui/react";
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import Card from "../components/Card";
+import Card from "../components/Ad/Card";
 import { Image } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
-import { AdsQuery } from "@/gql/graphql";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import SearchBar from "@/components/SearchBar";
-
+import { Ad, AdsQuery } from "@/gql/graphql";
+import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/Navbar/Navbar";
+import SearchBar from "@/components/Navbar/SearchBar";
+import FilterSection from "@/components/Filters/FilterSection"
+import { Divider } from '@chakra-ui/react'
 const GET_ADS = gql`
   query Ads {
     getAds {
@@ -24,7 +25,9 @@ export default function HomePage() {
   return (
     <ChakraProvider>
       <Navbar />
-      <SearchBar />
+      <SearchBar />    
+      <Divider/>
+      <FilterSection/>
       <Box pos="relative">
         <Image
           margin="auto"
