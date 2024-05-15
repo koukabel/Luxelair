@@ -5,12 +5,15 @@ import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
 import Card from "../../components/Ad/Card";
-import { FilterTypeQuery } from "@/gql/graphql";
+import { Ad, FilterTypeQuery } from "@/gql/graphql";
 
 const SEARCH_AD = gql`
 query FilterByHouseType($type: String!) {
   filterByHouseType(type: $type) {
     id
+    location
+    image
+    price
   }
 }
 `;
@@ -36,7 +39,7 @@ export default function SearchHousingTypePage() {
       ) : (
         <Box>
           {data?.filterByHouseType 
-            ? data.filterByHouseType.map((ad) => (
+            ? data.filterByHouseType.map((ad:any) => (
               <Card
                 key={ad.id} 
                 id={ad.id}

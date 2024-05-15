@@ -9,7 +9,7 @@ import {
 	Stack,
 	Text,
 } from "@chakra-ui/react";
-import ProfileHoteImg from "../ProfileHoteImg";
+
 import EditProfile from "./EditProfile";
 import HostVerify from "./HostVerify";
 
@@ -20,7 +20,7 @@ export default function Banner() {
 				<Flex>
 					<Card maxW="sm" backgroundColor="#C3C3C3" w={300}>
 						<CardBody>
-							<ProfileHoteImg />
+						
 							<Stack mt="6" spacing="3">
 								<Heading size="md">Béatrice | Hote</Heading>
 								<Text>17 commentaires</Text>

@@ -1,12 +1,12 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import HoteBanner from "@/components/profile/HostBanner";
+import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/Navbar/Navbar";
+import HoteBanner from "@/components/Profil/HostBanner";
 import { ChakraProvider, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
-import MyAds from "@/components/profile/MyAds";
+import MyAds from "@/components/Profil/MyAds";
 import { Divider } from "@chakra-ui/react";
-import HostComments from "@/components/profile/HostComments";
+import HostComments from "@/components/Profil/HostComments";
 
 export default function Host() {
 	return (
