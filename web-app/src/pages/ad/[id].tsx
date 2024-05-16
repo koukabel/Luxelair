@@ -22,7 +22,6 @@ import {
 } from "@/gql/graphql";
 import { useState, useEffect } from "react";
 import { GET_MY_PROFIL } from "../publishAd/CreateAdForm";
-import Login from "@/pages/authentication/login";
 
 const GET_AD = gql`
   query ad($adId: ID!) {

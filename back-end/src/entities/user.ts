@@ -157,11 +157,6 @@ class User extends BaseEntity {
 
     return bookings;
   }
-
-  static async getAdsByBooking(): Promise<Booking[]> {
-    const bookings = await Booking.find({ relations: ["ad"] });
-    return bookings;
-  }
 }
 
 export default User;

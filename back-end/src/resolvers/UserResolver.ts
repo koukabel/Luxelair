@@ -117,9 +117,4 @@ export class UserResolver {
   async getBookingsByUser(@Arg("userId") userId: string): Promise<Booking[]> {
     return await User.getBookingsByUser(userId);
   }
-
-  @Query(() => [Booking])
-  getAdsByBookings() {
-    return User.getAdsByBooking();
-  }
 }
