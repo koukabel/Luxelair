@@ -28,53 +28,57 @@ export default function Navbar() {
     await signOut();
   };
 
-	return (
-		<Flex alignItems="center">
-			<Link href="/">
-				<Image src="/logoWhite.png" boxSize="150px" objectFit="contain" />
-			</Link>
-			<Heading className="mainHeading">LUXELAIR</Heading>
-			<Spacer />
-			<Flex direction="row" alignItems="center" gap={5} padding="10">
-				<Link
-					cursor={"pointer"}
-					fontWeight="light"
-					fontSize="16px"
-					href={data?.myProfile ? "/publishAd/CreateAdForm" : "/authentication/login"}
-				>
-					Mettre ma propriété sur Luxelair
-				</Link>
-				{data?.myProfile ? (
-           <>
-           <Link
+  return (
+    <Flex alignItems="center">
+      <Link href="/">
+        <Image src="/logoWhite.png" boxSize="150px" objectFit="contain" />
+      </Link>
+      <Heading className="mainHeading">LUXELAIR</Heading>
+      <Spacer />
+      <Flex direction="row" alignItems="center" gap={5} padding="10">
+        <Link
+          cursor={"pointer"}
+          fontWeight="light"
+          fontSize="16px"
+          href={
+            data?.myProfile
+              ? "/publishAd/CreateAdForm"
+              : "/authentication/login"
+          }
+        >
+          Mettre ma propriété sur Luxelair
+        </Link>
+        {data?.myProfile ? (
+          <>
+            <Link
+              cursor={"pointer"}
+              fontWeight="light"
+              fontSize="16px"
+              onClick={handleSignOut}
+              href="/authentification/login"
+            >
+              Déconnexion
+            </Link>
+            <Link
+              cursor={"pointer"}
+              fontWeight="light"
+              fontSize="16px"
+              href={`/profil/traveler/${data?.myProfile.id}`}
+            >
+              <Avatar cursor="pointer" bg="#B4770A" />
+            </Link>
+          </>
+        ) : (
+          <Link
             cursor={"pointer"}
             fontWeight="light"
             fontSize="16px"
-            onClick={handleSignOut}
-            href="/login"
+            href="/authentication/login"
           >
-            Déconnexion
+            Connexion
           </Link>
-					<Link
-						cursor={"pointer"}
-						fontWeight="light"
-						fontSize="16px"
-						href={`/profil/traveler/${data?.myProfile.id}`}
-					>
-						<Avatar cursor="pointer" bg="#B4770A" />
-					</Link>
-          </>
-				) : (
-					<Link
-						cursor={"pointer"}
-						fontWeight="light"
-						fontSize="16px"
-						href="/authentication/login"
-					>
-						Connexion
-					</Link>
-				)}
-			</Flex>
-		</Flex>
-	);
+        )}
+      </Flex>
+    </Flex>
+  );
 }

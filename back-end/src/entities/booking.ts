@@ -1,107 +1,104 @@
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, ManyToMany } from "typeorm";
+import {
+  Entity,
+  Column,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-import Ad  from "./ad";
+import Ad from "./ad";
 import User from "./user";
+import { CreateOrUpdateBooking } from "src/resolvers/BookingResolver";
 
 @Entity()
 @ObjectType()
 class Booking extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  @Field(() => ID)
+  id!: string;
 
-    @PrimaryGeneratedColumn("uuid")
-    @Field(() => ID)
-    id!: string;
+  @Column()
+  @Field()
+  checkinDate!: Date;
 
-    @Column()
-    @Field()
-    checkinDate!: Date;
+  @Column()
+  @Field()
+  checkoutDate!: Date;
 
-    @Column()
-    @Field()
-    checkoutDate!: Date;
+  @Column()
+  @Field()
+  totalPrice!: number;
 
-    @Column()
-    @Field()
-    price!: number;
+  // Voir après pour mettre un enum pour mettre plusieurs status
+  @Column({ default: false })
+  @Field()
+  status!: boolean;
 
-    // Voir après pour mettre un enum pour mettre plusieurs status
-    @Column({default: false})
-    @Field()
-    status!: boolean;
+  @Column({ default: new Date() })
+  @Field()
+  datePayment!: Date;
 
-    @Column({default: new Date})
-    @Field()
-    datePayment!: Date;
+  @Column({ default: false })
+  @Field()
+  statusPayment!: boolean;
 
-    @Column({default: false })
-    @Field()
-    statusPayment!: boolean;
+  @ManyToMany(() => User, (user) => user.bookings)
+  users!: User[];
 
-    @ManyToMany(() => Ad, (ad) => ad.bookings)
-    ads!: Ad[];
-    
-    @ManyToMany(() => User, (user) => user.bookings)
-    users!: User[];
-    static checkinDate: Date | number; 
-    static checkoutDate: Date | number;
-    
-    constructor(booking?: Partial<Booking>) {
-        super();
-        if (booking) {
-            if (!booking.checkinDate) {
-                throw new Error('La date de départ est obligatoire')
-            }
-            this.checkinDate = booking.checkinDate;
-            if (!booking.checkoutDate) {
-                throw new Error('La date d\'arrivée est obligatoire')
-            }
-            this.checkoutDate = booking.checkoutDate
-            if (!booking.price) {
-                throw new Error('Le prix est obligatoire')
-            }
-        }
+  @ManyToOne(() => Ad, (ad) => ad.bookings)
+  @JoinColumn({ name: "adId" })
+  @Field(() => Ad)
+  ad!: Ad;
 
-        
+  constructor(booking?: Partial<Booking>) {
+    super();
+    if (booking) {
+      if (!booking.checkinDate) {
+        throw new Error("La date de départ est obligatoire");
+      }
+      this.checkinDate = booking.checkinDate;
+      if (!booking.checkoutDate) {
+        throw new Error("La date d'arrivée est obligatoire");
+      }
+      this.checkoutDate = booking.checkoutDate;
+      if (!booking.totalPrice) {
+        throw new Error("Le total est obligatoire");
+      }
+      this.totalPrice = booking.totalPrice;
     }
+  }
 
+  static async saveNewBooking(
+    bookingData: CreateOrUpdateBooking
+  ): Promise<Booking> {
+    const booking = new Booking(bookingData);
+    const user = await User.getUserById(bookingData.userId);
+    const ad = await Ad.getAdById(bookingData.adId);
 
+    booking.users = [user];
+    booking.ad = ad;
 
-    // static async getBookingsByUser(): Promise<Booking[]> {
-    //     const bookings = await Booking.find()
-    //     return bookings;
-    // }
+    const saveBooking = await booking.save();
+    return saveBooking;
+  }
 
-    // static async saveNewBooking(): Promise<Booking[]> {
+  static async getBookings(): Promise<Booking[]> {
+    const bookings = await Booking.find();
+    return bookings;
+  }
 
-    // }
-// Méthode qui calcule la différence en jours entre deux dates et multiplie par le prix
-static async totalPrice(): Promise<void> {
-	const dateCheckin = new Date("2024-01-31").getTime();
-	const dateCheckout = new Date("2024-02-02").getTime();
-  
-    const prixParjour = 1000;
-
-	const differenceEnMillisecondes = dateCheckout - dateCheckin;
-
-	const differenceEnJours = differenceEnMillisecondes / (24 * 60 * 60 * 1000);
-
-	const prixTotal = differenceEnJours * prixParjour;
-
-	console.log(Math.round(prixTotal * 100) / 100);
-    console.log("hi")
+  static async getBooking(id: string): Promise<Booking> {
+    const booking = await Booking.findOne({
+      where: { id: id },
+      relations: ["ad"],
+    });
+    if (!booking) {
+      throw new Error("Booking does not existy");
+    }
+    return booking;
+  }
 }
 
-    // static async totalPrice(): Promise<void> {
-    //     const dateCheckin = new Date(checkin).getTime();
-	//     const dateCheckout = new Date(checkout).getTime();
-
-	//     const differenceEnMillisecondes = dateCheckout - dateCheckin;
-	//     const differenceEnJours = differenceEnMillisecondes / (24 * 60 * 60 * 1000);
-
-	// const prixTotal = differenceEnJours * prixParJour;
-
-	// return Math.round(prixTotal * 100) / 100;
-        
-    
-}
-
-export default Booking; 
+export default Booking;

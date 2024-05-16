@@ -7,10 +7,14 @@ import {
   ManyToMany,
   JoinTable,
   Like,
+  ILike,
+  ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
 import { Between, In } from "typeorm";
+import User from "./user";
 
 export enum HousingTypeEnum {
   Chalet = "Chalet",
@@ -19,8 +23,9 @@ export enum HousingTypeEnum {
   Hotel_particulier = "Hôtel particulier",
   Chateau = "Chateau",
   Logement_sur_l_eau = "Logement sur l'eau",
-  Bateau="Bateau", 
-  Tour="Tour"
+  Bateau = "Bateau",
+  Tour = "Tour",
+  Duplex = "Duplex",
 }
 
 export enum EquipmentTypeEnum {
@@ -102,9 +107,13 @@ class Ad extends BaseEntity {
   @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
 
-  @JoinTable()
-  @ManyToMany(() => Booking, (booking) => booking.ads)
-  @Field(() => [Booking])
+  @ManyToOne(() => User, (user) => user.ads, {
+    eager: true,
+  })
+  @Field(() => User)
+  user!: User;
+
+  @OneToMany(() => Booking, (booking) => booking.ad)
   bookings!: Booking[];
 
   constructor(ad?: Partial<Ad>) {
@@ -161,7 +170,7 @@ class Ad extends BaseEntity {
 
   static async searchAd(location: string): Promise<Ad[]> {
     const adLocation = await Ad.find({
-      where: { location: Like(`%${location}%`) },
+      where: { location: ILike(`%${location}%`) },
     });
     if (adLocation.length === 0) {
       throw new Error("Location does not exist");
@@ -169,49 +178,50 @@ class Ad extends BaseEntity {
     return adLocation;
   }
 
-
   static async filterAdByType(housingType: HousingTypeEnum): Promise<Ad[]> {
     const searchHouseType = await Ad.find({
-      where: { housingType }
+      where: { housingType },
     });
-  
+
     if (searchHouseType.length === 0) {
       throw new Error("Ad does not exist");
     }
     return searchHouseType || [];
   }
 
-
-static async filterAdByPrice(minimum: number, maximum: number): Promise<Ad[]> {
-  const searchPrice = await Ad.find({
-    where: {
-      price: Between(minimum, maximum)
-    }
-  });
-
-  if (searchPrice.length === 0) {
-    throw new Error("No ads found within the given price range");
-  }
-  return searchPrice;
-}
-
-static async filterAdByEquipments(equip: string): Promise<Ad[]> {
-  let searchResult: Ad[] = await Ad.find({
+  static async filterAdByPrice(
+    minimum: number,
+    maximum: number
+  ): Promise<Ad[]> {
+    const searchPrice = await Ad.find({
       where: {
-        equipements: Like(`%${equip}%`)
-      }
+        price: Between(minimum, maximum),
+      },
     });
-  
-  if (searchResult.length === 0) {
-    throw new Error("No ads found with the given equipment");
+
+    if (searchPrice.length === 0) {
+      throw new Error("No ads found within the given price range");
+    }
+    return searchPrice;
   }
-  return searchResult;
-}
 
+  static async filterAdByEquipments(equip: string): Promise<Ad[]> {
+    let searchResult: Ad[] = await Ad.find({
+      where: {
+        equipements: Like(`%${equip}%`),
+      },
+    });
 
-  
+    if (searchResult.length === 0) {
+      throw new Error("No ads found with the given equipment");
+    }
+    return searchResult;
+  }
+
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);
+    const user = await User.getUserById(adInformations.userId);
+    newAd.user = user;
     const savedAd = await newAd.save();
     return savedAd;
   }

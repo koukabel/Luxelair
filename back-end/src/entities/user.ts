@@ -12,6 +12,7 @@ import { CreateUser, UpdateUser, signIn } from "../resolvers/UserResolver";
 import Booking from "./booking";
 import { compare, hash } from "bcrypt";
 import UserSession from "./userSession";
+import Ad from "./ad";
 
 @Entity("user")
 @ObjectType()
@@ -58,9 +59,14 @@ class User extends BaseEntity {
   @OneToMany(() => UserSession, (session) => session.user)
   sessions!: UserSession[];
 
-  @ManyToMany(() => Booking, (booking) => booking.users)
   @JoinTable()
+  @ManyToMany(() => Booking, (booking) => booking.users, { eager: true })
+  @Field(() => [Booking])
   bookings!: Booking[];
+
+  @OneToMany(() => Ad, (ad) => ad.user)
+  @Field(() => [Ad])
+  ads!: Ad[];
 
   constructor(user?: CreateUser) {
     super();
@@ -136,6 +142,25 @@ class User extends BaseEntity {
       throw new Error("User does not exist");
     }
     return user;
+  }
+
+  static async getBookingsByUser(userId: string): Promise<Booking[]> {
+    const user = await User.findOneBy({ id: userId });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+
+    const bookings = await Booking.find({
+      where: { users: user },
+      relations: ["ad"],
+    });
+
+    return bookings;
+  }
+
+  static async getAdsByBooking(): Promise<Booking[]> {
+    const bookings = await Booking.find({ relations: ["ad"] });
+    return bookings;
   }
 }
 

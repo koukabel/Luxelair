@@ -51,6 +51,9 @@ export class editOrCreateAd {
 
   @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
+
+  @Field()
+  userId!: string;
 }
 
 @Resolver()
