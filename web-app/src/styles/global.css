@@ -40,3 +40,23 @@
     outline-style: none;
     padding: 50px;
   }
+
+  .searchMap {
+    width: 40vw;
+    position: absolute;
+    top: 22vh;
+    height: 5vh;
+    left: 50%;
+    background-color: white;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    z-index: 1000;
+
+  }
+
+  .location-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust as needed to position the icon */
+    transform: translateY(-50%);
+  }
