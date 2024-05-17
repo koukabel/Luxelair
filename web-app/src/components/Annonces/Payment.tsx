@@ -73,6 +73,7 @@ const Payment: React.FC<PaymentProps> = ({
                 excludeDates={disabledDates}
                 selected={checkIn}
                 className="custom-datepicker"
+                placeholderText="Date d'arrivée"
               />
               <DatePicker
                 onChange={(date) => handleCheckOutChange(date)}
@@ -80,6 +81,7 @@ const Payment: React.FC<PaymentProps> = ({
                 excludeDates={disabledDates}
                 selected={checkOut}
                 className="custom-datepicker"
+                placeholderText="Date de départ"
               />
             </Flex>
             <Button
