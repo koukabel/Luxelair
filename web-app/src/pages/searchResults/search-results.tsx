@@ -33,17 +33,18 @@ export default function SearchResultsPage() {
       <SearchBar />
       <h1>Résultats de la recherche pour : {location}</h1>
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
-        {data?.search
-          ? data.search.map((ad) => (
-              <Card
-                id={ad.id}
-                price={ad.price}
-                location={ad.location}
-                image={`/file-hosting/${ad.id}.jpg`}
-                // description={ad.description}
-              />
-            ))
-          : null}
+      {data?.search
+  ? data.search.map((ad) => (
+      <Card
+        key={ad.id} 
+        id={ad.id}
+        price={ad.price}
+        location={ad.location}
+        image={`/file-hosting/${ad.id}.jpg`}
+        
+      />
+    ))
+  : null}
       </SimpleGrid>
       <Footer/>
       </ChakraProvider>

@@ -25,9 +25,9 @@ export default function HomePage() {
   return (
     <ChakraProvider>
       <Navbar />
-      <SearchBar />    
-      <Divider/>
-      <FilterSection/>
+      <SearchBar />
+      <Divider />
+      <FilterSection />
       <Box pos="relative">
         <Image
           margin="auto"
@@ -51,13 +51,14 @@ export default function HomePage() {
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
         {data?.getAds
           ? data.getAds.map((ad) => (
-              <Card
-                id={ad.id}
-                price={ad.price}
-                location={ad.location}
-                image={`/file-hosting/${ad.id}.jpg`}
-              />
-            ))
+            <Card
+              key={ad.id} 
+              id={ad.id}
+              price={ad.price}
+              location={ad.location}
+              image={`/file-hosting/${ad.id}.jpg`}
+            />
+          ))
           : null}
       </SimpleGrid>
       <Footer />
