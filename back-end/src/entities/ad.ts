@@ -114,6 +114,7 @@ class Ad extends BaseEntity {
   user!: User;
 
   @OneToMany(() => Booking, (booking) => booking.ad)
+  @Field(() => Booking)
   bookings!: Booking[];
 
   constructor(ad?: Partial<Ad>) {

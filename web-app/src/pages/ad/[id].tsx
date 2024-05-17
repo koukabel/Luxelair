@@ -22,6 +22,17 @@ import {
 } from "@/gql/graphql";
 import { useState, useEffect } from "react";
 import { GET_MY_PROFIL } from "../publishAd/CreateAdForm";
+import { parseISO, eachDayOfInterval } from "date-fns";
+
+const GET_BOOKINGS_BY_AD = gql`
+  query GetBookingsByAds($getBookingsByAdsId: String!) {
+    getBookingsByAds(id: $getBookingsByAdsId) {
+      checkinDate
+      checkoutDate
+      id
+    }
+  }
+`;
 
 const GET_AD = gql`
   query ad($adId: ID!) {
@@ -69,12 +80,16 @@ export default function Ad() {
     variables: { adId: id as string },
   });
 
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState<Date | null>(null);
+  const [checkOut, setCheckOut] = useState<Date | null>(null);
   const [nights, setNights] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const { data: profileData, error } =
     useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+  const { data: dataAds } = useQuery(GET_BOOKINGS_BY_AD, {
+    variables: { getBookingsByAdsId: id as string },
+  });
+  const [disabledDates, setDisabledDates] = useState<Date[]>([]);
 
   const [newBookingInfo, setnewBooking] =
     useState<CreateBookingMutationVariables>({
@@ -86,7 +101,7 @@ export default function Ad() {
       totalPrice: 0,
     });
 
-  const handleCheckInChange = (newValue: string) => {
+  const handleCheckInChange = (newValue: Date | null) => {
     setCheckIn(newValue);
     setnewBooking({
       ...newBookingInfo,
@@ -102,7 +117,7 @@ export default function Ad() {
     });
   };
 
-  const handleCheckOutChange = (newValue: string) => {
+  const handleCheckOutChange = (newValue: Date | null) => {
     setCheckOut(newValue);
     setnewBooking({
       ...newBookingInfo,
@@ -111,10 +126,8 @@ export default function Ad() {
   };
 
   useEffect(() => {
-    if (checkIn && checkOut) {
-      const checkInDate = new Date(checkIn);
-      const checkOutDate = new Date(checkOut);
-      const diffTime = checkOutDate.getTime() - checkInDate.getTime();
+    if (checkIn && checkOut && data?.ad) {
+      const diffTime = checkOut.getTime() - checkIn.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       setNights(diffDays);
       const newTotalPrice = diffDays * data.ad.price;
@@ -140,6 +153,21 @@ export default function Ad() {
     CreateBookingMutation,
     CreateBookingMutationVariables
   >(CREATE_BOOKING);
+
+  useEffect(() => {
+    if (dataAds) {
+      const updatedDisabledDates: Date[] = [];
+      for (const booking of dataAds?.getBookingsByAds) {
+        const startDate = parseISO(booking.checkinDate);
+        const endDate = parseISO(booking.checkoutDate);
+        const dates = eachDayOfInterval({ start: startDate, end: endDate });
+        updatedDisabledDates.push(...dates);
+      }
+      setDisabledDates(updatedDisabledDates);
+    }
+  }, [dataAds]);
+
+  console.log(disabledDates);
 
   const newBooking = async () => {
     try {
@@ -219,6 +247,7 @@ export default function Ad() {
                 onCheckOutChange={handleCheckOutChange}
                 onPriceChange={handlePriceChange}
                 onSubmit={handleSubmit}
+                disabledDates={disabledDates}
               />{" "}
             </Container>
           </Flex>

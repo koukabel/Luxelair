@@ -1,4 +1,3 @@
-import { GetBookingsByUserQuery } from "@/gql/graphql";
 import { gql, useQuery } from "@apollo/client";
 import { Box, Image, Text, Stack, Heading, SimpleGrid } from "@chakra-ui/react";
 import Link from "next/link";
@@ -30,26 +29,29 @@ export default function MyBookings() {
   const { data } = useQuery(MY_BOOKINGS, {
     variables: { userId: id as string },
   });
+
   return (
     <>
-      {data ? (
-        <Box padding="5">
-          <Heading as="h2" size="xl" marginBottom="5"></Heading>
+      <Box padding="5">
+        <Heading as="h2" size="xl" marginBottom="5">
+          Mes réservations
+        </Heading>
+        {data && data.getBookingsByUser.length > 0 ? (
           <SimpleGrid columns={[1, null, 4]} spacing="120px">
             {data.getBookingsByUser.map((booking) => (
-              <Link href={`/booking/${booking.id}`}>
+              <Link key={booking.id} href={`/booking/${booking.id}`}>
                 <Box
-                  key={booking.id}
                   borderWidth="1px"
                   borderRadius="lg"
                   overflow="hidden"
                   boxShadow="md"
+                  cursor="pointer"
                 >
                   <Image
                     height={"300px"}
                     width={"310px"}
                     objectFit={"cover"}
-                    src={booking.ad.image}
+                    src={`/file-hosting/${booking.ad.id}.jpg`}
                     alt={`Image de l'annonce ${booking.ad.title}`}
                   />
                   <Box p="2">
@@ -72,10 +74,10 @@ export default function MyBookings() {
               </Link>
             ))}
           </SimpleGrid>
-        </Box>
-      ) : (
-        <p>Loading...</p>
-      )}
+        ) : (
+          <p>Vous n'avez pas de réservations</p>
+        )}
+      </Box>
     </>
   );
 }

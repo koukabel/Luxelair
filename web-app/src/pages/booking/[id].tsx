@@ -44,7 +44,7 @@ export default function Booking() {
   const { data } = useQuery(MY_BOOKING_AD, {
     variables: { getBookingId: id as string },
   });
-  console.log(data);
+
   if (data) {
     return (
       <ChakraProvider>
@@ -60,47 +60,49 @@ export default function Booking() {
             overflow="hidden"
             boxShadow="md"
           >
-            <Image
-              height={"300px"}
-              width={"310px"}
-              objectFit={"cover"}
-              src={data.getBooking.ad.image}
-              alt={`Image de l'annonce ${data.getBooking.ad.title}`}
-            />
-            <Box position="absolute" top="2" right="2">
-              {data.getBooking.statusPayment ? (
-                <Badge colorScheme="green">Payé</Badge>
-              ) : (
-                <Badge colorScheme="red" borderRadius={8} padding={1}>
-                  Non payé
-                </Badge>
-              )}
-            </Box>
-            <Box p="2">
-              <Stack spacing={6}>
-                <Text
-                  fontWeight="bold"
-                  fontSize="xl"
-                  lineHeight="tight"
-                  isTruncated
-                  whiteSpace={"normal"}
-                >
-                  {data.getBooking.ad.title}
-                </Text>
-                <Text color="gray.500" fontSize="sm">
-                  {data.getBooking.ad.description}
-                </Text>
-                <Text>
-                  Date d'arrivée:{" "}
-                  {new Date(data.getBooking.checkinDate).toDateString()}
-                </Text>
-                <Text>
-                  Date de départ:{" "}
-                  {new Date(data.getBooking.checkoutDate).toDateString()}
-                </Text>
-                <Text>Prix total: {data.getBooking.totalPrice} €</Text>
-              </Stack>
-            </Box>
+            <Flex alignItems="flex-start">
+              <Image
+                height={"300px"}
+                width={"310px"}
+                objectFit={"cover"}
+                src={`/file-hosting/${data.getBooking.ad.id}.jpg`}
+                alt={`Image de l'annonce ${data.getBooking.ad.title}`}
+              />
+              <Box marginLeft="4" flex="1">
+                <Box position="relative">
+                  {data.getBooking.statusPayment ? (
+                    <Badge colorScheme="green">Payé</Badge>
+                  ) : (
+                    <Badge colorScheme="red" borderRadius={8} padding={1}>
+                      Non payé
+                    </Badge>
+                  )}
+                </Box>
+                <Stack spacing={6} marginLeft="2">
+                  <Text
+                    fontWeight="bold"
+                    fontSize="xl"
+                    lineHeight="tight"
+                    isTruncated
+                    whiteSpace={"normal"}
+                  >
+                    {data.getBooking.ad.title}
+                  </Text>
+                  <Text color="gray.500" fontSize="sm">
+                    {data.getBooking.ad.description}
+                  </Text>
+                  <Text>
+                    Date d'arrivée:{" "}
+                    {new Date(data.getBooking.checkinDate).toDateString()}
+                  </Text>
+                  <Text>
+                    Date de départ:{" "}
+                    {new Date(data.getBooking.checkoutDate).toDateString()}
+                  </Text>
+                  <Text>Prix total: {data.getBooking.totalPrice} €</Text>
+                </Stack>
+              </Box>
+            </Flex>
           </Box>
         </Box>
         <Footer />

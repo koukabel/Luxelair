@@ -11,6 +11,7 @@ export default function Footer() {
       color="white"
       paddingTop={20}
       paddingBottom={20}
+      marginTop="auto"
     >
       <VStack spacing={6}>
         <Text fontSize="sm">© 2024 Luxelair. All rights reserved.</Text>
