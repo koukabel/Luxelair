@@ -7,7 +7,6 @@ import {
   Args,
   Query,
   Arg,
-  ID,
 } from "type-graphql";
 
 @ArgsType()
@@ -39,16 +38,11 @@ export class BookingResolver {
   }
 
   @Query(() => [Booking])
-  getBookings() {
+  getBokings() {
     return Booking.getBookings();
   }
   @Query(() => Booking)
   getBooking(@Arg("id") id: string) {
     return Booking.getBooking(id);
-  }
-
-  @Query(() => [Booking])
-  getBookingsByAds(@Arg("id") id: string) {
-    return Booking.getBookingsByAd(id);
   }
 }

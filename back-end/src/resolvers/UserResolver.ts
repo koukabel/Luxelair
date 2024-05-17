@@ -15,7 +15,6 @@ import { MinLength, IsEmail } from "class-validator";
 import { Context } from "..";
 import { setUserSessionIdInCookie } from "../utils/cookie";
 import Booking from "../entities/booking";
-import Ad from "../entities/ad";
 
 @ArgsType()
 export class CreateUser {
@@ -110,17 +109,12 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  async user(@Arg("id", () => ID) id: string) {
-    return await User.getUserById(id);
+  user(@Arg("id", () => ID) id: string) {
+    return User.getUserById(id);
   }
 
   @Query(() => [Booking])
   async getBookingsByUser(@Arg("userId") userId: string): Promise<Booking[]> {
     return await User.getBookingsByUser(userId);
-  }
-
-  @Query(() => [Ad])
-  async getAdsByUser(@Arg("id", () => ID) id: string) {
-    return await User.getAdsByUser(id);
   }
 }

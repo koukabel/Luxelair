@@ -55,7 +55,7 @@ export default function Navbar() {
               fontWeight="light"
               fontSize="16px"
               onClick={handleSignOut}
-              href={`/authentication/login`}
+              href="/authentification/login"
             >
               Déconnexion
             </Link>

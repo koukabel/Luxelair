@@ -6,7 +6,6 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
-  In,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { CreateUser, UpdateUser, signIn } from "../resolvers/UserResolver";
@@ -157,16 +156,6 @@ class User extends BaseEntity {
     });
 
     return bookings;
-  }
-
-  static async getAdsByUser(userId: string): Promise<Ad[]> {
-    const user = await User.findOneBy({ id: userId });
-    if (!user) {
-      throw new Error("User does not exist");
-    }
-
-    const ads = await Ad.find({ where: { user: user } });
-    return ads;
   }
 }
 
