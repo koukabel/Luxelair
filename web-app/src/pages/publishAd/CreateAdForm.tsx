@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { ChakraProvider } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import FirstStep from "@/components/AdCreationComponents/FirstStep/FirstStep";
@@ -49,6 +49,8 @@ export const GET_MY_PROFIL = gql`
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
+  const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+
   const [publishAdInfo, setPublishAdInfo] =
     useState<AdCreationMutationVariables>({
       title: "",
@@ -57,8 +59,18 @@ export default function CreateAdForm() {
       price: 0,
       equipements: [],
       housingType: null,
+      userId: "",
     });
   const [fileInForm, setFileInForm] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (data?.myProfile) {
+      setPublishAdInfo({
+        ...publishAdInfo,
+        userId: data.myProfile.id,
+      });
+    }
+  }, [data]);
 
   const handleChange = (fieldName: string, newValue: string | number) => {
     setPublishAdInfo({
@@ -85,6 +97,7 @@ export default function CreateAdForm() {
       $price: Float!
       $equipements: [String!]
       $housingType: HousingTypeEnum
+      $userId: String!
     ) {
       createAd(
         title: $title
@@ -93,6 +106,7 @@ export default function CreateAdForm() {
         price: $price
         equipements: $equipements
         housingType: $housingType
+        userId: $userId
       ) {
         id
       }
@@ -130,6 +144,7 @@ export default function CreateAdForm() {
           description: publishAdInfo.description,
           equipements: publishAdInfo.equipements,
           housingType: publishAdInfo.housingType,
+          userId: publishAdInfo.userId,
         },
       });
 
@@ -146,8 +161,6 @@ export default function CreateAdForm() {
   const handleSubmit = () => {
     publishAd();
   };
-
-  const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
 
   return !data?.myProfile ? (
     <Login />

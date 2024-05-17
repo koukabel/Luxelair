@@ -14,127 +14,127 @@ import Navbar from "@/components/Navbar/Navbar";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 export default function Dashboard() {
-	const [view, setView] = useState("dashboard");
+  const [view, setView] = useState("dashboard");
 
-	const getComponent = () => {
-		switch (view) {
-			case "dashboard":
-				return <DashboardView />;
-			case "ad":
-				return <AdView />;
-			case "calendar":
-				return <CalendarView />;
-			case "message":
-				return <MessageView />;
-			case "booking":
-				return <BookingView />;
-			case "comment":
-				return <CommentView />;
-			default:
-				return <Box>Page not found</Box>;
-		}
-	};
+  const getComponent = () => {
+    switch (view) {
+      case "dashboard":
+        return <DashboardView />;
+      case "ad":
+        return <AdView />;
+      case "calendar":
+        return <CalendarView />;
+      case "message":
+        return <MessageView />;
+      case "booking":
+        return <BookingView />;
+      case "comment":
+        return <CommentView />;
+      default:
+        return <Box>Page not found</Box>;
+    }
+  };
 
-	return (
-		<ChakraProvider>
-			<Navbar />
-			<Layout>
-				<VStack w="20%" bg="#F6F6F6" gap={"0"}>
-					<Box
-						w="full"
-						bg="black"
-						padding="4"
-						textAlign="center"
-						textColor="white"
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-					>
-						Aujourd'hui
-					</Box>
-					<Button
-						w="full"
-						bg={view === "dashboard" ? "#E2E8F0" : "#F6F6F6"}
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-						onClick={() => setView("dashboard")}
-						rightIcon={view === "dashboard" ? <ChevronRightIcon /> : undefined}
-					>
-						Dashboard
-					</Button>
-					<Button
-						w="full"
-						bg={view === "ad" ? "#E2E8F0" : "#F6F6F6"}
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-						onClick={() => setView("ad")}
-						rightIcon={view === "ad" ? <ChevronRightIcon /> : undefined}
-					>
-						Annonces
-					</Button>
-					<Button
-						w="full"
-						bg={view === "calendar" ? "#E2E8F0" : "#F6F6F6"}
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-						onClick={() => setView("calendar")}
-						rightIcon={view === "calendar" ? <ChevronRightIcon /> : undefined}
-					>
-						Calendrier
-					</Button>
-					<Button
-						w="full"
-						bg={view === "message" ? "#E2E8F0" : "#F6F6F6"}
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-						onClick={() => setView("message")}
-						rightIcon={view === "message" ? <ChevronRightIcon /> : undefined}
-					>
-						Messages
-					</Button>
-					<Box
-						w="full"
-						bg="black"
-						padding="4"
-						textAlign="center"
-						textColor="white"
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-					>
-						Hôte
-					</Box>
-					<Button
-						w="full"
-						bg="#F6F6F6"
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-						onClick={() => setView("booking")}
-						rightIcon={view === "booking" ? <ChevronRightIcon /> : undefined}
-					>
-						Mes réservations
-					</Button>
-					<Button
-						w="full"
-						bg="#F6F6F6"
-						borderBottom="1px"
-						borderRadius="0"
-						borderColor={"#B4770A"}
-						onClick={() => setView("comment")}
-						rightIcon={view === "comment" ? <ChevronRightIcon /> : undefined}
-					>
-						Mes commentaires
-					</Button>
-				</VStack>
-				<Box flex="1" p="8" w="80%">
-					{getComponent()}
-				</Box>
-			</Layout>
-		</ChakraProvider>
-	);
+  return (
+    <ChakraProvider>
+      <Navbar />
+      <Layout>
+        <VStack w="20%" bg="#F6F6F6" gap={"0"}>
+          <Box
+            w="full"
+            bg="black"
+            padding="4"
+            textAlign="center"
+            textColor="white"
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+          >
+            Aujourd'hui
+          </Box>
+          <Button
+            w="full"
+            bg={view === "dashboard" ? "#E2E8F0" : "#F6F6F6"}
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+            onClick={() => setView("dashboard")}
+            rightIcon={view === "dashboard" ? <ChevronRightIcon /> : undefined}
+          >
+            Dashboard
+          </Button>
+          <Button
+            w="full"
+            bg={view === "ad" ? "#E2E8F0" : "#F6F6F6"}
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+            onClick={() => setView("ad")}
+            rightIcon={view === "ad" ? <ChevronRightIcon /> : undefined}
+          >
+            Annonces
+          </Button>
+          <Button
+            w="full"
+            bg={view === "calendar" ? "#E2E8F0" : "#F6F6F6"}
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+            onClick={() => setView("calendar")}
+            rightIcon={view === "calendar" ? <ChevronRightIcon /> : undefined}
+          >
+            Calendrier
+          </Button>
+          <Button
+            w="full"
+            bg={view === "message" ? "#E2E8F0" : "#F6F6F6"}
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+            onClick={() => setView("message")}
+            rightIcon={view === "message" ? <ChevronRightIcon /> : undefined}
+          >
+            Messages
+          </Button>
+          <Box
+            w="full"
+            bg="black"
+            padding="4"
+            textAlign="center"
+            textColor="white"
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+          >
+            Hôte
+          </Box>
+          <Button
+            w="full"
+            bg="#F6F6F6"
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+            onClick={() => setView("booking")}
+            rightIcon={view === "booking" ? <ChevronRightIcon /> : undefined}
+          >
+            Mes réservations
+          </Button>
+          <Button
+            w="full"
+            bg="#F6F6F6"
+            borderBottom="1px"
+            borderRadius="0"
+            borderColor={"#B4770A"}
+            onClick={() => setView("comment")}
+            rightIcon={view === "comment" ? <ChevronRightIcon /> : undefined}
+          >
+            Mes commentaires
+          </Button>
+        </VStack>
+        <Box flex="1" p="8" w="80%">
+          {getComponent()}
+        </Box>
+      </Layout>
+    </ChakraProvider>
+  );
 }
