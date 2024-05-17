@@ -12,17 +12,20 @@ import {
   Container,
 } from "@chakra-ui/react";
 import React from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface PaymentProps {
   price: number;
   nights: number;
   totalPrice: number;
-  checkIn: string;
-  checkOut: string;
-  onCheckInChange: (newValue: string) => void;
-  onCheckOutChange: (newValue: string) => void;
+  checkIn: Date | null;
+  checkOut: Date | null;
+  onCheckInChange: (newValue: Date | null) => void;
+  onCheckOutChange: (newValue: Date | null) => void;
   onPriceChange: (newValue: number) => void;
   onSubmit: () => void;
+  disabledDates: Date[];
 }
 
 const Payment: React.FC<PaymentProps> = ({
@@ -35,13 +38,14 @@ const Payment: React.FC<PaymentProps> = ({
   onCheckOutChange,
   onPriceChange,
   onSubmit,
+  disabledDates,
 }) => {
-  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onCheckInChange(e.target.value);
+  const handleCheckInChange = (date: Date | null) => {
+    onCheckInChange(date);
   };
 
-  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onCheckOutChange(e.target.value);
+  const handleCheckOutChange = (date: Date | null) => {
+    onCheckOutChange(date);
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,27 +66,18 @@ const Payment: React.FC<PaymentProps> = ({
               <Heading size="md">7 reviews</Heading>
             </Flex>
             <Flex>
-              <Input
-                placeholder="Check-in"
-                size="md"
-                name="checkIn"
-                fontFamily="Montserrat"
-                fontWeight="regular"
-                fontSize="12px"
-                type="date"
-                value={checkIn}
-                onChange={handleCheckInChange}
+              <DatePicker
+                onChange={(date) => handleCheckInChange(date)}
+                minDate={new Date()}
+                disabled={false}
+                excludeDates={disabledDates}
+                selected={checkIn}
               />
-              <Input
-                placeholder="Check-out"
-                size="md"
-                name="checkOut"
-                fontFamily="Montserrat"
-                fontWeight="regular"
-                fontSize="12px"
-                type="date"
-                value={checkOut}
-                onChange={handleCheckOutChange}
+              <DatePicker
+                onChange={(date) => handleCheckOutChange(date)}
+                minDate={new Date()}
+                excludeDates={disabledDates}
+                selected={checkOut}
               />
             </Flex>
             <Button

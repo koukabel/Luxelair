@@ -6,6 +6,7 @@ import {
   ManyToMany,
   ManyToOne,
   JoinColumn,
+  In,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import Ad from "./ad";
@@ -45,6 +46,7 @@ class Booking extends BaseEntity {
   statusPayment!: boolean;
 
   @ManyToMany(() => User, (user) => user.bookings)
+  @Field(() => User)
   users!: User[];
 
   @ManyToOne(() => Ad, (ad) => ad.bookings)
@@ -85,7 +87,15 @@ class Booking extends BaseEntity {
   }
 
   static async getBookings(): Promise<Booking[]> {
-    const bookings = await Booking.find();
+    const bookings = await Booking.find({ relations: ["ad"] });
+    return bookings;
+  }
+
+  static async getBookingsByAd(adId: string): Promise<Booking[]> {
+    const bookings = await Booking.find({
+      where: { ad: { id: adId } },
+      relations: ["ad"],
+    });
     return bookings;
   }
 

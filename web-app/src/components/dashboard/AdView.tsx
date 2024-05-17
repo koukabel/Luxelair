@@ -1,61 +1,86 @@
-import { Badge, Box, Image } from "@chakra-ui/react";
+import { Badge, Box, Image, SimpleGrid } from "@chakra-ui/react";
+import { gql, useQuery } from "@apollo/client";
+import { GetMyProfileQuery } from "@/gql/graphql";
+import { GET_MY_PROFIL } from "@/pages/publishAd/CreateAdForm";
 
-const property = {
-	imageUrl: "https://bit.ly/2Z4KKcF",
-	imageAlt: "Rear view of modern home with pool",
-	beds: 3,
-	baths: 2,
-	title: "Modern home in city center in the heart of historic Los Angeles",
-	formattedPrice: "$1,900.00",
-	reviewCount: 34,
-	rating: 4,
-};
-
+const GET_ADS_BY_USER = gql`
+  query GetAdsByUser($getAdsByUserId: ID!) {
+    getAdsByUser(id: $getAdsByUserId) {
+      id
+      image
+      location
+      price
+      title
+      housingType
+      equipements
+      description
+    }
+  }
+`;
 export default function AdView() {
-	return (
-		<>
-			<div>
-				<h1>Mes Annonces en ligne !</h1>
-			</div>
+  const { data: profileData, error } =
+    useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
+  const { data } = useQuery(GET_ADS_BY_USER, {
+    variables: {
+      getAdsByUserId: profileData?.myProfile.id,
+    },
+  });
+  return (
+    <>
+      <div>
+        <h1>Mes Annonces en ligne !</h1>
+      </div>
+      <SimpleGrid columns={[2, null, 3]} spacing="40px">
+        {data ? (
+          data.getAdsByUser.map((ad) => (
+            <Box
+              maxW="sm"
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+            >
+              <Image src={`/file-hosting/${ad.id}.jpg`} alt={ad.title} />
 
-			<Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-				<Image src={property.imageUrl} alt={property.imageAlt} />
+              <Box p="6">
+                <Box display="flex" alignItems="baseline">
+                  <Badge borderRadius="full" px="2" colorScheme="teal">
+                    New
+                  </Badge>
+                  <Box
+                    color="gray.500"
+                    fontWeight="semibold"
+                    letterSpacing="wide"
+                    fontSize="xs"
+                    textTransform="uppercase"
+                    ml="2"
+                  >
+                    beds &bull; baths
+                  </Box>
+                </Box>
 
-				<Box p="6">
-					<Box display="flex" alignItems="baseline">
-						<Badge borderRadius="full" px="2" colorScheme="teal">
-							New
-						</Badge>
-						<Box
-							color="gray.500"
-							fontWeight="semibold"
-							letterSpacing="wide"
-							fontSize="xs"
-							textTransform="uppercase"
-							ml="2"
-						>
-							{property.beds} beds &bull; {property.baths} baths
-						</Box>
-					</Box>
+                <Box
+                  mt="1"
+                  fontWeight="semibold"
+                  as="h4"
+                  lineHeight="tight"
+                  noOfLines={1}
+                >
+                  {ad.title}
+                </Box>
 
-					<Box
-						mt="1"
-						fontWeight="semibold"
-						as="h4"
-						lineHeight="tight"
-						noOfLines={1}
-					>
-						{property.title}
-					</Box>
-
-					<Box>
-						{property.formattedPrice}
-						<Box as="span" color="gray.600" fontSize="sm">
-							/ wk
-						</Box>
-					</Box>
-				</Box>
-			</Box>
-		</>
-	);
+                <Box>
+                  {ad.price}€
+                  <Box as="span" color="gray.600" fontSize="sm">
+                    /jour
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          ))
+        ) : (
+          <p>Vous avez aucune annonce en ligne</p>
+        )}
+      </SimpleGrid>
+    </>
+  );
 }
