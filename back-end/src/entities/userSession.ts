@@ -25,6 +25,14 @@ class UserSession extends BaseEntity {
     const savedSession = await newSession.save();
     return savedSession;
   }
+
+  static async getSessionById(id: string): Promise<UserSession> {
+    const userSession = await UserSession.findOneBy({ id: id });
+    if (!userSession) {
+      throw new Error("UserSession does not exist");
+    }
+    return userSession;
+  }
 }
 
 export default UserSession;

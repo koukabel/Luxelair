@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
+    "@jest-mock/express": "^2.0.2",
     "bcrypt": "^5.1.1",
     "class-validator": "^0.14.0",
     "cookie": "^0.6.0",

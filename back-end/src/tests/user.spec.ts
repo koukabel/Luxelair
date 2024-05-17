@@ -1,5 +1,6 @@
 import { getDataSource } from "../database";
 import User from "../entities/user";
+import UserSession from "../entities/userSession";
 
 describe("User", () => {
   beforeEach(async () => {
@@ -104,6 +105,73 @@ describe("User", () => {
         .sort((a, b) => a.email.localeCompare(b.email));
 
       expect(sortedUsers).toEqual(sortedNewUsers);
+    });
+  });
+  describe("editUserInfo", () => {
+    it("when user does not exist", async () => {
+      const user = await User.createNewUser({
+        email: "test@email.com",
+        firstName: "Testfirstname",
+        lastName: "Testlastname",
+        password: "testpassword456",
+      });
+      await expect(
+        User.editUserInfo("550e8400-e29b-41d4-a716-446655440000", user)
+      ).rejects.toThrow("User does not exist");
+    });
+    it("when user exist, returns update user", async () => {
+      const user = await User.createNewUser({
+        email: "test@email.com",
+        firstName: "Testfirstname",
+        lastName: "Testlastname",
+        password: "testpassword456",
+      });
+      const userInfo = {
+        ...user,
+        firstName: "test",
+      };
+      const updatedUser = await User.editUserInfo(user.id, {
+        ...user,
+        firstName: "test",
+      });
+
+      expect(await User.editUserInfo(user.id, userInfo)).toEqual(updatedUser);
+    });
+  });
+  describe("getUserById", () => {
+    it("when user does not exist", async () => {
+      await expect(
+        User.getUserById("550e8400-e29b-41d4-a716-446655440000")
+      ).rejects.toThrow("User does not exist");
+    });
+    it("must return user", async () => {
+      const user = await User.createNewUser({
+        email: "test@email.com",
+        firstName: "Testfirstname",
+        lastName: "Testlastname",
+        password: "testpassword456",
+      });
+      expect(await User.getUserById(user.id)).toMatchObject(user);
+    });
+  });
+
+  describe("getUserWithSessionId", () => {
+    it("returns user associated with session", async () => {
+      const user = await User.createNewUser({
+        email: "test@email.com",
+        firstName: "Testfirstname",
+        lastName: "Testlastname",
+        password: "testpassword456",
+      });
+      const session = await UserSession.saveNewSession(user);
+      const sessionTest = session.user;
+
+      expect(await User.getUserWithSessionId(session.id)).toEqual(sessionTest);
+    });
+
+    it("returns null if session does not exist", async () => {
+      const user = await User.getUserWithSessionId("test");
+      expect(user).toBeNull();
     });
   });
 });

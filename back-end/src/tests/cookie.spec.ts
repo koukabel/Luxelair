@@ -1,5 +1,10 @@
-import { getUserSessionIdFromCookie } from "../utils/cookie";
+import {
+  getUserSessionIdFromCookie,
+  setUserSessionIdInCookie,
+} from "../utils/cookie";
 import { IncomingMessage } from "node:http";
+import { getMockRes } from "@jest-mock/express";
+import UserSession from "../entities/userSession";
 
 describe("getUserSessionIdFromCookie", () => {
   describe("when request has no cookies", () => {
@@ -31,6 +36,39 @@ describe("getUserSessionIdFromCookie", () => {
           } as IncomingMessage;
           expect(getUserSessionIdFromCookie(req)).toEqual("test");
         });
+      });
+    });
+  });
+
+  describe("setUserSessionIdInCookie", () => {
+    describe("when session is provided", () => {
+      it("sets userSessionId cookie with session id", () => {
+        const { res } = getMockRes();
+
+        const session = new UserSession();
+        session.id = "test_session_id";
+
+        setUserSessionIdInCookie(res, session);
+
+        expect(res.cookie).toHaveBeenCalledWith(
+          "userSessionId",
+          session.id,
+          expect.objectContaining({
+            secure: true,
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 365,
+          })
+        );
+      });
+    });
+
+    describe("when session is null", () => {
+      it("clears userSessionId cookie", () => {
+        const { res } = getMockRes();
+
+        setUserSessionIdInCookie(res, null);
+
+        expect(res.clearCookie).toHaveBeenCalledWith("userSessionId");
       });
     });
   });
