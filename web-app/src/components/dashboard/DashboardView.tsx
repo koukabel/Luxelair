@@ -6,9 +6,23 @@ import {
   Divider,
   Flex,
 } from "@chakra-ui/react";
-import { GET_MY_PROFIL } from "@/pages/publishAd/CreateAdForm";
-import { useQuery } from "@apollo/client";
 import { GetMyProfilQuery } from "@/gql/graphql";
+import { gql, useQuery } from "@apollo/client";
+
+const GET_MY_PROFIL = gql`
+  query GetMyProfil {
+    myProfile {
+      email
+      firstName
+      id
+      lastName
+      city
+      location
+      phoneNumber
+      description
+    }
+  }
+`;
 
 export default function DashboardView() {
   const { data } = useQuery<GetMyProfilQuery>(GET_MY_PROFIL);

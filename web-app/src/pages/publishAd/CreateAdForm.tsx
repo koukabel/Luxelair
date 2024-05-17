@@ -1,15 +1,16 @@
+// eslint-disable-next-line
 import { ChakraProvider } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import FirstStep from "@/components/AdCreationComponents/FirstStep/FirstStep";
 import ControlButtons from "@/components/AdCreationComponents/FirstStep/ControlButtons";
-
+import Login from "@/pages/authentication/login";
 import Equipements from "@/components/AdCreationComponents/SecondStep/Equipements";
 import HouseType from "@/components/AdCreationComponents/FirstStep/HouseType";
 import SecondStep from "@/components/AdCreationComponents/SecondStep/SecondStep";
 import ImageUploader from "@/components/AdCreationComponents/SecondStep/ImageUploader";
-import Location from "@/components/AdCreationComponents/FirstStep/Location";
+// import Location from "@/components/AdCreationComponents/FirstStep/Location";
 import AdTitle from "@/components/AdCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/AdCreationComponents/SecondStep/AdDescription";
 import ThirdStep from "@/components/AdCreationComponents/ThirdStep/ThirdStep";
@@ -23,7 +24,16 @@ import {
   GetMyProfileQuery,
 } from "@/gql/graphql";
 
-import Login from "@/pages/authentication/login";
+
+
+import dynamic from 'next/dynamic'
+ 
+const Location = dynamic(() => import('../../components/AdCreationComponents/FirstStep/Location'), {
+  ssr: false,
+})
+
+
+
 
 export const GET_MY_PROFIL = gql`
   query GetMyProfile {

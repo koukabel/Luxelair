@@ -1,7 +1,27 @@
 import React from "react";
-import { Flex, Image, Heading, Spacer, Link, Avatar } from "@chakra-ui/react";
+import {
+  Flex,
+  Image,
+  Heading,
+  Spacer,
+  Link,
+  Avatar,
+  Button,
+} from "@chakra-ui/react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { GetMyProfileQuery, SignOutMutation } from "@/gql/graphql";
+
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const GET_MY_PROFIL = gql`
   query GetMyProfile {
@@ -59,14 +79,27 @@ export default function Navbar() {
             >
               Déconnexion
             </Link>
-            <Link
-              cursor={"pointer"}
-              fontWeight="light"
-              fontSize="16px"
-              href={`/profil/traveler/${data?.myProfile.id}`}
-            >
-              <Avatar cursor="pointer" bg="#B4770A" />
-            </Link>
+            <Menu>
+              <MenuButton
+                as={Button}
+                bg="transparent"
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+              >
+                <Avatar cursor="pointer" bg="#B4770A" />
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  as={Link}
+                  href={`/profil/traveler/${data?.myProfile.id}`}
+                >
+                  Mode Voyageur
+                </MenuItem>
+                <MenuItem as={Link} href={`/dashboard/${data?.myProfile.id}`}>
+                  Mode Hôte
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </>
         ) : (
           <Link

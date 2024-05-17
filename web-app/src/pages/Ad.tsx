@@ -7,12 +7,12 @@ import {
   Flex,
   Container,
 } from "@chakra-ui/react";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import Rating from "@/components/Rating";
+import Footer from "@/components/Footer/Footer";
+import Navbar from "@/components/Navbar/Navbar";
+import Rating from "@/components/Reviews/Rating";
 // import TagAd from "./components/TagAd";
-import Toggle from "@/components/Toggle";
-import Payment from "@/components/Payment";
+//import Toggle from "@/components/Toggle";
+import Payment from "@/components/Payment/Payment";
 import ProfileImg from "@/components/ProfileTravelerImg";
 import { gql } from "@apollo/client";
 
@@ -45,7 +45,6 @@ export default function Ad() {
         <Rating />
       </Stack>
       <Flex margin="3%" display="flex">
-        <Toggle />
         <Payment />
       </Flex>
       <Footer />

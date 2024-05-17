@@ -5,6 +5,8 @@ import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
 import Card from "../../components/Ad/Card";
+import { Key } from "react";
+import { Ad } from "@/gql/graphql";
 
 const SEARCH_AD = gql`
   query FilterByPrice($min: Float!, $max: Float!) {
@@ -21,10 +23,13 @@ export default function SearchHousingTypePage() {
   const router = useRouter();
   const { price } = router.query;
 
+  const minPrice = typeof price === 'string' ? parseFloat(price.split(',')[0]) : 500;
+  const maxPrice = typeof price === 'string' ? parseFloat(price.split(',')[1]) : 10000;
+  
   const { loading, error, data } = useQuery(SEARCH_AD, {
     variables: {
-      min: price ? parseFloat(price.split(',')[0]) : 500,
-      max: price ? parseFloat(price.split(',')[1]) : 10000,
+      min: minPrice,
+      max: maxPrice,
     },
   });
 
@@ -44,12 +49,12 @@ export default function SearchHousingTypePage() {
           </Text>
         ) : (
           <Box p="3rem" display="flex">
-            {data?.filerByPrice.map((ad) => (
+            {data?.filerByPrice.map((ad:any) => (
               <Card
                 key={ad.id}
                 id={ad.id}
                 price={ad.price}
-                location={ad.location}
+                 location={ad.location}
                 image={`/file-hosting/${ad.id}.jpg`}
               />
             ))}

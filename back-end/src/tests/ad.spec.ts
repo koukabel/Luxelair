@@ -69,3 +69,65 @@
 //     });
 //   });
 // });
+//     it("when location is match", async () => {
+//       const ads = newAds.filter((ad) => ad.location === "Paris");
+//       const search = await Ad.searchAd("Paris");
+//       const sortedAds = ads
+//         .slice()
+//         .sort((a, b) => a.title.localeCompare(b.title));
+//       const sortedSearch = search
+//         .slice()
+//         .sort((a, b) => a.title.localeCompare(b.title));
+
+//       expect(sortedAds).toEqual(sortedSearch);
+//     });
+//   });
+
+//   describe("getAdById", () => {
+//     it("when ad does not exist", async () => {
+//       await expect(
+//         Ad.getAdById("550e8400-e29b-41d4-a716-446655440000")
+//       ).rejects.toThrow("Ad does not exist");
+//     });
+//     it("must return ad", async () => {
+//       const adId = await newAds[0].id;
+//       expect(await Ad.getAdById(adId)).toMatchObject(newAds[0]);
+//     });
+//   });
+
+//   describe("updateAd", () => {
+//     it("when ad does not exist", async () => {
+//       const ad = newAds[0];
+//       await expect(
+//         Ad.updateAd("550e8400-e29b-41d4-a716-446655440000", ad)
+//       ).rejects.toThrow("Ad does not exist");
+//     });
+//     it("when ad exist, returns update ad", async () => {
+//       const ad = newAds[0];
+//       const updateAdInformation = {
+//         ...ad,
+//         title: "Nouveau titre annonce",
+//       };
+//       const updatedAd = await Ad.updateAd(ad.id, {
+//         ...ad,
+//         title: "Nouveau titre annonce",
+//       });
+
+//       expect(await Ad.updateAd(ad.id, updateAdInformation)).toEqual(updatedAd);
+//     });
+//   });
+
+//   describe("deleteAd", () => {
+//     it("when ad does not exist", async () => {
+//       await expect(
+//         Ad.deleteAd("550e8400-e29b-41d4-a716-446655440000")
+//       ).rejects.toThrow(
+//         "Ad with ID 550e8400-e29b-41d4-a716-446655440000 does not exist."
+//       );
+//     });
+//     it("when ad exist, returns void", async () => {
+//       const adId = newAds[0].id;
+//       await expect(Ad.deleteAd(adId)).resolves.toBeUndefined();
+//     });
+//   });
+// });
