@@ -1,4 +1,4 @@
-import { Badge, Box, Image } from "@chakra-ui/react";
+import { Badge, Box, Image, Text } from "@chakra-ui/react";
 
 const property = {
 	imageUrl: "https://bit.ly/2Z4KKcF",
@@ -14,9 +14,9 @@ const property = {
 export default function AdView() {
 	return (
 		<>
-			<div>
-				<h1>Mes Annonces en ligne !</h1>
-			</div>
+			<Text fontWeight={"700"} padding={"5"} fontSize={"36px"}>
+				Mes annonces en lignes
+			</Text>
 
 			<Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
 				<Image src={property.imageUrl} alt={property.imageAlt} />

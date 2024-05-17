@@ -1,16 +1,17 @@
 // pages/dashboard
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import { Box, Button, VStack, ChakraProvider } from "@chakra-ui/react";
 import { useState } from "react";
 
 // Import components Dashboard
-import DashboardView from "../components/dashboard/DashboardView";
-import AdView from "../components/dashboard/AdView";
-import CalendarView from "../components/dashboard/CalendarView";
-import MessageView from "../components/dashboard/MessageView";
+import DashboardView from "../../components/dashboard/DashboardView";
+import AdView from "../../components/dashboard/AdView";
+import CalendarView from "../../components/dashboard/CalendarView";
+import MessageView from "../../components/dashboard/MessageView";
 import BookingView from "@/components/dashboard/BookingView";
 import CommentView from "@/components/dashboard/Comment";
 import Navbar from "@/components/Navbar/Navbar";
+import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 export default function Dashboard() {
 	const [view, setView] = useState("dashboard");
@@ -53,41 +54,45 @@ export default function Dashboard() {
 					</Box>
 					<Button
 						w="full"
-						bg="#F6F6F6"
+						bg={view === "dashboard" ? "#E2E8F0" : "#F6F6F6"}
 						borderBottom="1px"
 						borderRadius="0"
 						borderColor={"#B4770A"}
 						onClick={() => setView("dashboard")}
+						rightIcon={view === "dashboard" ? <ChevronRightIcon /> : undefined}
 					>
 						Dashboard
 					</Button>
 					<Button
 						w="full"
-						bg="#F6F6F6"
+						bg={view === "ad" ? "#E2E8F0" : "#F6F6F6"}
 						borderBottom="1px"
 						borderRadius="0"
 						borderColor={"#B4770A"}
 						onClick={() => setView("ad")}
+						rightIcon={view === "ad" ? <ChevronRightIcon /> : undefined}
 					>
 						Annonces
 					</Button>
 					<Button
 						w="full"
-						bg="#F6F6F6"
+						bg={view === "calendar" ? "#E2E8F0" : "#F6F6F6"}
 						borderBottom="1px"
 						borderRadius="0"
 						borderColor={"#B4770A"}
 						onClick={() => setView("calendar")}
+						rightIcon={view === "calendar" ? <ChevronRightIcon /> : undefined}
 					>
 						Calendrier
 					</Button>
 					<Button
 						w="full"
-						bg="#F6F6F6"
+						bg={view === "message" ? "#E2E8F0" : "#F6F6F6"}
 						borderBottom="1px"
 						borderRadius="0"
 						borderColor={"#B4770A"}
 						onClick={() => setView("message")}
+						rightIcon={view === "message" ? <ChevronRightIcon /> : undefined}
 					>
 						Messages
 					</Button>
@@ -110,6 +115,7 @@ export default function Dashboard() {
 						borderRadius="0"
 						borderColor={"#B4770A"}
 						onClick={() => setView("booking")}
+						rightIcon={view === "booking" ? <ChevronRightIcon /> : undefined}
 					>
 						Mes réservations
 					</Button>
@@ -120,6 +126,7 @@ export default function Dashboard() {
 						borderRadius="0"
 						borderColor={"#B4770A"}
 						onClick={() => setView("comment")}
+						rightIcon={view === "comment" ? <ChevronRightIcon /> : undefined}
 					>
 						Mes commentaires
 					</Button>
