@@ -16,11 +16,10 @@ const Layout = ({ children }: LayoutProps) => {
 				p="4"
 				color="#B4770A"
 				w="100%"
-				borderBottom={"1px"}
+				border={"1px"}
+				justifyContent={"center"}
 			>
-				<Box p="2">LOGO</Box>
-				<Heading size=" md">Gérer mes annonces</Heading>
-				<Button colorScheme="red">Mettre ma propriété en ligne</Button>
+				<Flex fontWeight="700">Mode hôte - Gérer mes annonces</Flex>
 			</Flex>
 			<Flex flex="1" w="100%">
 				{children}
