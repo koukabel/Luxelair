@@ -25,6 +25,12 @@
   font-size: 96px;
 }
 
+.custom-datepicker {
+  border: 2px solid #B4770A;
+  border-radius: 4px;
+  margin-left: .5rem;
+}
+
 
 
 
