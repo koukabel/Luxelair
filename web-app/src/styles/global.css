@@ -31,15 +31,14 @@
 
 @import url("leaflet/dist/leaflet.css");
 .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom{
-    width: 70%;
-    position: relative;
-    top: 22vh;
-    height: 50vh;
-    left: 50%;
-    background-color: white;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    z-index: 1000;
+  max-width: 70%;
+  position: relative;
+  top: 14rem;
+  left: 50%;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+ 
   }
 
   .location-icon {

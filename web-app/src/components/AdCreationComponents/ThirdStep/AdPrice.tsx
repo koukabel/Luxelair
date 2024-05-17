@@ -44,7 +44,7 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
   }
 
   return (
-    <VStack height={"41vh"}>
+    <VStack height={"48vh"}>
       <Box display={"flex"} flexDirection={"column"} justifyContent={"center"}>
         <Heading p={10} textAlign={"left"}>
           À présent, fixez votre prix
@@ -67,8 +67,6 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
           $
           <EditableControls />
         </Editable>
-        <Text fontSize='md' textAlign={'center'} p={'30px'}>Prix à payer par le voyageur {price + 1}$</Text>
-     
       </Box>
     </VStack>
   );
