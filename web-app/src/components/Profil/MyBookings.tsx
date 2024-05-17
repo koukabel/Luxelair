@@ -30,15 +30,30 @@ export default function MyBookings() {
     variables: { userId: id as string },
   });
 
+  if (!data) {
+    return null;
+  }
+
+  const confirmedBookings = data.getBookingsByUser.filter(
+    (booking) => booking.statusPayment
+  );
+  const pendingBookings = data.getBookingsByUser.filter(
+    (booking) => !booking.statusPayment
+  );
+
   return (
-    <>
-      <Box padding="5">
-        <Heading as="h2" size="xl" marginBottom="5">
-          Mes réservations
-        </Heading>
-        {data && data.getBookingsByUser.length > 0 ? (
+    <Box padding="5">
+      <Heading as="h2" size="xl" marginBottom="5">
+        Mes réservations
+      </Heading>
+
+      {confirmedBookings.length > 0 && (
+        <>
+          <Heading as="h3" size="md" marginBottom="3">
+            Réservations confirmées
+          </Heading>
           <SimpleGrid columns={[1, null, 4]} spacing="120px">
-            {data.getBookingsByUser.map((booking) => (
+            {confirmedBookings.map((booking) => (
               <Link key={booking.id} href={`/booking/${booking.id}`}>
                 <Box
                   borderWidth="1px"
@@ -68,16 +83,74 @@ export default function MyBookings() {
                       <Text color="gray.500" fontSize="sm">
                         {booking.ad.description}
                       </Text>
+                      <Text fontWeight="bold" fontSize="md" color="green.500">
+                        Réservation confirmée
+                      </Text>
                     </Stack>
                   </Box>
                 </Box>
               </Link>
             ))}
           </SimpleGrid>
-        ) : (
-          <p>Vous n'avez pas de réservations</p>
-        )}
-      </Box>
-    </>
+        </>
+      )}
+
+      {pendingBookings.length > 0 && (
+        <>
+          <Heading
+            as="h3"
+            size="md"
+            marginTop={confirmedBookings.length > 0 ? "5" : "0"}
+            marginBottom="3"
+          >
+            Réservations en attente
+          </Heading>
+          <SimpleGrid columns={[1, null, 4]} spacing="120px">
+            {pendingBookings.map((booking) => (
+              <Link key={booking.id} href={`/booking/${booking.id}`}>
+                <Box
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  boxShadow="md"
+                  cursor="pointer"
+                >
+                  <Image
+                    height={"300px"}
+                    width={"310px"}
+                    objectFit={"cover"}
+                    src={`/file-hosting/${booking.ad.id}.jpg`}
+                    alt={`Image de l'annonce ${booking.ad.title}`}
+                  />
+                  <Box p="2">
+                    <Stack spacing={6}>
+                      <Text
+                        fontWeight="bold"
+                        fontSize="xl"
+                        lineHeight="tight"
+                        isTruncated
+                        whiteSpace={"normal"}
+                      >
+                        {booking.ad.title}
+                      </Text>
+                      <Text color="gray.500" fontSize="sm">
+                        {booking.ad.description}
+                      </Text>
+                      <Text fontWeight="bold" fontSize="md" color="red.500">
+                        Réservation en attente
+                      </Text>
+                    </Stack>
+                  </Box>
+                </Box>
+              </Link>
+            ))}
+          </SimpleGrid>
+        </>
+      )}
+
+      {confirmedBookings.length === 0 && pendingBookings.length === 0 && (
+        <Text>Vous n'avez pas de réservations</Text>
+      )}
+    </Box>
   );
 }

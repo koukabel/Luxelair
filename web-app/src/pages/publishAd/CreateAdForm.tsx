@@ -24,16 +24,14 @@ import {
   GetMyProfileQuery,
 } from "@/gql/graphql";
 
+import dynamic from "next/dynamic";
 
-
-import dynamic from 'next/dynamic'
- 
-const Location = dynamic(() => import('../../components/AdCreationComponents/FirstStep/Location'), {
-  ssr: false,
-})
-
-
-
+const Location = dynamic(
+  () => import("../../components/AdCreationComponents/FirstStep/Location"),
+  {
+    ssr: false,
+  }
+);
 
 export const GET_MY_PROFIL = gql`
   query GetMyProfile {
