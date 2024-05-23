@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   In,
   PrimaryGeneratedColumn,
   OneToOne,
@@ -74,8 +75,6 @@ class User extends BaseEntity {
   @OneToOne(() => Payment, payment => payment.user)
   @Field(() => Payment)
   payment!: Payment;
-
-  
   constructor(user?: CreateUser) {
     super();
     if (user) {
