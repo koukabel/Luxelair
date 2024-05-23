@@ -8,11 +8,13 @@ import {
   Container,
   Box,
   Badge,
+  Button,
 } from "@chakra-ui/react";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import { useQuery, gql } from "@apollo/client";
 import { useRouter } from "next/router";
+
 
 const MY_BOOKING_AD = gql`
   query GetBooking($getBookingId: String!) {
@@ -100,11 +102,13 @@ export default function Booking() {
                     {new Date(data.getBooking.checkoutDate).toDateString()}
                   </Text>
                   <Text>Prix total: {data.getBooking.totalPrice} €</Text>
+                  <Button >Payer</Button>
                 </Stack>
               </Box>
             </Flex>
           </Box>
         </Box>
+   
         <Footer />
       </ChakraProvider>
     );

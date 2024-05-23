@@ -2,17 +2,18 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, JoinColum
 import { ObjectType, Field, ID, Float, registerEnumType } from "type-graphql";
 import Booking from "./booking";
 import User from "./user";
+import { editOrCreatePayment } from "src/resolvers/PaymentResolver";
 
 export enum PaymentStatusEnum {
     Confirmed = "Confirmé",
     Failed = "échoué",
     Pending = "en attente"
 }
+
 registerEnumType(PaymentStatusEnum, {
     name: "PaymentStatusEnum",
     description: "The status of a payment",
 });
-
 
 @Entity()
 @ObjectType()
@@ -34,7 +35,7 @@ class Payment extends BaseEntity {
     createdAt!: Date;
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
-    @Field()
+    @Field({ nullable: true })
     updatedAt!: Date;
 
     @Column({
@@ -45,40 +46,34 @@ class Payment extends BaseEntity {
     @Field(() => PaymentStatusEnum, { nullable: true })
     status!: PaymentStatusEnum;
 
-    @OneToOne(() => Booking, booking => booking.payment)
-    @JoinColumn({ name: "booking_id" })
+    // one booking one payment
+    @OneToOne(() => Booking, { eager: true }) 
+    @JoinColumn({ name: "booking_id" }) //  foreign key
     @Field(() => Booking)
     booking!: Booking;
 
-    @OneToOne(() => User, user => user.payment, { eager: true })
-    @JoinColumn({ name: "user_id" })
+    // one user one payment
+    @OneToOne(() => User, { eager: true }) 
+    @JoinColumn({ name: "user_id" }) // foreign key column 
     @Field(() => User)
     user!: User;
 
-    @Column()
-    @Field()
-    booking_id!: string;
 
-    @Column()
-    @Field()
-    user_id!: string;
+    constructor(payment?: editOrCreatePayment) {
+        super();
+        if (payment) {
+            this.amount = payment.amount;
+            this.currency = payment.currency;
+            this.status = payment.status || PaymentStatusEnum.Pending;
+            this.createdAt= payment.createdAt;
+            this.updatedAt= payment.updatedAt
+        }
+    }
 }
 
-// constructor(payment?: CreatePayment) {
-//     super();
-//     if (payment) {
-//         this.amount = payment.amount;
-//         this.currency = payment.currency;
-//         this.status = payment.status || PaymentStatusEnum.Pending;
-//         this.booking = payment.booking;
-//         this.user = payment.user;
-//         this.booking_id = payment.booking.id;
-//         this.user_id = payment.user.id;
-//     }
-//   }
 
-
-// static async createStripePayment(amount: number, currency: string, customerId: string): Promise<Stripe.PaymentIntent> {}
+// static async createStripePayment(amount: number, currency: string, customerId: string):
+// Promise<Stripe.PaymentIntent> {}
 //getbookingbypaymentid or status
 //getpayment statusby 
 
