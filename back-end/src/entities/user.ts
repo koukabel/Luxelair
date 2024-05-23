@@ -14,6 +14,7 @@ import Booking from "./booking";
 import { compare, hash } from "bcrypt";
 import UserSession from "./userSession";
 import Ad from "./ad";
+import Payment from "./payment";
 
 @Entity("user")
 @ObjectType()
@@ -69,6 +70,11 @@ class User extends BaseEntity {
   @Field(() => [Ad])
   ads!: Ad[];
 
+  @OneToOne(() => Payment, payment => payment.user)
+  @Field(() => Payment)
+  payment!: Payment;
+}
+  
   constructor(user?: CreateUser) {
     super();
     if (user) {

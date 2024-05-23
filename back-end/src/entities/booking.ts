@@ -4,6 +4,7 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   ManyToMany,
+  OneToOne,
   ManyToOne,
   JoinColumn,
   In,
@@ -12,6 +13,7 @@ import { ObjectType, Field, ID } from "type-graphql";
 import Ad from "./ad";
 import User from "./user";
 import { CreateOrUpdateBooking } from "src/resolvers/BookingResolver";
+import Payment from "./payment";
 
 @Entity()
 @ObjectType()
@@ -54,6 +56,11 @@ class Booking extends BaseEntity {
   @Field(() => Ad)
   ad!: Ad;
 
+  @OneToOne(() => Payment, payment => payment.booking)
+  @JoinColumn({ name: "paymentId" })
+  @Field(() => Payment)
+  payment!: Payment;
+  
   constructor(booking?: Partial<Booking>) {
     super();
     if (booking) {
