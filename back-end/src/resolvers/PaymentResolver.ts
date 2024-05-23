@@ -1,5 +1,5 @@
 import { PaymentStatusEnum } from "src/entities/payment";
-import { ArgsType, Field } from "type-graphql";
+import { ArgsType, Field, Resolver } from "type-graphql";
 
 
 @ArgsType()
@@ -33,5 +33,8 @@ export class editOrCreatePayment {
   }
 
 
+  @Resolver()
+export class PaymentResolver {
+}
   
   

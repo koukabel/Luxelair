@@ -6,7 +6,6 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
-  OneToOne,
   In,
   PrimaryGeneratedColumn,
   OneToOne,
