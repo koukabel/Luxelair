@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
-import { ObjectType, Field, ID, Float } from "type-graphql";
+import { ObjectType, Field, ID, Float, registerEnumType } from "type-graphql";
 import Booking from "./booking";
 import User from "./user";
 
@@ -8,6 +8,11 @@ export enum PaymentStatusEnum {
     Failed = "échoué",
     Pending = "en attente"
 }
+registerEnumType(PaymentStatusEnum, {
+    name: "PaymentStatusEnum",
+    description: "The status of a payment",
+});
+
 
 @Entity()
 @ObjectType()

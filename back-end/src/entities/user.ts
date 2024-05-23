@@ -8,6 +8,7 @@ import {
   OneToMany,
   In,
   PrimaryGeneratedColumn,
+  OneToOne,
 } from "typeorm";
 import { CreateUser, UpdateUser, signIn } from "../resolvers/UserResolver";
 import Booking from "./booking";
@@ -73,7 +74,7 @@ class User extends BaseEntity {
   @OneToOne(() => Payment, payment => payment.user)
   @Field(() => Payment)
   payment!: Payment;
-}
+
   
   constructor(user?: CreateUser) {
     super();
