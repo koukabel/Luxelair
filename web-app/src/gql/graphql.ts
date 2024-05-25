@@ -39,7 +39,7 @@ export type Booking = {
   checkoutDate: Scalars['DateTimeISO']['output'];
   datePayment: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
-  payment: Payment;
+  payments: Array<Payment>;
   status: Scalars['Boolean']['output'];
   statusPayment: Scalars['Boolean']['output'];
   totalPrice: Scalars['Float']['output'];
@@ -120,14 +120,12 @@ export type Payment = {
   __typename?: 'Payment';
   amount: Scalars['Float']['output'];
   booking: Booking;
-  booking_id: Scalars['String']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
   currency: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   status?: Maybe<PaymentStatusEnum>;
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   user: User;
-  user_id: Scalars['String']['output'];
 };
 
 /** The status of a payment */
@@ -152,6 +150,7 @@ export type Query = {
   getBookingsByUser: Array<Booking>;
   getEquipmentTypes: Array<Scalars['String']['output']>;
   getHousingTypes: Array<HousingTypeEnum>;
+  getPaymentById: Payment;
   myProfile: User;
   search: Array<Ad>;
   user: User;
@@ -200,6 +199,11 @@ export type QueryGetBookingsByUserArgs = {
 };
 
 
+export type QueryGetPaymentByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type QuerySearchArgs = {
   location: Scalars['String']['input'];
 };
@@ -221,7 +225,7 @@ export type User = {
   id: Scalars['ID']['output'];
   lastName: Scalars['String']['output'];
   location: Scalars['String']['output'];
-  payment: Payment;
+  payments: Array<Payment>;
   phoneNumber: Scalars['String']['output'];
 };
 

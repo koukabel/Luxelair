@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv/config";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { AdResolver } from "./resolvers/AdResolver";
@@ -9,8 +10,9 @@ import { AuthChecker } from "type-graphql";
 import { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
-import { PaymentResolver } from "./resolvers/PaymentResolver";
-
+import { PaymentResolver } from "./resolvers/PaymentResolver"; 
+import { stripe } from "./stripe";
+stripe;
 export type Context = { res: Response; user: User | null };
 
 const authChecker: AuthChecker<Context> = ({ context }) => {

@@ -8,6 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
   In,
+  OneToMany,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import Ad from "./ad";
@@ -56,10 +57,9 @@ class Booking extends BaseEntity {
   @Field(() => Ad)
   ad!: Ad;
 
-  @OneToOne(() => Payment, payment => payment.booking)
-  @JoinColumn({ name: "paymentId" })
-  @Field(() => Payment)
-  payment!: Payment;
+  @OneToMany(() => Payment, payment => payment.booking)
+  @Field(() => [Payment])
+  payments!: Payment[];
   
   constructor(booking?: Partial<Booking>) {
     super();

@@ -71,9 +71,11 @@ class User extends BaseEntity {
   @Field(() => [Ad])
   ads!: Ad[];
 
-  @OneToOne(() => Payment, payment => payment.user)
-  @Field(() => Payment)
-  payment!: Payment;
+  // One user can have many payments
+  @OneToMany(() => Payment, (payment) => payment.user)
+  @Field(() => [Payment])
+  payments!: Payment[];
+
   constructor(user?: CreateUser) {
     super();
     if (user) {

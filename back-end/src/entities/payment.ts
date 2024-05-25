@@ -1,8 +1,9 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { ObjectType, Field, ID, Float, registerEnumType } from "type-graphql";
 import Booking from "./booking";
 import User from "./user";
-import { editOrCreatePayment } from "src/resolvers/PaymentResolver";
+import { stripe } from "../stripe";
+import { EditOrCreatePayment } from "../resolvers/PaymentResolver";
 
 export enum PaymentStatusEnum {
     Confirmed = "Confirmé",
@@ -34,7 +35,7 @@ class Payment extends BaseEntity {
     @Field()
     createdAt!: Date;
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP", nullable: true })
     @Field({ nullable: true })
     updatedAt!: Date;
 
@@ -46,35 +47,62 @@ class Payment extends BaseEntity {
     @Field(() => PaymentStatusEnum, { nullable: true })
     status!: PaymentStatusEnum;
 
-    // one booking one payment
-    @OneToOne(() => Booking, { eager: true }) 
-    @JoinColumn({ name: "booking_id" }) //  foreign key
+    @ManyToOne(() => Booking, booking => booking.payments, { eager: true })
+    @JoinColumn({ name: "booking_id" })
     @Field(() => Booking)
     booking!: Booking;
 
-    // one user one payment
-    @OneToOne(() => User, { eager: true }) 
-    @JoinColumn({ name: "user_id" }) // foreign key column 
+    @ManyToOne(() => User, user => user.payments, { eager: true })
+    @JoinColumn({ name: "user_id" })
     @Field(() => User)
     user!: User;
 
-
-    constructor(payment?: editOrCreatePayment) {
+    constructor(payment?: EditOrCreatePayment) {
         super();
         if (payment) {
             this.amount = payment.amount;
             this.currency = payment.currency;
             this.status = payment.status || PaymentStatusEnum.Pending;
-            this.createdAt= payment.createdAt;
-            this.updatedAt= payment.updatedAt
+            this.createdAt = payment.createdAt;
+            this.updatedAt = payment.updatedAt;
         }
     }
+
+    static async createStripePayment(amount: number, currency: string, bookingId: string, userId: string): Promise<Payment> {
+        const user = await User.findOne({ where: { id: userId } });
+        const booking = await Booking.findOne({ where: { id: bookingId } });
+        if (!user || !booking) {
+            throw new Error("User or Booking not found");
+        }
+    console.log(userId, bookingId)
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount,
+            currency,
+            automatic_payment_methods: { enabled: true },
+        });
+    
+        const payment = Payment.create({
+            amount,
+            currency,
+            status: PaymentStatusEnum.Pending,
+            booking,
+            user,
+        });
+    
+        await payment.save();
+    
+        return payment;
+    }
+
+    static async getPaymentById(id: string): Promise<Payment> {
+        const payment = await Payment.findOne({
+            where: { id: id },
+            relations: ["booking", "user"],
+        });
+        if (!payment) {
+            throw new Error("Payment does not exist");
+        }
+        return payment;
+    }
 }
-
-
-// static async createStripePayment(amount: number, currency: string, customerId: string):
-// Promise<Stripe.PaymentIntent> {}
-//getbookingbypaymentid or status
-//getpayment statusby 
-
 export default Payment;

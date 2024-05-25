@@ -41,11 +41,16 @@ const MY_BOOKING_AD = gql`
 `;
 
 export default function Booking() {
+
+  function openCheckoutPage(){
+    router.push('./payment/transaction')
+  }
   const router = useRouter();
   const { id } = router.query;
   const { data } = useQuery(MY_BOOKING_AD, {
     variables: { getBookingId: id as string },
   });
+
 
   if (data) {
     return (
@@ -102,7 +107,7 @@ export default function Booking() {
                     {new Date(data.getBooking.checkoutDate).toDateString()}
                   </Text>
                   <Text>Prix total: {data.getBooking.totalPrice} €</Text>
-                  <Button >Payer</Button>
+                  <Button onClick={openCheckoutPage}>Payer</Button>
                 </Stack>
               </Box>
             </Flex>
