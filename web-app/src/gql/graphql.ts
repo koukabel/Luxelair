@@ -62,6 +62,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   createAd: Ad;
   createBooking: Booking;
+  createStripeCheckoutSession: Scalars['String']['output'];
+  createStripePayment: Payment;
   createUser: User;
   signIn: User;
   signOut: Scalars['Boolean']['output'];
@@ -87,6 +89,22 @@ export type MutationCreateBookingArgs = {
   checkoutDate: Scalars['DateTimeISO']['input'];
   statusPayment: Scalars['Boolean']['input'];
   totalPrice: Scalars['Float']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
+export type MutationCreateStripeCheckoutSessionArgs = {
+  amount: Scalars['Float']['input'];
+  bookingId: Scalars['String']['input'];
+  currency: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
+export type MutationCreateStripePaymentArgs = {
+  amount: Scalars['Float']['input'];
+  bookingId: Scalars['String']['input'];
+  currency: Scalars['String']['input'];
   userId: Scalars['String']['input'];
 };
 
@@ -124,7 +142,6 @@ export type Payment = {
   currency: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   status?: Maybe<PaymentStatusEnum>;
-  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   user: User;
 };
 

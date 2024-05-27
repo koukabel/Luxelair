@@ -43,7 +43,7 @@ const MY_BOOKING_AD = gql`
 export default function Booking() {
 
   function openCheckoutPage(){
-    router.push('./payment/transaction')
+    router.push(`/payment/transaction?totalPrice=${data.getBooking.totalPrice}`)
   }
   const router = useRouter();
   const { id } = router.query;
