@@ -11,9 +11,16 @@ import { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
 import { PaymentResolver } from "./resolvers/PaymentResolver"; 
-import { stripe } from "./stripe";
-stripe;
-export type Context = { res: Response; user: User | null };
+import Stripe from "stripe";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2024-04-10",
+});
+
+export type Context = { req: any, res: Response; user: User | null; stripe: Stripe };
 
 const authChecker: AuthChecker<Context> = ({ context }) => {
   return Boolean(context.user);
@@ -35,12 +42,13 @@ const startServer = async () => {
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
-    context: async ({ req, res }): Promise<Context> => {
+    context: async ({ req, res }: { req: any; res: any }): Promise<Context> => {
       const userSessionId = getUserSessionIdFromCookie(req);
       const user = userSessionId
         ? await User.getUserWithSessionId(userSessionId)
         : null;
-      return { res: res as Response, user };
+        return { req, res, user, stripe };
+
     },
   });
 
