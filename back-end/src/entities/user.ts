@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -6,7 +6,6 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
-  In,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { CreateUser, UpdateUser, signIn } from "../resolvers/UserResolver";
@@ -34,8 +33,9 @@ class User extends BaseEntity {
   @Field()
   email!: string;
 
-  // @Column()
-  // role!: string;
+  @Column("simple-array", { nullable: true, default: ["Traveller"] })
+  @Field(() => [String], { nullable: true, defaultValue: ["Traveller"] })
+  roles!: string[];
 
   @Column()
   @Field()
@@ -76,6 +76,10 @@ class User extends BaseEntity {
       this.firstName = user.firstName;
       this.lastName = user.lastName;
       this.hashedPassword = user.password;
+      if (user.roles === undefined || user.roles.length === 0) {
+        throw new Error("Le rôle est obligatoire");
+      }
+      this.roles = user.roles;
     }
   }
 

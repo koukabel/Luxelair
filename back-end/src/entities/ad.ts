@@ -4,8 +4,6 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   Like,
   ILike,
   ManyToOne,
@@ -15,6 +13,7 @@ import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
 import { Between, In } from "typeorm";
 import User from "./user";
+import { UpdateUser } from "src/resolvers/UserResolver";
 
 export enum HousingTypeEnum {
   Chalet = "Chalet",
@@ -222,6 +221,11 @@ class Ad extends BaseEntity {
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);
     const user = await User.getUserById(adInformations.userId);
+    const newRole = "Host";
+    if (!user.roles.includes(newRole)) {
+      user.roles.push(newRole);
+      await User.save(user);
+    }
     newAd.user = user;
     const savedAd = await newAd.save();
     return savedAd;

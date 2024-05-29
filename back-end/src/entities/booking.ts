@@ -109,6 +109,24 @@ class Booking extends BaseEntity {
     }
     return booking;
   }
+
+  static async getBookingsByHost(userId: string): Promise<Booking[]> {
+    const user = await User.findOneBy({ id: userId });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    if (!user.roles.includes("Host")) {
+      throw new Error("User is not a host");
+    }
+    const ads = await Ad.find({
+      where: { user: user },
+      relations: ["bookings"],
+    });
+    console.log(ads);
+    const bookings = ads.flatMap((ad) => ad.bookings);
+
+    return bookings;
+  }
 }
 
 export default Booking;
