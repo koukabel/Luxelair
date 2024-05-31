@@ -106,14 +106,12 @@ class Ad extends BaseEntity {
   @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
 
-  @ManyToOne(() => User, (user) => user.ads, {
-    eager: true,
-  })
-  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.ads)
+  @Field()
   user!: User;
 
-  @OneToMany(() => Booking, (booking) => booking.ad)
-  @Field(() => Booking)
+  @ManyToOne(() => Booking, (booking) => booking.ad)
+  @Field(() => [Booking])
   bookings!: Booking[];
 
   constructor(ad?: Partial<Ad>) {

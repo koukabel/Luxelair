@@ -53,7 +53,12 @@ export class BookingResolver {
   }
 
   @Query(() => [Booking])
-  getBookingsByHost(@Arg("id") id: string) {
-    return Booking.getBookingsByHost(id);
+  getBookingsByHost(@Arg("userId", () => ID) userId: string) {
+    return Booking.getBookingsByHost(userId);
+  }
+
+  @Query(() => [Booking])
+  getBookingsByTraveller(@Arg("userId", () => ID) userId: string) {
+    return Booking.getBookingsByTraveller(userId);
   }
 }

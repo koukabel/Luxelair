@@ -60,9 +60,7 @@ class User extends BaseEntity {
   @OneToMany(() => UserSession, (session) => session.user)
   sessions!: UserSession[];
 
-  @JoinTable()
-  @ManyToMany(() => Booking, (booking) => booking.users, { eager: true })
-  @Field(() => [Booking])
+  @OneToMany(() => Booking, (booking) => booking.user)
   bookings!: Booking[];
 
   @OneToMany(() => Ad, (ad) => ad.user)
@@ -149,28 +147,15 @@ class User extends BaseEntity {
     return user;
   }
 
-  static async getBookingsByUser(userId: string): Promise<Booking[]> {
-    const user = await User.findOneBy({ id: userId });
-    if (!user) {
-      throw new Error("User does not exist");
-    }
-
-    const bookings = await Booking.find({
-      where: { users: user },
-      relations: ["ad"],
-    });
-
-    return bookings;
-  }
-
   static async getAdsByUser(userId: string): Promise<Ad[]> {
-    const user = await User.findOneBy({ id: userId });
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ["ads"],
+    });
     if (!user) {
       throw new Error("User does not exist");
     }
-
-    const ads = await Ad.find({ where: { user: user } });
-    return ads;
+    return user.ads;
   }
 }
 

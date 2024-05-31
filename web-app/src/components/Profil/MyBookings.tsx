@@ -4,18 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export const MY_BOOKINGS = gql`
-  query GetBookingsByUser($userId: String!) {
-    getBookingsByUser(userId: $userId) {
+  query GetBookingsByTraveller($userId: ID!) {
+    getBookingsByTraveller(userId: $userId) {
       checkinDate
       checkoutDate
       datePayment
       id
+      status
       statusPayment
       totalPrice
-      status
       ad {
         id
-        image
         title
         description
       }
@@ -34,10 +33,10 @@ export default function MyBookings() {
     return null;
   }
 
-  const confirmedBookings = data.getBookingsByUser.filter(
+  const confirmedBookings = data.getBookingsByTraveller.filter(
     (booking) => booking.statusPayment
   );
-  const pendingBookings = data.getBookingsByUser.filter(
+  const pendingBookings = data.getBookingsByTraveller.filter(
     (booking) => !booking.statusPayment
   );
 
