@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import {
+  Box,
   Table,
   TableCaption,
   TableContainer,
@@ -10,6 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const GET_BOOKINGS_BY_HOST = gql`
   query GetBookingsByHost($userId: ID!) {
@@ -42,33 +44,102 @@ export default function BookingView() {
     },
   });
 
+  const calculateNights = (checkIn: Date, checkOut: Date) => {
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    const diffTime = checkOutDate.getTime() - checkInDate.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const bookingFinish = data?.getBookingsByHost.filter((booking) => {
+    const checkoutDate = new Date(booking.checkoutDate);
+    return checkoutDate < new Date();
+  });
+
+  const bookingPending = data?.getBookingsByHost.filter((booking) => {
+    const checkoutDate = new Date(booking.checkoutDate);
+    return checkoutDate > new Date();
+  });
+  console.log(bookingPending);
+
   return (
-    <div>
-      <h1>Mes réservations en cours : </h1>
-      <TableContainer>
-        <Table variant="striped">
-          <TableCaption>Mes réservations en cours</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>Voyageur</Th>
-              <Th>Date entrée</Th>
-              <Th isNumeric>Nombre de nuits</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data &&
-              data.getBookingsByHost.map((booking) => (
-                <Tr key={booking.id}>
-                  <Td>
-                    {booking.user.firstName} {booking.user.lastName}
-                  </Td>
-                  <Td>{new Date(booking.checkinDate).toDateString()}</Td>
-                  <Td isNumeric>3</Td>
-                </Tr>
-              ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </div>
+    <>
+      <div>
+        <h1>Mes réservations en cours : </h1>
+        <TableContainer>
+          <Table variant="striped">
+            <Thead>
+              <Tr>
+                <Th>Voyageur</Th>
+                <Th>Date entrée</Th>
+                <Th>Date de sortie</Th>
+                <Th>Logement concerné</Th>
+                <Th isNumeric>Nombre de nuits</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data && bookingPending.length > 0 ? (
+                bookingPending.map((booking) => (
+                  <Tr key={booking.id}>
+                    <Td>
+                      {booking.user.firstName} {booking.user.lastName}
+                    </Td>
+                    <Td>{new Date(booking.checkinDate).toDateString()}</Td>
+                    <Td>{new Date(booking.checkoutDate).toDateString()}</Td>
+                    <Td>{booking.ad.title}</Td>
+                    <Td isNumeric>
+                      {calculateNights(
+                        booking.checkinDate,
+                        booking.checkoutDate
+                      )}
+                    </Td>
+                  </Tr>
+                ))
+              ) : (
+                <p>Pas de réservation en cours</p>
+              )}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </div>
+      <Box marginTop="5rem">
+        <h1>Mes réservations terminées : </h1>
+        <TableContainer>
+          <Table variant="striped">
+            <Thead>
+              <Tr>
+                <Th>Voyageur</Th>
+                <Th>Date entrée</Th>
+                <Th>Date de sortie</Th>
+                <Th>Logement concerné</Th>
+                <Th isNumeric>Nombre de nuits</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data && bookingFinish.length > 0 ? (
+                bookingFinish.map((booking) => (
+                  <Tr key={booking.id}>
+                    <Td>
+                      {booking.user.firstName} {booking.user.lastName}
+                    </Td>
+                    <Td>{new Date(booking.checkinDate).toDateString()}</Td>
+                    <Td>{new Date(booking.checkoutDate).toDateString()}</Td>
+                    <Td>{booking.ad.title}</Td>
+                    <Td isNumeric>
+                      {calculateNights(
+                        booking.checkinDate,
+                        booking.checkoutDate
+                      )}
+                    </Td>
+                  </Tr>
+                ))
+              ) : (
+                <p>Pas de réservation en cours</p>
+              )}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </>
   );
 }

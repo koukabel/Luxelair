@@ -30,7 +30,7 @@ export default function MyBookings() {
   });
 
   if (!data) {
-    return null;
+    return <p>Pas de réservation</p>;
   }
 
   const confirmedBookings = data.getBookingsByTraveller.filter(
