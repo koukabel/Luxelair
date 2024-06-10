@@ -4,16 +4,13 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   Like,
   ILike,
   ManyToOne,
-  OneToMany,
 } from "typeorm";
 import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
-import { Between, In } from "typeorm";
+import { Between } from "typeorm";
 import User from "./user";
 
 export enum HousingTypeEnum {
@@ -107,14 +104,12 @@ class Ad extends BaseEntity {
   @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
 
-  @ManyToOne(() => User, (user) => user.ads, {
-    eager: true,
-  })
-  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.ads)
+  @Field()
   user!: User;
 
-  @OneToMany(() => Booking, (booking) => booking.ad)
-  @Field(() => Booking)
+  @ManyToOne(() => Booking, (booking) => booking.ad)
+  @Field(() => [Booking])
   bookings!: Booking[];
 
   constructor(ad?: Partial<Ad>) {
@@ -222,6 +217,11 @@ class Ad extends BaseEntity {
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);
     const user = await User.getUserById(adInformations.userId);
+    const newRole = "Host";
+    if (!user.roles.includes(newRole)) {
+      user.roles.push(newRole);
+      await User.save(user);
+    }
     newAd.user = user;
     const savedAd = await newAd.save();
     return savedAd;

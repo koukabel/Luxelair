@@ -1,6 +1,5 @@
 import {
   Args,
-  Authorized,
   Ctx,
   Mutation,
   Query,
@@ -9,6 +8,7 @@ import {
   ArgsType,
   Arg,
   ID,
+  registerEnumType,
 } from "type-graphql";
 import User from "../entities/user";
 import { MinLength, IsEmail } from "class-validator";
@@ -16,6 +16,11 @@ import { Context } from "..";
 import { setUserSessionIdInCookie } from "../utils/cookie";
 import Booking from "../entities/booking";
 import Ad from "../entities/ad";
+import { RolesTypesEnum } from "../utils/RolesTypesEnum";
+
+registerEnumType(RolesTypesEnum, {
+  name: "RolesTypesEnum",
+});
 
 @ArgsType()
 export class CreateUser {
@@ -29,8 +34,8 @@ export class CreateUser {
   @IsEmail()
   email!: string;
 
-  // @Field()
-  // role: string;
+  @Field(() => [String], { nullable: true, defaultValue: ["Traveller"] })
+  roles!: string[];
 
   @Field()
   @MinLength(12)
@@ -49,8 +54,8 @@ export class UpdateUser {
   @IsEmail()
   email!: string;
 
-  // @Field()
-  // role: string;
+  @Field(() => [String], { nullable: true })
+  roles!: string[];
 
   @Field({ nullable: true })
   phoneNumber?: string;
@@ -80,6 +85,11 @@ export class UserResolver {
   @Query(() => [User])
   users() {
     return User.getUsers();
+  }
+
+  @Query(() => [RolesTypesEnum])
+  getRolesTypes() {
+    return Object.values(RolesTypesEnum);
   }
 
   @Mutation(() => User)
@@ -112,11 +122,6 @@ export class UserResolver {
   @Query(() => User)
   async user(@Arg("id", () => ID) id: string) {
     return await User.getUserById(id);
-  }
-
-  @Query(() => [Booking])
-  async getBookingsByUser(@Arg("userId") userId: string): Promise<Booking[]> {
-    return await User.getBookingsByUser(userId);
   }
 
   @Query(() => [Ad])

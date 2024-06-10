@@ -3,9 +3,7 @@ import {
   Column,
   BaseEntity,
   PrimaryGeneratedColumn,
-  ManyToMany,
   ManyToOne,
-  JoinColumn,
   In,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
@@ -45,12 +43,11 @@ class Booking extends BaseEntity {
   @Field()
   statusPayment!: boolean;
 
-  @ManyToMany(() => User, (user) => user.bookings)
-  @Field(() => User)
-  users!: User[];
+  @ManyToOne(() => User, (user) => user.bookings)
+  @Field()
+  user!: User;
 
   @ManyToOne(() => Ad, (ad) => ad.bookings)
-  @JoinColumn({ name: "adId" })
   @Field(() => Ad)
   ad!: Ad;
 
@@ -79,7 +76,7 @@ class Booking extends BaseEntity {
     const user = await User.getUserById(bookingData.userId);
     const ad = await Ad.getAdById(bookingData.adId);
 
-    booking.users = [user];
+    booking.user = user;
     booking.ad = ad;
 
     const saveBooking = await booking.save();
@@ -108,6 +105,43 @@ class Booking extends BaseEntity {
       throw new Error("Booking does not existy");
     }
     return booking;
+  }
+
+  static async getBookingsByHost(userId: string): Promise<Booking[]> {
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ["ads"],
+    });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+
+    const adIds = user.ads.map((ad) => ad.id);
+
+    if (adIds.length === 0) {
+      return [];
+    }
+
+    const bookings = await Booking.find({
+      where: { ad: { id: In(adIds) } },
+      relations: ["ad", "user"],
+    });
+
+    return bookings;
+  }
+
+  static async getBookingsByTraveller(userId: string): Promise<Booking[]> {
+    const bookings = await Booking.find({
+      where: { user: { id: userId } },
+      relations: ["ad", "user"],
+    });
+
+    if (bookings.length === 0) {
+      throw new Error("No bookings found for this traveller");
+    }
+
+    return bookings;
   }
 }
 
