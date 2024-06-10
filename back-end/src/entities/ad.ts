@@ -7,13 +7,11 @@ import {
   Like,
   ILike,
   ManyToOne,
-  OneToMany,
 } from "typeorm";
 import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
-import { Between, In } from "typeorm";
+import { Between } from "typeorm";
 import User from "./user";
-import { UpdateUser } from "src/resolvers/UserResolver";
 
 export enum HousingTypeEnum {
   Chalet = "Chalet",
