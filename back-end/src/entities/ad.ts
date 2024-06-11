@@ -12,6 +12,7 @@ import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
 import { Between } from "typeorm";
 import User from "./user";
+import { getCache } from "../cache";
 
 export enum HousingTypeEnum {
   Chalet = "Chalet",
@@ -168,6 +169,11 @@ class Ad extends BaseEntity {
   }
 
   static async searchAd(location: string): Promise<Ad[]> {
+    const cache = await getCache();
+    const cachedResult = await cache.get(location);
+    if (cachedResult) {
+      return JSON.parse(cachedResult);
+    }
     const adLocation = await Ad.find({
       where: { location: ILike(`%${location}%`) },
       relations: ["user"],
@@ -175,6 +181,7 @@ class Ad extends BaseEntity {
     if (adLocation.length === 0) {
       throw new Error("Location does not exist");
     }
+    cache.set(location, JSON.stringify(adLocation));
     return adLocation;
   }
 

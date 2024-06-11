@@ -7,8 +7,8 @@ import { Ad, AdsQuery } from "@/gql/graphql";
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
-import FilterSection from "@/components/Filters/FilterSection"
-import { Divider } from '@chakra-ui/react'
+import FilterSection from "@/components/Filters/FilterSection";
+import { Divider, CircularProgress } from "@chakra-ui/react";
 const GET_ADS = gql`
   query Ads {
     getAds {
@@ -21,7 +21,8 @@ const GET_ADS = gql`
 `;
 
 export default function HomePage() {
-  const { data } = useQuery<AdsQuery>(GET_ADS);
+  const { data, error, loading } = useQuery<AdsQuery>(GET_ADS);
+
   return (
     <ChakraProvider>
       <Navbar />
@@ -49,17 +50,21 @@ export default function HomePage() {
       </Box>
 
       <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
-        {data?.getAds
-          ? data.getAds.map((ad) => (
+        {loading ? (
+          <Box textAlign="center" gridColumn="1/-1">
+            <CircularProgress isIndeterminate color="#B4770A" />
+          </Box>
+        ) : (
+          data?.getAds.map((ad) => (
             <Card
-              key={ad.id} 
+              key={ad.id}
               id={ad.id}
               price={ad.price}
               location={ad.location}
               image={`/file-hosting/${ad.id}.jpg`}
             />
           ))
-          : null}
+        )}
       </SimpleGrid>
       <Footer />
     </ChakraProvider>
