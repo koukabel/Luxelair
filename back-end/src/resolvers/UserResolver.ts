@@ -14,7 +14,6 @@ import User from "../entities/user";
 import { MinLength, IsEmail } from "class-validator";
 import { Context } from "..";
 import { setUserSessionIdInCookie } from "../utils/cookie";
-import Booking from "../entities/booking";
 import Ad from "../entities/ad";
 import { RolesTypesEnum } from "../utils/RolesTypesEnum";
 
@@ -53,9 +52,6 @@ export class UpdateUser {
   @Field()
   @IsEmail()
   email!: string;
-
-  @Field(() => [String], { nullable: true })
-  roles!: string[];
 
   @Field({ nullable: true })
   phoneNumber?: string;
