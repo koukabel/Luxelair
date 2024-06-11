@@ -8,7 +8,7 @@
 
 [https://0923-orange-1.wns.wilders.dev/](https://0923-orange-1.wns.wilders.dev/)
 
-<h2>Project Screenshots:</h2>
+<h2>Projet Screenshots:</h2>
 
 <div style="display: flex; justify-content: center;">
     <div style="display: flex;">
@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<h2>🧐 Features</h2>
+<h2>🧐 Fonctionnalités</h2>
 
 Voici quelques-unes des features du projet:
 
@@ -37,7 +37,7 @@ Voici quelques-unes des features du projet:
 - Faire une recherche des logements
 - Modifications de ses informations personnelles
 
-<h2>🛠️ Installation Steps:</h2>
+<h2>🛠️ Etapes d'installation</h2>
 
 <p>1. Cloner le projet</p>
 
@@ -59,7 +59,7 @@ cd luxelair
 make run-dev
 ```
 
-<h3> Si vous n'utilisez docker: </h3>
+<h3> Si vous n'utilisez pas docker: </h3>
 
 <p>1. Installer les dépendances</p>
 
