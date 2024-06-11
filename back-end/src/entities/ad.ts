@@ -105,7 +105,7 @@ class Ad extends BaseEntity {
   housingType!: HousingTypeEnum;
 
   @ManyToOne(() => User, (user) => user.ads)
-  @Field()
+  @Field(() => User)
   user!: User;
 
   @ManyToOne(() => Booking, (booking) => booking.ad)
@@ -152,12 +152,15 @@ class Ad extends BaseEntity {
   }
 
   static async getAds(): Promise<Ad[]> {
-    const ads = await Ad.find();
+    const ads = await Ad.find({ relations: ["user"] });
     return ads;
   }
 
   static async getAdById(id: string): Promise<Ad> {
-    const ad = await Ad.findOneBy({ id: id });
+    const ad = await Ad.findOne({
+      where: { id },
+      relations: ["user"],
+    });
     if (!ad) {
       throw new Error("Ad does not exist");
     }
@@ -167,6 +170,7 @@ class Ad extends BaseEntity {
   static async searchAd(location: string): Promise<Ad[]> {
     const adLocation = await Ad.find({
       where: { location: ILike(`%${location}%`) },
+      relations: ["user"],
     });
     if (adLocation.length === 0) {
       throw new Error("Location does not exist");
