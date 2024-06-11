@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://socialify.git.ci/vravanel/luxelair/image?font=Inter&amp;name=1&amp;theme=Auto" alt="project-image"></p>
 
-<p id="description">Le projet Luxelair qui a été développé par 3 développeurs a été réalisé dans le cadre de notre alternance Concepteur Développeur d'Applications. LuxeLair est une plateforme de réservation de logement de luxe. Notre MVP inclut des fonctionnalités telles que la publication d'annonces gestion des annonces la possibilité de faire une réservation le paiement et la gestion des réservations.</p>
+<p id="description">Le projet Luxelair, conçu par une équipe de trois développeurs, a été développé dans le cadre de notre programme d'alternance en tant que Concepteur Développeur d'Applications. LuxeLair est une plateforme de réservation de logement de luxe. Notre MVP inclut des fonctionnalités telles que la publication d'annonces gestion des annonces la possibilité de faire une réservation le paiement et la gestion des réservations.</p>
 
 <h2>🚀 Demo</h2>
 
