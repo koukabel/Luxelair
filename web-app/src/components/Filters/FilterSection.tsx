@@ -1,100 +1,115 @@
-import { LuSettings2 } from "react-icons/lu";
-import{ Button, Flex, IconButton, HStack, Box, AbsoluteCenter, Text, VStack} from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faBuilding,
+  faHotel,
+  faDoorOpen,
+  faChessRook,
+  faShip,
+  faWater,
+  faCity,
+  faCogs,
+} from "@fortawesome/free-solid-svg-icons";
+import { Button, Flex, HStack, Box, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
-import { FaHouse } from "react-icons/fa6";
-import { FilterTypeQuery, HousingTypeEnum } from "@/gql/graphql";
-import { TbBuildingCottage } from "react-icons/tb";
-import { BsBuildings } from "react-icons/bs";
-import { LuHotel } from "react-icons/lu";
-import { BsHouseDoor } from "react-icons/bs";
-import { PiCastleTurret } from "react-icons/pi";
-import { MdOutlineDirectionsBoatFilled } from "react-icons/md";
-import { MdOutlineHouseboat } from "react-icons/md";
-import { MdOutlineCastle } from "react-icons/md";
+import { useDisclosure } from "@chakra-ui/react";
 import FilterDialog from "./FilterDialog";
-import { useDisclosure} from "@chakra-ui/react";
+
 const FilterSection = () => {
   const GET_HOUSE_TYPES = gql`
-  query GetHousingTypes {
-    getHousingTypes
-  }
-`;
+    query GetHousingTypes {
+      getHousingTypes
+    }
+  `;
 
+  const FILTER_BY_HOUSETYPE = gql`
+    query filterType($type: String!) {
+      filterByHouseType(type: $type) {
+        housingType
+        id
+      }
+    }
+  `;
 
-const FILTER_BY_HOUSETYPE = gql`
-query filterType($type: String!) {
-  filterByHouseType(type: $type) {
-    housingType
-    id
-  }
-}`;
+  const { data } = useQuery(GET_HOUSE_TYPES);
+  const [filteredAds] = useLazyQuery(FILTER_BY_HOUSETYPE);
+  const router = useRouter();
+  const [selectedType, setSelectedType] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const searchByHouseType = (type) => {
+    setSelectedType(type);
+    filteredAds({ variables: { type: selectedType } });
+    router.push(`/searchResults/type-results?type=${type}`);
+  };
 
-const { data } = useQuery(GET_HOUSE_TYPES);
-const [filteredAds] = useLazyQuery<FilterTypeQuery>(FILTER_BY_HOUSETYPE);
+  const getIconForType = (type) => {
+    switch (type) {
+      case "Chalet":
+        return <FontAwesomeIcon icon={faHome} />;
+      case "Appartement":
+        return <FontAwesomeIcon icon={faBuilding} />;
+      case "HotelParticulier":
+        return <FontAwesomeIcon icon={faHotel} />;
+      case "Maison":
+        return <FontAwesomeIcon icon={faDoorOpen} />;
+      case "Chateau":
+        return <FontAwesomeIcon icon={faChessRook} />;
+      case "Bateau":
+        return <FontAwesomeIcon icon={faShip} />;
+      case "Tour":
+        return <FontAwesomeIcon icon={faCity} />;
+      case "LogementSurLEau":
+        return <FontAwesomeIcon icon={faWater} />;
+      default:
+        return <FontAwesomeIcon icon={faBuilding} />;
+    }
+  };
 
-const router = useRouter(); 
-const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null); 
-
-const { isOpen, onOpen, onClose } = useDisclosure()
-const searchByHouseType = (type: HousingTypeEnum) => {
-  setSelectedType(type);
-  filteredAds({ variables: { type: selectedType } }); 
-  router.push(`/searchResults/type-results?type=${type}`);
-};
-
-const getIconForType = (type: HousingTypeEnum) => {
-  switch (type) {
-    case HousingTypeEnum.Chalet:
-      return <TbBuildingCottage />;
-    case HousingTypeEnum.Appartement:
-      return <BsBuildings />;
-    case HousingTypeEnum.HotelParticulier:
-      return <LuHotel />;
-    case HousingTypeEnum.Maison:
-      return <BsHouseDoor />;
-    case HousingTypeEnum.Chateau:
-      return <MdOutlineCastle />;
-    case HousingTypeEnum.Bateau:
-      return <MdOutlineDirectionsBoatFilled />;
-    case HousingTypeEnum.Tour:
-      return <PiCastleTurret />;
-    case HousingTypeEnum.LogementSurLEau:
-      return <MdOutlineHouseboat />;
-    default:
-      return <FaHouse />;
-  }
-};
-
-return (
-
-  <HStack spacing='24px' h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
-  <Flex alignItems='center'>
-  {data?.getHousingTypes && data.getHousingTypes.map((type: HousingTypeEnum, index: number) => (
-          <VStack pr='50px'>
-            <Box onClick={() => searchByHouseType(type)} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
-              {getIconForType(type)}
-
-              <Text fontSize='xs' textAlign="center">{type}</Text> 
-            </Box>
-          </VStack>
-        ))}
- 
-     <Button leftIcon={<LuSettings2 />} colorScheme='gray' variant='outline' pl='10px' fontSize='sm' onClick={onOpen}>
-    Filtres
-  </Button>
-  {isOpen && <FilterDialog isOpen={isOpen} onClose={onClose} />}
-
-
-  </Flex>
-</HStack>
-
-);
-
+  return (
+    <HStack
+      spacing="24px"
+      h="10vh"
+      m="5px"
+      justifyContent="center"
+      pos="sticky"
+      top="0"
+      zIndex="1000"
+      bg="white"
+    >
+      <Flex alignItems="center">
+        {data?.getHousingTypes &&
+          data.getHousingTypes.map((type, index) => (
+            <VStack pr="50px" key={index}>
+              <Box
+                onClick={() => searchByHouseType(type)}
+                cursor="pointer"
+                color={selectedType === type ? "black" : "gray"}
+                display="contents"
+              >
+                {getIconForType(type)}
+                <Text fontSize="xs" textAlign="center">
+                  {type}
+                </Text>
+              </Box>
+            </VStack>
+          ))}
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faCogs} />}
+          colorScheme="gray"
+          variant="outline"
+          pl="10px"
+          fontSize="sm"
+          onClick={onOpen}
+        >
+          Filtres
+        </Button>
+        {isOpen && <FilterDialog isOpen={isOpen} onClose={onClose} />}
+      </Flex>
+    </HStack>
+  );
 };
 
 export default FilterSection;
-
-
