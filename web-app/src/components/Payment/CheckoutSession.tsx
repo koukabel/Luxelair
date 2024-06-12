@@ -2,7 +2,12 @@
  import React from "react";
  import { loadStripe } from "@stripe/stripe-js";
  import { gql, useMutation } from "@apollo/client";
- import {CustomCheckoutProvider} from '@stripe/react-stripe-js';
+ import {
+ Center,
+ Button,
+Text
+} from "@chakra-ui/react";
+
 const stripePublishableKey = ('pk_test_51PJd3M07GbaJqaEDWtBaETRYzha5dVydrINevHGkDOJZg64ixF8mPJkmE4Cbcj72BMD8pLQLJ7YCdUfy7UFYhxiG00fS1tuYJB');
 if (!stripePublishableKey) {
   throw new Error("Stripe publishable key is not defined in environment variables");
@@ -42,12 +47,13 @@ const handleCheckout = async () => {
 };
 
    return (
-     <div>
-      <button onClick={handleCheckout} disabled={loading}>
-         {loading ? "Loading..." : "Checkout"}
-      </button>
-      {error && <p>Error: {error.message}</p>}
-    </div>
+     <Center className="grey-circle">
+      <Button bg='#B4770A' w="7rem" mb="30px" color='white' onClick={handleCheckout} disabled={loading} > 
+        
+         {loading ? "Traitement..." : "Payer"}
+      </Button>
+      {error && <Text>Error: {error.message}</Text>}
+    </Center>
   );
  };
 

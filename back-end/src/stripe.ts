@@ -1,5 +1,4 @@
 import Stripe from "stripe";
-console.log(process.env.STRIPE_SECRET_KEY)
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+export const stripe = new Stripe("sk_test_51PJd3M07GbaJqaEDoQi7jHEYEMy3xewM73ymLZXQdBGA4fsE6wct0HmDdacoA7zSoVhFJDq6vbaQqGx1UD7ajmGE00AMFXq7jB"!, {
     apiVersion: '2024-04-10', // Specify the Stripe API version
   });

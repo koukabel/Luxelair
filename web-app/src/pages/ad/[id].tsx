@@ -167,8 +167,6 @@ export default function Ad() {
     }
   }, [dataAds]);
 
-  console.log(disabledDates);
-
   const newBooking = async () => {
     try {
       const { data } = await createBooking({

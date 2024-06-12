@@ -112,7 +112,7 @@ class Booking extends BaseEntity {
       relations: ["ad"],
     });
     if (!booking) {
-      throw new Error("Booking does not existy");
+      throw new Error("Booking does not exist");
     }
     return booking;
   }

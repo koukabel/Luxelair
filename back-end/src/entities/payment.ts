@@ -77,39 +77,6 @@ class Payment extends BaseEntity {
     }
   }
 
-  static async createStripePayment(
-    amount: number,
-    currency: string,
-    bookingId: string,
-    userId: string
-  ): Promise<Payment> {
-    const user = await User.findOne({ where: { id: userId } });
-    const booking = await Booking.findOne({ where: { id: bookingId } });
-    if (!user || !booking) {
-      throw new Error("User or Booking not found");
-    }
-
-    // creating the payment intent with stripe
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), 
-      currency,
-      automatic_payment_methods: { enabled: true },
-    });
-
-    // save the payment record in the db
-    const payment = Payment.create({
-      amount,
-      currency,
-      status: PaymentStatusEnum.Pending,
-      booking,
-      user,
-      id: paymentIntent.id
-    });
-
-    await payment.save();
-
-    return payment;
-  }
 
   static async getPaymentById(id: string): Promise<Payment> {
     const payment = await Payment.findOne({
@@ -121,5 +88,18 @@ class Payment extends BaseEntity {
     }
     return payment;
   }
+
+
+  static async getPaymentByBookingId(id: string): Promise<Payment> {
+    const payment = await Payment.findOne({
+      where: { booking: { id: id } },
+      relations: ["booking", "user"],
+    });
+    if (!payment) {
+      throw new Error("Payment does not exist for the provided booking ID");
+    }
+    return payment;
+  }
+  
 }
 export default Payment;

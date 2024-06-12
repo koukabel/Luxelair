@@ -29,7 +29,20 @@ export class EditOrCreatePayment {
 
 @Resolver()
 export class PaymentResolver {
-  @Mutation(() => String) //mutation to create a chechout session for stripe payment
+
+  @Query(() => Payment)
+  async getPaymentByBookingById(@Arg("id") id: string): Promise<Payment> {
+    return await Payment.getPaymentByBookingId(id);
+  }
+
+
+  @Query(() => Payment)
+  async getPaymentById(@Arg("id") id: string): Promise<Payment> {
+    return await Payment.getPaymentById(id);
+  }
+
+  //create payment 
+  @Mutation(() => String)
   async createStripeCheckoutSession(
     @Arg("amount") amount: number,
     @Arg("currency") currency: string,
@@ -46,50 +59,28 @@ export class PaymentResolver {
       payment_method_types: ["card"],
       line_items: [
         {
-          price_data: {
-            currency,
-            product_data: {
-              name: "Booking Payment",
-            },
-            unit_amount: Math.round(amount * 100),
-          },
+          price: "price_1PQVOf07GbaJqaED3CpdNNHZ", //stripe product id
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      success_url: `${process.env.FRONTEND_URL}/payment/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/payment/cancel`,
       metadata: {
         bookingId,
         userId,
       },
     });
+    const payment = Payment.create({
+      amount,
+      currency,
+      status: PaymentStatusEnum.Pending,
+      booking,
+      user,
+    });
 
+    await payment.save();
     return session.id;
   }
 
-  @Mutation(() => Payment)
-  async createStripePayment(
-    @Arg("amount") amount: number,
-    @Arg("currency") currency: string,
-    @Arg("bookingId") bookingId: string,
-    @Arg("userId") userId: string
-  ): Promise<Payment> {
-    try {
-      return await Payment.createStripePayment(
-        amount,
-        currency,
-        bookingId,
-        userId
-      );
-    } catch (error) {
-      console.error("Error creating Stripe payment:", error);
-      throw new Error("Failed to create Stripe payment");
-    }
-  }
-
-  @Query(() => Payment)
-  async getPaymentById(@Arg("id") id: string): Promise<Payment> {
-    return await Payment.getPaymentById(id);
-  }
 }
