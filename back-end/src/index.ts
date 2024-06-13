@@ -7,12 +7,13 @@ import User from "./entities/user";
 import { UserResolver } from "./resolvers/UserResolver";
 import { BookingResolver } from "./resolvers/BookingResolver";
 import { AuthChecker } from "type-graphql";
-import { Response } from "express";
+import express, { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
 import { PaymentResolver } from "./resolvers/PaymentResolver"; 
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import { webhookHandler } from "./stripe";
 
 dotenv.config();
 
@@ -54,7 +55,8 @@ const startServer = async () => {
 
   await getDataSource();
 
-  //Booking.calculerPrixTotal();
+  const app = express();
+  app.use('/webhook', webhookHandler);
 
   console.log(`🚀  Server ready at: ${url}`);
 };

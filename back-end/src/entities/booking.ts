@@ -3,10 +3,7 @@ import {
   Column,
   BaseEntity,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  OneToOne,
   ManyToOne,
-  JoinColumn,
   In,
   OneToMany,
 } from "typeorm";
@@ -48,15 +45,15 @@ class Booking extends BaseEntity {
   @Field()
   statusPayment!: boolean;
 
-  @ManyToMany(() => User, (user) => user.bookings)
+  @ManyToOne(() => User, (user) => user.bookings)
   @Field(() => User)
-  users!: User[];
+  user!: User;
 
   @ManyToOne(() => Ad, (ad) => ad.bookings)
-  @JoinColumn({ name: "adId" })
   @Field(() => Ad)
   ad!: Ad;
 
+  //one booking can have many payments (failed and succeeded)
   @OneToMany(() => Payment, payment => payment.booking)
   @Field(() => [Payment])
   payments!: Payment[];
@@ -86,7 +83,7 @@ class Booking extends BaseEntity {
     const user = await User.getUserById(bookingData.userId);
     const ad = await Ad.getAdById(bookingData.adId);
 
-    booking.users = [user];
+    booking.user = user;
     booking.ad = ad;
 
     const saveBooking = await booking.save();
@@ -94,7 +91,9 @@ class Booking extends BaseEntity {
   }
 
   static async getBookings(): Promise<Booking[]> {
-    const bookings = await Booking.find({ relations: ["ad"] });
+    const bookings = await Booking.find({
+      relations: ["ad", "ad.user", "user"],
+    });
     return bookings;
   }
 
@@ -109,12 +108,49 @@ class Booking extends BaseEntity {
   static async getBooking(id: string): Promise<Booking> {
     const booking = await Booking.findOne({
       where: { id: id },
-      relations: ["ad"],
+      relations: ["ad", "user"],  
     });
     if (!booking) {
       throw new Error("Booking does not exist");
     }
     return booking;
+  }
+
+  static async getBookingsByHost(userId: string): Promise<Booking[]> {
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ["ads"],
+    });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+
+    const adIds = user.ads.map((ad) => ad.id);
+
+    if (adIds.length === 0) {
+      return [];
+    }
+
+    const bookings = await Booking.find({
+      where: { ad: { id: In(adIds) } },
+      relations: ["ad", "user"],
+    });
+
+    return bookings;
+  }
+
+  static async getBookingsByTraveller(userId: string): Promise<Booking[]> {
+    const bookings = await Booking.find({
+      where: { user: { id: userId } },
+      relations: ["ad", "user"],
+    });
+
+    if (bookings.length === 0) {
+      throw new Error("No bookings found for this traveller");
+    }
+
+    return bookings;
   }
 }
 

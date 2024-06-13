@@ -1,3 +1,4 @@
+import { Booking } from "@/gql/graphql";
 import { gql, useQuery } from "@apollo/client";
 import { Box, Image, Text, Stack, Heading, SimpleGrid } from "@chakra-ui/react";
 import Link from "next/link";
@@ -106,7 +107,7 @@ export default function MyBookings() {
             Réservations en attente
           </Heading>
           <SimpleGrid columns={[1, null, 4]} spacing="120px">
-            {pendingBookings.map((booking) => (
+            {pendingBookings.map((booking: Booking) => (
               <Link key={booking.id} href={`/booking/${booking.id}`}>
                 <Box
                   borderWidth="1px"

@@ -35,7 +35,6 @@ export class PaymentResolver {
     return await Payment.getPaymentByBookingId(id);
   }
 
-
   @Query(() => Payment)
   async getPaymentById(@Arg("id") id: string): Promise<Payment> {
     return await Payment.getPaymentById(id);
@@ -54,12 +53,16 @@ export class PaymentResolver {
     if (!user || !booking) {
       throw new Error("User or Booking not found");
     }
-
+    const amountInCents = amount * 100;
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
-          price: "price_1PQVOf07GbaJqaED3CpdNNHZ", //stripe product id
+          price_data: {
+            unit_amount: amountInCents,
+            currency: 'eur',
+            product: "prod_QAeATtmABPgraI"
+          },
           quantity: 1,
         },
       ],

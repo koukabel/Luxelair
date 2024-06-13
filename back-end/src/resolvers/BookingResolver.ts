@@ -51,4 +51,14 @@ export class BookingResolver {
   getBookingsByAds(@Arg("id") id: string) {
     return Booking.getBookingsByAd(id);
   }
+
+  @Query(() => [Booking])
+  getBookingsByHost(@Arg("userId", () => ID) userId: string) {
+    return Booking.getBookingsByHost(userId);
+  }
+
+  @Query(() => [Booking])
+  getBookingsByTraveller(@Arg("userId", () => ID) userId: string) {
+    return Booking.getBookingsByTraveller(userId);
+  }
 }

@@ -3,12 +3,8 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
-  In,
   PrimaryGeneratedColumn,
-  OneToOne,
 } from "typeorm";
 import { CreateUser, UpdateUser, signIn } from "../resolvers/UserResolver";
 import Booking from "./booking";
@@ -36,8 +32,9 @@ class User extends BaseEntity {
   @Field()
   email!: string;
 
-  // @Column()
-  // role!: string;
+  @Column("simple-array", { nullable: true, default: ["Traveller"] })
+  @Field(() => [String], { nullable: true, defaultValue: ["Traveller"] })
+  roles!: string[];
 
   @Column()
   @Field()
@@ -62,20 +59,19 @@ class User extends BaseEntity {
   @OneToMany(() => UserSession, (session) => session.user)
   sessions!: UserSession[];
 
-  @JoinTable()
-  @ManyToMany(() => Booking, (booking) => booking.users, { eager: true })
-  @Field(() => [Booking])
+  @OneToMany(() => Booking, (booking) => booking.user)
+  @Field(() => Booking)
   bookings!: Booking[];
 
   @OneToMany(() => Ad, (ad) => ad.user)
   @Field(() => [Ad])
   ads!: Ad[];
 
-  // One user can have many payments
+    // One user can have many payments
   @OneToMany(() => Payment, (payment) => payment.user)
   @Field(() => [Payment])
   payments!: Payment[];
-
+  
   constructor(user?: CreateUser) {
     super();
     if (user) {
@@ -83,6 +79,10 @@ class User extends BaseEntity {
       this.firstName = user.firstName;
       this.lastName = user.lastName;
       this.hashedPassword = user.password;
+      if (user.roles === undefined || user.roles.length === 0) {
+        throw new Error("Le rôle est obligatoire");
+      }
+      this.roles = user.roles;
     }
   }
 
@@ -152,28 +152,15 @@ class User extends BaseEntity {
     return user;
   }
 
-  static async getBookingsByUser(userId: string): Promise<Booking[]> {
-    const user = await User.findOneBy({ id: userId });
-    if (!user) {
-      throw new Error("User does not exist");
-    }
-
-    const bookings = await Booking.find({
-      where: { users: user },
-      relations: ["ad"],
-    });
-
-    return bookings;
-  }
-
   static async getAdsByUser(userId: string): Promise<Ad[]> {
-    const user = await User.findOneBy({ id: userId });
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ["ads"],
+    });
     if (!user) {
       throw new Error("User does not exist");
     }
-
-    const ads = await Ad.find({ where: { user: user } });
-    return ads;
+    return user.ads;
   }
 }
 
