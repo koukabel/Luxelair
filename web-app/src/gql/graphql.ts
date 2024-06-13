@@ -114,13 +114,11 @@ export type MutationUpdateUserArgs = {
   lastName: Scalars['String']['input'];
   location?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  roles?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type Query = {
   __typename?: 'Query';
   ad: Ad;
-  ads: Array<Ad>;
   filerByPrice: Array<Ad>;
   filterByEquipements: Array<Ad>;
   filterByHouseType: Array<Ad>;
@@ -204,6 +202,7 @@ export enum RolesTypesEnum {
 export type User = {
   __typename?: 'User';
   ads: Array<Ad>;
+  bookings: Booking;
   city: Scalars['String']['output'];
   description: Scalars['String']['output'];
   email: Scalars['String']['output'];

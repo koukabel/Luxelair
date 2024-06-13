@@ -163,7 +163,7 @@ class Ad extends BaseEntity {
       relations: ["user"],
     });
     if (!ad) {
-      throw new Error("Ad does not exist");
+      throw new Error("Ad does not exist ");
     }
     return ad;
   }

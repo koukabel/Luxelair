@@ -79,11 +79,6 @@ export class AdResolver {
   }
 
   @Query(() => [Ad])
-  ads() {
-    return Ad.getAds();
-  }
-
-  @Query(() => [Ad])
   search(@Arg("location") location: string) {
     return Ad.searchAd(location);
   }
