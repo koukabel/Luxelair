@@ -1,10 +1,8 @@
-import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -61,6 +59,7 @@ class User extends BaseEntity {
   sessions!: UserSession[];
 
   @OneToMany(() => Booking, (booking) => booking.user)
+  @Field(() => Booking)
   bookings!: Booking[];
 
   @OneToMany(() => Ad, (ad) => ad.user)
