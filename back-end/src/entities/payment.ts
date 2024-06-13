@@ -9,7 +9,6 @@ import {
 import { ObjectType, Field, ID, Float, registerEnumType } from "type-graphql";
 import Booking from "./booking";
 import User from "./user";
-import { stripe } from "../stripe";
 import { EditOrCreatePayment } from "../resolvers/PaymentResolver";
 
 export enum PaymentStatusEnum {

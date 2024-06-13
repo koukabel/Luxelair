@@ -6,42 +6,30 @@ import { useRouter } from "next/router";
 
 
 export const MY_BOOKINGS = gql`
-  query GetBookingsByTraveller($userId: ID!) {
-    getBookingsByTraveller(userId: $userId) {
-      checkinDate
-      checkoutDate
-      datePayment
-      id
-      status
-      statusPayment
-      totalPrice
-      ad {
-        id
-        title
-        description
-      }
-    }
-  }
+mutation HandlePaymentIntentSucceededWebhook($bookingId: String!) {
+  handlePaymentIntentSucceededWebhook(bookingId: $bookingId)
+}
+ 
 `;
-
 
 export default function MyBookings() {
   const router = useRouter();
   const { id } = router.query;
   const { data } = useQuery(MY_BOOKINGS, {
-    variables: { userId: id as string },
+    variables: { bookingId: id as string },
   });
 
   if (!data) {
     return null;
   }
-
-  const confirmedBookings = data.getBookingsByUser.filter(
-    (booking) => booking.statusPayment
-  );
-  const pendingBookings = data.getBookingsByUser.filter(
-    (booking) => !booking.statusPayment
-  );
+console.log(data)
+const confirmedBookings: Booking[]= []
+  // const confirmedBookings = data.getBookingsByUser.filter(
+  //   (booking) => booking.statusPayment
+  // );
+  // const pendingBookings = data.getBookingsByUser.filter(
+  //   (booking) => !booking.statusPayment
+  // );
 
   return (
     <Box padding="5">
@@ -97,7 +85,7 @@ export default function MyBookings() {
         </>
       )}
 
-      {pendingBookings.length > 0 && (
+      {/* {pendingBookings.length > 0 && (
         <>
           <Heading
             as="h3"
@@ -147,12 +135,12 @@ export default function MyBookings() {
               </Link>
             ))}
           </SimpleGrid>
-        </>
-      )}
+        </> 
+      )}*/}
 
-      {confirmedBookings.length === 0 && pendingBookings.length === 0 && (
+      {/* {confirmedBookings.length === 0 && pendingBookings.length === 0 && (
         <Text>Vous n'avez pas de réservations</Text>
-      )}
+      )} */}
     </Box>
   );
 }

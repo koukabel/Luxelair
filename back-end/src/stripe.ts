@@ -14,7 +14,12 @@ webhookHandler.post(
   "/webhook",
   bodyParser.raw({ type: "application/json" }),
   async (req: Request, res: Response) => {
-    const sig = req.headers["stripe-signature"]!;
+    const sig = req.headers["stripe-signature"];
+    if (!sig) {
+      console.error("Missing stripe-signature header");
+      return res.status(400).send("Webhook Error: Missing stripe-signature header");
+    }
+
     let event;
 
     try {
@@ -24,37 +29,28 @@ webhookHandler.post(
         process.env.STRIPE_WEBHOOK_SECRET!
       );
     } catch (err) {
-      console.error(`Webhook signature failed.`, );
+      console.error("Webhook signature verification failed:",);
       return res.status(400).send(`Webhook Error: `);
     }
 
     // Handle the event
     switch (event.type) {
-      case "checkout.session.completed":
-        const session = event.data.object as Stripe.Checkout.Session;
-        const metadata = session.metadata;
-        if (metadata && metadata.bookingId && metadata.userId) {
+      case "payment_intent.succeeded":
+        // Handle payment success
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const metadata = paymentIntent.metadata;
+        if (metadata && metadata.bookingId) {
           const bookingId = metadata.bookingId;
-      const payment = await Payment.getPaymentByBookingId(bookingId);
-          // Update the payment status
-          try {
-            payment.status = PaymentStatusEnum.Confirmed;
-            await payment.save();
-          } catch (err) {
-            payment.status = PaymentStatusEnum.Failed;
-            await payment.save();
-            console.error(`Error updating payment status:`);
-            return res.status(500).send(`Internal Server Error`);
-          }
-        } else {
-          console.error("Metadata is missing required fields");
-          return res.status(400).send("Metadata is missing required fields");
+          // Update payment status here
+          const statusUpdated = await this.handlePaymentIntentSucceededWebhook(bookingId);
+          console.log(`Payment status updated: ${statusUpdated}`);
         }
         break;
       // Handle other event types as needed
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
+    
 
     res.status(200).json({ received: true });
   }

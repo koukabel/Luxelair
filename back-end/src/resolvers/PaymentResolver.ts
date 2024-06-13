@@ -3,6 +3,7 @@ import Payment, { PaymentStatusEnum } from "../entities/payment";
 import User from "../entities/user";
 import Booking from "../entities/booking";
 import { stripe } from "../stripe";
+
 @InputType()
 export class EditOrCreatePayment {
   @Field()
@@ -40,7 +41,6 @@ export class PaymentResolver {
     return await Payment.getPaymentById(id);
   }
 
-  //create payment 
   @Mutation(() => String)
   async createStripeCheckoutSession(
     @Arg("amount") amount: number,
@@ -86,4 +86,28 @@ export class PaymentResolver {
     return session.id;
   }
 
+  @Mutation(() => PaymentStatusEnum)
+  async handlePaymentIntentSucceededWebhook(
+    @Arg("bookingId") bookingId: string
+  ): Promise<PaymentStatusEnum> {
+    try {
+      // Find the payment associated with the booking
+      const payment = await Payment.getPaymentByBookingId(bookingId);
+      if (!payment) {
+        console.error("Payment not found for booking ID:", bookingId);
+        return PaymentStatusEnum.Pending;
+      }
+
+      // Update payment status to Confirmed
+      payment.status = PaymentStatusEnum.Confirmed;
+      await payment.save();
+
+      console.log(`Payment status updated to Confirmed for booking ID: ${bookingId}`);
+      return payment.status;
+    } catch (error) {
+      console.error("Failed to handle payment_intent.succeeded webhook:", error);
+      return PaymentStatusEnum.Failed;
+    }
+  }
 }
+
