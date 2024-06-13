@@ -73,14 +73,14 @@ return (
   <HStack spacing='24px' h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
   <Flex alignItems='center'>
   {data?.getHousingTypes && data.getHousingTypes.map((type: HousingTypeEnum, index: number) => (
-          <VStack pr='50px'>
-            <Box onClick={() => searchByHouseType(type)} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
-              {getIconForType(type)}
+  <VStack pr='50px' key={type}>
+    <Box onClick={() => searchByHouseType(type)} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
+      {getIconForType(type)}
+      <Text fontSize='xs' textAlign="center">{type}</Text> 
+    </Box>
+  </VStack>
+))}
 
-              <Text fontSize='xs' textAlign="center">{type}</Text> 
-            </Box>
-          </VStack>
-        ))}
  
      <Button leftIcon={<LuSettings2 />} colorScheme='gray' variant='outline' pl='10px' fontSize='sm' onClick={onOpen}>
     Filtres

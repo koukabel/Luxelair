@@ -21,7 +21,15 @@ mutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $cur
   }
 `;
 
-const CheckoutSession = ({ amount, currency, bookingId, userId }) => {
+interface Props {
+ amount:number,
+ currency: string,
+ bookingId: string,
+ userId: string
+}
+const CheckoutSession: React.FC<Props> = ({ amount, currency, bookingId, userId }) => {
+  
+
   const [createCheckoutSession, { loading, error }] = useMutation(CREATE_CHECKOUT_SESSION);
 
   const handleCheckout = async () => {

@@ -4,25 +4,26 @@ import { Box, Image, Text, Stack, Heading, SimpleGrid } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+
 export const MY_BOOKINGS = gql`
-  query GetBookingsByUser($userId: String!) {
-    getBookingsByUser(userId: $userId) {
+  query GetBookingsByTraveller($userId: ID!) {
+    getBookingsByTraveller(userId: $userId) {
       checkinDate
       checkoutDate
       datePayment
       id
+      status
       statusPayment
       totalPrice
-      status
       ad {
         id
-        image
         title
         description
       }
     }
   }
 `;
+
 
 export default function MyBookings() {
   const router = useRouter();

@@ -18,27 +18,30 @@ import CheckoutSession from "@/components/Payment/CheckoutSession";
 
 // GetBooking , fetch the user id too
 const MY_BOOKING_AD = gql`
-  query GetBooking($getBookingId: String!) {
-    getBooking(id: $getBookingId) {
-      checkinDate
-      checkoutDate
-      datePayment
+query GetBooking($getBookingId: String!) {
+  getBooking(id: $getBookingId) {
+    checkinDate
+    checkoutDate
+    datePayment
+    id
+    status
+    statusPayment
+    totalPrice
+    ad {
       id
-      status
-      statusPayment
-      totalPrice
-      ad {
-        id
-        housingType
-        equipements
-        description
-        image
-        price
-        title
-        location
-      }
+      housingType
+      equipements
+      description
+      image
+      price
+      title
+      location
+    }
+    user {
+      id
     }
   }
+}
 `;
 
 export default function Booking() {
@@ -50,6 +53,7 @@ export default function Booking() {
   });
 
   if (data) {
+    console.log(data)
     return (
       <ChakraProvider>
         <Navbar />
@@ -104,7 +108,7 @@ export default function Booking() {
                     {new Date(data.getBooking.checkoutDate).toDateString()}
                   </Text>
                   <Text>Prix total: {data.getBooking.totalPrice} €</Text>
-                  <CheckoutSession amount={data.getBooking.totalPrice} currency="eur" bookingId={data.getBooking.id} userId="1646ef1c-2c90-4522-90b5-6269071337b5" />
+                  <CheckoutSession amount={data.getBooking.totalPrice} currency="eur" bookingId={data.getBooking.id} userId={data.getBooking.user.id} />
                 </Stack>
               </Box>
             </Flex>
