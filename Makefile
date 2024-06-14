@@ -19,3 +19,5 @@ web-app-test-watch:
 
 web-app-generate-graphql-types:
 	cd web-app && npm run graphql-codegen
+
+	
