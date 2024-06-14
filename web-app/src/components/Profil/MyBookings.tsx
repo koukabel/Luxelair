@@ -15,14 +15,14 @@ mutation HandlePaymentIntentSucceededWebhook($bookingId: String!) {
 export default function MyBookings() {
   const router = useRouter();
   const { id } = router.query;
-  const { data } = useQuery(MY_BOOKINGS, {
-    variables: { bookingId: id as string },
-  });
+  // const { data } = useQuery(MY_BOOKINGS, {
+  //   variables: { bookingId: id as string },
+  // });
 
-  if (!data) {
-    return null;
-  }
-console.log(data)
+  // if (!data) {
+  //   return null;
+  // }
+//console.log(data)
 const confirmedBookings: Booking[]= []
   // const confirmedBookings = data.getBookingsByUser.filter(
   //   (booking) => booking.statusPayment
