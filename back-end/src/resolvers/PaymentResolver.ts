@@ -1,11 +1,20 @@
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { ObjectType, Field, InputType, Arg, Mutation, Query, Resolver } from "type-graphql";
 import Payment, { PaymentStatusEnum } from "../entities/payment";
 import User from "../entities/user";
 import Booking from "../entities/booking";
 import { stripe } from "../stripe";
 
+@ObjectType()
+class PaymentStatusResult {
+  @Field(() => PaymentStatusEnum)
+  status!: PaymentStatusEnum;
+
+  @Field(() => Booking, { nullable: true })
+  booking?: Booking;
+}
+
 @InputType()
-export class EditOrCreatePayment {
+class EditOrCreatePayment {
   @Field()
   amount!: number;
 
@@ -30,7 +39,6 @@ export class EditOrCreatePayment {
 
 @Resolver()
 export class PaymentResolver {
-
   @Query(() => Payment)
   async getPaymentByBookingById(@Arg("id") id: string): Promise<Payment> {
     return await Payment.getPaymentByBookingId(id);
@@ -86,16 +94,16 @@ export class PaymentResolver {
     return session.id;
   }
 
-  @Mutation(() => PaymentStatusEnum)
+  @Mutation(() => PaymentStatusResult)
   async handlePaymentIntentSucceededWebhook(
     @Arg("bookingId") bookingId: string
-  ): Promise<PaymentStatusEnum> {
+  ): Promise<PaymentStatusResult> {
     try {
       // Find the payment associated with the booking
       const payment = await Payment.getPaymentByBookingId(bookingId);
       if (!payment) {
         console.error("Payment not found for booking ID:", bookingId);
-        return PaymentStatusEnum.Pending;
+        return { status: PaymentStatusEnum.Pending };
       }
 
       // Update payment status to Confirmed
@@ -103,11 +111,10 @@ export class PaymentResolver {
       await payment.save();
 
       console.log(`Payment status updated to Confirmed for booking ID: ${bookingId}`);
-      return payment.status;
+      return { status: payment.status, booking: payment.booking };
     } catch (error) {
       console.error("Failed to handle payment_intent.succeeded webhook:", error);
-      return PaymentStatusEnum.Failed;
+      return { status: PaymentStatusEnum.Failed };
     }
   }
 }
-
