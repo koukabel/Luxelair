@@ -10,11 +10,12 @@ import {
 	faCity,
 	faCogs,
 } from "@fortawesome/free-solid-svg-icons";
-import { Button, Flex, HStack, Box, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
-import { useDisclosure } from "@chakra-ui/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { Pagination } from "swiper/modules";
 import FilterDialog from "./FilterDialog";
 
 const FilterSection = () => {
@@ -37,15 +38,14 @@ const FilterSection = () => {
 	const [filteredAds] = useLazyQuery(FILTER_BY_HOUSETYPE);
 	const router = useRouter();
 	const [selectedType, setSelectedType] = useState(null);
-	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const searchByHouseType = (type) => {
+	const searchByHouseType = (type: any) => {
 		setSelectedType(type);
 		filteredAds({ variables: { type: selectedType } });
 		router.push(`/searchResults/type-results?type=${type}`);
 	};
 
-	const getIconForType = (type) => {
+	const getIconForType = (type: any) => {
 		switch (type) {
 			case "Chalet":
 				return <FontAwesomeIcon icon={faHome} />;
@@ -69,46 +69,69 @@ const FilterSection = () => {
 	};
 
 	return (
-		<HStack
-			spacing="24px"
-			h="10vh"
-			m="5px"
-			justifyContent="center"
-			pos="sticky"
-			top="0"
-			zIndex="1000"
-			bg="white"
+		<div
+			style={{
+				position: "sticky",
+				top: "0",
+				zIndex: "0",
+				background: "white",
+				padding: "5px",
+			}}
 		>
-			<Flex alignItems="center">
+			<Swiper
+				spaceBetween={10}
+				slidesPerView={2}
+				pagination={{ clickable: true }}
+				breakpoints={{
+					640: {
+						slidesPerView: 2,
+						spaceBetween: 10,
+					},
+					768: {
+						slidesPerView: 3,
+						spaceBetween: 10,
+					},
+					1024: {
+						slidesPerView: 5,
+						spaceBetween: 10,
+					},
+				}}
+				modules={[Pagination]}
+			>
 				{data?.getHousingTypes &&
-					data.getHousingTypes.map((type, index) => (
-						<VStack pr="50px" key={index}>
-							<Box
+					data.getHousingTypes.map((type: any, index: any) => (
+						<SwiperSlide key={index}>
+							<div
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									alignItems: "center",
+									margin: "10%",
+									cursor: "pointer",
+									color: selectedType === type ? "black" : "gray",
+								}}
 								onClick={() => searchByHouseType(type)}
-								cursor="pointer"
-								color={selectedType === type ? "black" : "gray"}
-								display="contents"
 							>
 								{getIconForType(type)}
-								<Text fontSize="xs" textAlign="center">
-									{type}
-								</Text>
-							</Box>
-						</VStack>
+								<p style={{ fontSize: "12px", textAlign: "center" }}>{type}</p>
+							</div>
+						</SwiperSlide>
 					))}
-				<Button
-					leftIcon={<FontAwesomeIcon icon={faCogs} />}
-					colorScheme="gray"
-					variant="outline"
-					pl="10px"
-					fontSize="sm"
-					onClick={onOpen}
-				>
-					Filtres
-				</Button>
-				{isOpen && <FilterDialog isOpen={isOpen} onClose={onClose} />}
-			</Flex>
-		</HStack>
+			</Swiper>
+			<button
+				style={{
+					marginTop: "10px",
+					padding: "10px",
+					fontSize: "14px",
+					borderColor: "gray",
+					backgroundColor: "white",
+					cursor: "pointer",
+					width: "100%",
+				}}
+			>
+				<FontAwesomeIcon icon={faCogs} /> Filtres
+			</button>
+		</div>
 	);
 };
 

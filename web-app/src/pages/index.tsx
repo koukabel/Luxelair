@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
 import FilterSection from "@/components/Filters/FilterSection";
 import { Divider } from "@chakra-ui/react";
+import { Global, css } from "@emotion/react";
 
 const GET_ADS = gql`
 	query Ads {
@@ -25,30 +26,45 @@ export default function HomePage() {
 	const { data } = useQuery<AdsQuery>(GET_ADS);
 	return (
 		<ChakraProvider>
+			<Global
+				styles={css`
+					body {
+						margin: 0;
+						overflow-x: hidden;
+					}
+				`}
+			/>
 			<Navbar />
 			<SearchBar />
 			<Divider />
 			<FilterSection />
-			<Box pos="relative">
+			<Box pos="relative" w="100%" overflow="hidden">
 				<Image
 					margin="auto"
 					objectFit="cover"
 					src="welcome_page.png"
 					alt="Welcome Page"
-				/>
-
-				<Heading
 					w="100%"
+				/>
+				<Box
 					pos="absolute"
-					top="80%"
-					left="84%"
-					color="white"
-					transform="translate(-50%,-50%)"
+					top="0"
+					left="0"
+					right="0"
+					bottom="0"
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
 				>
-					LuxeLair.. Où le bien-être commence{" "}
-				</Heading>
+					<Heading
+						color="white"
+						textAlign="center"
+						fontSize={["2xl", "3xl", "4xl", "5xl"]}
+					>
+						LuxeLair.. Où le bien-être commence
+					</Heading>
+				</Box>
 			</Box>
-
 			<SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
 				{data?.getAds
 					? data.getAds.map((ad) => (
