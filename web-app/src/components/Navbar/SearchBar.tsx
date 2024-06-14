@@ -30,7 +30,7 @@ export default function SearchBar() {
   };
 
   return (
-    <Box>
+    <Box marginTop="12rem">
       <Flex alignItems="center" w="70%" paddingBottom="20px" m="auto">
         <Input
           placeholder="Rechercher une destination"
