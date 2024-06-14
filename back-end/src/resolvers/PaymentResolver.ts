@@ -14,7 +14,7 @@ class PaymentStatusResult {
 }
 
 @InputType()
-class EditOrCreatePayment {
+export class EditOrCreatePayment {
   @Field()
   amount!: number;
 
@@ -94,16 +94,39 @@ export class PaymentResolver {
     return session.id;
   }
 
-  @Mutation(() => PaymentStatusResult)
+  // @Mutation(() => PaymentStatusResult)
+  // async handlePaymentIntentSucceededWebhook(
+  //   @Arg("bookingId") bookingId: string
+  // ): Promise<PaymentStatusResult> {
+  //   try {
+  //     // Find the payment associated with the booking
+  //     const payment = await Payment.getPaymentByBookingId(bookingId);
+  //     if (!payment) {
+  //       console.error("Payment not found for booking ID:", bookingId);
+  //       return { status: PaymentStatusEnum.Pending };
+  //     }
+
+  //     // Update payment status to Confirmed
+  //     payment.status = PaymentStatusEnum.Confirmed;
+  //     await payment.save();
+
+  //     console.log(`Payment status updated to Confirmed for booking ID: ${bookingId}`);
+  //     return { status: payment.status, booking: payment.booking };
+  //   } catch (error) {
+  //     console.error("Failed to handle payment_intent.succeeded webhook:", error);
+  //     return { status: PaymentStatusEnum.Failed };
+  //   }
+  // }
+  @Mutation(() => PaymentStatusEnum, { nullable: true })
   async handlePaymentIntentSucceededWebhook(
     @Arg("bookingId") bookingId: string
-  ): Promise<PaymentStatusResult> {
+  ): Promise<PaymentStatusEnum | null> {
     try {
-      // Find the payment associated with the booking
+      // Update payment status logic
       const payment = await Payment.getPaymentByBookingId(bookingId);
       if (!payment) {
         console.error("Payment not found for booking ID:", bookingId);
-        return { status: PaymentStatusEnum.Pending };
+        return null; // or PaymentStatusEnum.Failed if you prefer
       }
 
       // Update payment status to Confirmed
@@ -111,10 +134,10 @@ export class PaymentResolver {
       await payment.save();
 
       console.log(`Payment status updated to Confirmed for booking ID: ${bookingId}`);
-      return { status: payment.status, booking: payment.booking };
+      return PaymentStatusEnum.Confirmed;
     } catch (error) {
       console.error("Failed to handle payment_intent.succeeded webhook:", error);
-      return { status: PaymentStatusEnum.Failed };
+      return PaymentStatusEnum.Failed;
     }
   }
 }

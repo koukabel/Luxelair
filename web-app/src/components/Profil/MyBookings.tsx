@@ -154,6 +154,7 @@ export default function MyBookings() {
       if (id) {
         handlePaymentIntentSucceeded({ variables: { bookingId: id as string } })
           .then(result => {
+            console.log(result);
             if (result.data?.handlePaymentIntentSucceededWebhook === PaymentStatusEnum.Confirmed) {
               setConfirmedBookings(prev => [...prev, id as string]);
             } else if (result.data?.handlePaymentIntentSucceededWebhook === PaymentStatusEnum.Failed) {
@@ -165,6 +166,7 @@ export default function MyBookings() {
           });
       }
     }, [id, handlePaymentIntentSucceeded]);
+    
     if (loading) return <Spinner />;
     if (error) return (
       <Alert status="error">
@@ -178,59 +180,58 @@ export default function MyBookings() {
       <Stack spacing={3}>
         <Heading as="h2" size="lg">Mes réservations</Heading>
         {confirmedBookings.length > 0 ? (
-          <Box>
-            <Heading as="h3" size="md"> Réservations confirmées</Heading>
-            {confirmedBookings.map(bookingId => (
-              <Text key={bookingId}>Booking ID: {bookingId}</Text>
-            ))}
-          </Box>
-        ) : (
-          <Text>No confirmed bookings</Text>
-        )}
+  <Box>
+    <Heading as="h3" size="md">Réservations confirmées</Heading>
+    {confirmedBookings.map(bookingId => (
+      <Text key={bookingId}>Booking ID: {bookingId}</Text>
+    ))}
+  </Box>
+) : null}
+
         {failedBookings.length > 0 ? (
           <Box>
             <Heading as="h3" size="md"> Réservations en attente de paiement</Heading>
-            <SimpleGrid columns={[1, null, 4]} spacing="120px">
+           
             {failedBookings.map(bookingId => (
-              // <Text key={bookingId}>Booking ID: {bookingId}</Text>
-              <Link key={bookingId} href={`/booking/${bookingId}`}>
-              <Box
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                boxShadow="md"
-                cursor="pointer"
-              >
-                <Image
-                  height={"300px"}
-                  width={"310px"}
-                  objectFit={"cover"}
-                  src={`/file-hosting/${bookingId}.jpg`}
-                  alt={`Image de l'annonce`}
-                />
-                <Box p="2">
-                  <Stack spacing={6}>
-                    <Text
-                      fontWeight="bold"
-                      fontSize="xl"
-                      lineHeight="tight"
-                      isTruncated
-                      whiteSpace={"normal"}
-                    >
-                      Booking ID: {bookingId}
-                    </Text>
-                    <Text color="gray.500" fontSize="sm">
-                      Description for booking ID {bookingId}
-                    </Text>
-                    {/* <Text fontWeight="bold" fontSize="md" color="green.500">
-                      Réservation confirmée
-                    </Text> */}
-                  </Stack>
-                </Box>
-              </Box>
-            </Link>
+             <Text key={bookingId}>Booking ID: {bookingId}</Text>
+            //   <Link key={bookingId} href={`/booking/${bookingId}`}>
+            //   <Box
+            //     borderWidth="1px"
+            //     borderRadius="lg"
+            //     overflow="hidden"
+            //     boxShadow="md"
+            //     cursor="pointer"
+            //   >
+            //     <Image
+            //       height={"300px"}
+            //       width={"310px"}
+            //       objectFit={"cover"}
+            //       src={`/file-hosting/${bookingId}.jpg`}
+            //       alt={`Image de l'annonce`}
+            //     />
+            //     <Box p="2">
+            //       <Stack spacing={6}>
+            //         <Text
+            //           fontWeight="bold"
+            //           fontSize="xl"
+            //           lineHeight="tight"
+            //           isTruncated
+            //           whiteSpace={"normal"}
+            //         >
+            //           Booking ID: {bookingId}
+            //         </Text>
+            //         <Text color="gray.500" fontSize="sm">
+            //           Description for booking ID {bookingId}
+            //         </Text>
+            //         {/* <Text fontWeight="bold" fontSize="md" color="green.500">
+            //           Réservation confirmée
+            //         </Text> */}
+            //       </Stack>
+            //     </Box>
+            //   </Box>
+            // </Link>
             ))}
-            </SimpleGrid>
+    
           </Box>
         ) : (
           <Text>No failed bookings</Text>
