@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import User from "../entities/user";
 
-const USERS_COUNT = 40;
+const USERS_COUNT = 20;
 
 export const generateUsers = async () => {
   const users = [];
@@ -11,7 +11,7 @@ export const generateUsers = async () => {
     user.lastName = faker.person.lastName();
     user.email = faker.internet.email();
     user.roles = ["Traveller"];
-    user.hashedPassword = faker.internet.password();
+    user.hashedPassword = "test";
     users.push(user);
   }
   await User.save(users);
