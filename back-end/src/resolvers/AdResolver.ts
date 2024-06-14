@@ -107,4 +107,14 @@ export class AdResolver {
   createAd(@Args() args: editOrCreateAd) {
     return Ad.createAd(args);
   }
+
+  @Mutation(() => Ad)
+  updateAd(@Arg("id", () => ID) id: string, @Args() args: editOrCreateAd) {
+    return Ad.updateAd(id, args);
+  }
+
+  @Mutation(() => Ad)
+  deleteAd(@Arg("id", () => ID) id: string) {
+    return Ad.deleteAd(id);
+  }
 }

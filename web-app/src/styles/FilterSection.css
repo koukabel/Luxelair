@@ -1,0 +1,43 @@
+/* .filter-section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 10vh;
+	margin: 5px;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background: white;
+}
+
+.filter-section .filter-icons {
+	display: flex;
+	align-items: center;
+}
+
+.filter-section .filter-icon-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-right: 50px;
+	cursor: pointer;
+	color: gray;
+}
+
+.filter-section .filter-icon-box.selected {
+	color: black;
+}
+
+.filter-section .filter-text {
+	font-size: 12px;
+	text-align: center;
+}
+
+.filter-section .filter-button {
+	margin-left: 10px;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid gray;
+	background: white;
+	cursor: pointer;
+} */
