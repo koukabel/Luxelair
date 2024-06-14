@@ -9,6 +9,9 @@ import { AuthChecker } from "type-graphql";
 import { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
+import { getCache } from "./cache";
+import { generateUsers } from "./fixtures/user";
+import { generateAds } from "./fixtures/ad";
 
 export type Context = { res: Response; user: User | null };
 
@@ -43,9 +46,13 @@ const startServer = async () => {
 
   await getDataSource();
 
-  //Booking.calculerPrixTotal();
+  if (process.env.NODE_ENV === "dev") {
+    await generateUsers();
+    await generateAds();
+  }
+  await getCache();
 
-  console.log(`🚀  Server ready at: ${url}`);
+  console.log(`🚀  Server ready at : ${url}`);
 };
 
 startServer();

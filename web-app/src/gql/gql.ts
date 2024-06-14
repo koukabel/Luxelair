@@ -22,7 +22,7 @@ const documents = {
     "\n    query filterType($type: String!) {\n      filterByHouseType(type: $type) {\n        housingType\n        id\n      }\n    }\n  ": types.FilterTypeDocument,
     "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n": types.GetMyProfileDocument,
     "\n  mutation SignOut {\n    signOut\n  }\n": types.SignOutDocument,
-    "\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n": types.SearchAdDocument,
+    "\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n": types.SearchAdDocument,
     "\n\tquery GetMyProfilUpdate {\n\t  myProfile {\n\t\temail\n\t\tfirstName\n\t\tid\n\t\tlastName\n\t\tlocation\n\t\tdescription\n\t\tcity\n\t\tphoneNumber\n\t  }\n\t}\n  ": types.GetMyProfilUpdateDocument,
     "\n\tmutation UpdateUser(\n\t  $email: String!\n\t  $updateUserId: ID!\n\t  $description: String\n\t  $city: String\n\t  $location: String\n\t  $phoneNumber: String\n\t  $lastName: String!\n\t  $firstName: String!\n\t) {\n\t  updateUser(\n\t\temail: $email\n\t\tid: $updateUserId\n\t\tdescription: $description\n\t\tcity: $city\n\t\tlocation: $location\n\t\tphoneNumber: $phoneNumber\n\t\tlastName: $lastName\n\t\tfirstName: $firstName\n\t  ) {\n\t\temail\n\t\tfirstName\n\t\tid\n\t\tlastName\n\t  }\n\t}\n  ": types.UpdateUserDocument,
     "\n  query GetBookingsByTraveller($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        title\n        description\n      }\n    }\n  }\n": types.GetBookingsByTravellerDocument,
@@ -42,6 +42,7 @@ const documents = {
     "\n  query User($userId: ID!) {\n    user(id: $userId) {\n      id\n      lastName\n      location\n      phoneNumber\n      firstName\n      email\n      description\n      city\n    }\n  }\n": types.UserDocument,
     "\n    mutation adCreation(\n      $title: String!\n      $description: String!\n      $location: String!\n      $price: Float!\n      $equipements: [String!]\n      $housingType: HousingTypeEnum\n      $userId: String!\n    ) {\n      createAd(\n        title: $title\n        description: $description\n        location: $location\n        price: $price\n        equipements: $equipements\n        housingType: $housingType\n        userId: $userId\n      ) {\n        id\n      }\n    }\n  ": types.AdCreationDocument,
     "\n  query FilterByPrice($min: Float!, $max: Float!) {\n    filerByPrice(min: $min, max: $max) {\n      id\n      price\n      location\n      image\n    }\n  }\n": types.FilterByPriceDocument,
+    "\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n": types.SearchAdDocument,
     "\nquery FilterByHouseType($type: String!) {\n  filterByHouseType(type: $type) {\n    id\n    location\n    image\n    price\n  }\n}\n": types.FilterByHouseTypeDocument,
 };
 
@@ -98,7 +99,7 @@ export function graphql(source: "\n  mutation SignOut {\n    signOut\n  }\n"): (
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n"): (typeof documents)["\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n"];
+export function graphql(source: "\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n"): (typeof documents)["\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -175,6 +176,10 @@ export function graphql(source: "\n    mutation adCreation(\n      $title: Strin
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query FilterByPrice($min: Float!, $max: Float!) {\n    filerByPrice(min: $min, max: $max) {\n      id\n      price\n      location\n      image\n    }\n  }\n"): (typeof documents)["\n  query FilterByPrice($min: Float!, $max: Float!) {\n    filerByPrice(min: $min, max: $max) {\n      id\n      price\n      location\n      image\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n"): (typeof documents)["\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

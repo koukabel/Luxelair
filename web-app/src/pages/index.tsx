@@ -8,7 +8,7 @@ import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
 import FilterSection from "@/components/Filters/FilterSection";
-import { Divider } from "@chakra-ui/react";
+import { Divider, CircularProgress } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 
 const GET_ADS = gql`

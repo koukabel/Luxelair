@@ -139,7 +139,6 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   ad: Ad;
-  ads: Array<Ad>;
   filerByPrice: Array<Ad>;
   filterByEquipements: Array<Ad>;
   filterByHouseType: Array<Ad>;
