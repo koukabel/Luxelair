@@ -10,6 +10,7 @@ import { ObjectType, Field, ID, Float, registerEnumType } from "type-graphql";
 import Booking from "./booking";
 import User from "./user";
 import { EditOrCreatePayment } from "../resolvers/PaymentResolver";
+import PaymentStatusResult from "src/utils/PaymentStatusResult";
 
 export enum PaymentStatusEnum {
   Confirmed = "Confirmé",
@@ -47,7 +48,6 @@ class Payment extends BaseEntity {
     onUpdate: "CURRENT_TIMESTAMP",
     nullable: true,
   })
-
   @Column({
     type: "enum",
     enum: PaymentStatusEnum,
@@ -76,7 +76,6 @@ class Payment extends BaseEntity {
     }
   }
 
-
   static async getPaymentById(id: string): Promise<Payment> {
     const payment = await Payment.findOne({
       where: { id: id },
@@ -88,7 +87,6 @@ class Payment extends BaseEntity {
     return payment;
   }
 
-
   static async getPaymentByBookingId(id: string): Promise<Payment> {
     const payment = await Payment.findOne({
       where: { booking: { id: id } },
@@ -98,6 +96,40 @@ class Payment extends BaseEntity {
       throw new Error("Payment does not exist for the provided booking ID");
     }
     return payment;
+  }
+
+  static async handlePaymentIntent(bookingId: string): Promise<PaymentStatusResult> {
+    const payment = await Payment.getPaymentByBookingId(bookingId);
+    const booking = await Booking.findOne({
+      where: { id: bookingId },
+      relations: ["ad"],
+    });
+  
+    try {
+      if (!payment) {
+        console.error("Payment not found for booking ID:", bookingId);
+        return {
+          status: PaymentStatusEnum.Pending,
+          booking: undefined, // Return undefined instead of null
+        };
+      } else if (!booking || !booking.ad) {
+        console.error("Booking or associated Ad not found for booking ID:", bookingId);
+        return {
+          status: PaymentStatusEnum.Pending,
+          booking: undefined, // Return undefined instead of null
+        };
+      }
+  
+      payment.status = PaymentStatusEnum.Confirmed;
+      await payment.save();
+      return { status: PaymentStatusEnum.Confirmed, booking };
+    } catch (error) {
+      console.error("Failed to handle payment_intent.succeeded webhook:", error);
+      return {
+        status: PaymentStatusEnum.Failed,
+        booking: undefined, // Return undefined instead of null
+      };
+    }
   }
   
 }

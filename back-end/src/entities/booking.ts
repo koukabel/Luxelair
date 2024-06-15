@@ -49,7 +49,7 @@ class Booking extends BaseEntity {
   @Field(() => User)
   user!: User;
 
-  @ManyToOne(() => Ad, (ad) => ad.bookings)
+  @ManyToOne(() => Ad, (ad) => ad.bookings, { eager: true })
   @Field(() => Ad)
   ad!: Ad;
 

@@ -3,17 +3,10 @@ import Payment, { PaymentStatusEnum } from "../entities/payment";
 import User from "../entities/user";
 import Booking from "../entities/booking";
 import { stripe } from "../stripe";
+import PaymentStatusResult from "../utils/PaymentStatusResult";
 
-@ObjectType()
-class PaymentStatusResult {
-  @Field(() => PaymentStatusEnum)
-  status!: PaymentStatusEnum;
 
-  @Field(() => Booking, { nullable: true })
-  booking?: Booking;
-}
-
-@InputType()
+export @InputType()
 class EditOrCreatePayment {
   @Field()
   amount!: number;
@@ -92,29 +85,14 @@ export class PaymentResolver {
 
     await payment.save();
     return session.id;
-  }
+   }
 
-  @Mutation(() => PaymentStatusResult)
-  async handlePaymentIntentSucceededWebhook(
-    @Arg("bookingId") bookingId: string
-  ): Promise<PaymentStatusResult> {
-    try {
-      // Find the payment associated with the booking
-      const payment = await Payment.getPaymentByBookingId(bookingId);
-      if (!payment) {
-        console.error("Payment not found for booking ID:", bookingId);
-        return { status: PaymentStatusEnum.Pending };
-      }
-
-      // Update payment status to Confirmed
-      payment.status = PaymentStatusEnum.Confirmed;
-      await payment.save();
-
-      console.log(`Payment status updated to Confirmed for booking ID: ${bookingId}`);
-      return { status: payment.status, booking: payment.booking };
-    } catch (error) {
-      console.error("Failed to handle payment_intent.succeeded webhook:", error);
-      return { status: PaymentStatusEnum.Failed };
-    }
-  }
+   @Mutation(() => PaymentStatusResult)
+   async handlePaymentIntentSucceededWebhook(
+     @Arg("bookingId") bookingId: string
+   ): Promise<PaymentStatusResult> {
+     return await Payment.handlePaymentIntent(bookingId);
+   }
+   
 }
+

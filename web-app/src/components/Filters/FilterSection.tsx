@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
 import { FaHouse } from "react-icons/fa6";
-import { FilterTypeQuery, HousingTypeEnum } from "@/gql/graphql";
+
 import { TbBuildingCottage } from "react-icons/tb";
 import { BsBuildings } from "react-icons/bs";
 import { LuHotel } from "react-icons/lu";
@@ -15,6 +15,7 @@ import { MdOutlineHouseboat } from "react-icons/md";
 import { MdOutlineCastle } from "react-icons/md";
 import FilterDialog from "./FilterDialog";
 import { useDisclosure} from "@chakra-ui/react";
+import { FilterTypeQuery, HousingTypeEnum } from "@/gql/graphql";
 const FilterSection = () => {
   const GET_HOUSE_TYPES = gql`
   query GetHousingTypes {
