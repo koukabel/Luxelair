@@ -1,8 +1,7 @@
 import Stripe from "stripe";
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import {PaymentResolver} from "./resolvers/PaymentResolver"; 
-
+import { PaymentResolver } from "./resolvers/PaymentResolver";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-04-10",
@@ -10,7 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const webhookHandler = express.Router();
 
-// Use the raw body to handle Stripe webhooks
 webhookHandler.post(
   "/webhook",
   bodyParser.raw({ type: "application/json" }),
@@ -34,28 +32,28 @@ webhookHandler.post(
       return res.status(400).send(`Webhook Error}`);
     }
 
-    // Create an instance of the PaymentResolver
+
     const paymentResolver = new PaymentResolver();
 
-    // Handle the event
+
     switch (event.type) {
       case "payment_intent.succeeded":
-        // Handle payment success
+        //  payment success
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         const metadata = paymentIntent.metadata;
         if (metadata && metadata.bookingId) {
           const bookingId = metadata.bookingId;
           // Update payment status here
           const statusUpdated = await paymentResolver.handlePaymentIntentSucceededWebhook(bookingId);
-          
-          console.log(`Payment status updated: ${statusUpdated}`);
+
+          console.log(`Payment status updated`);
         }
         break;
-      // Handle other event types as needed
+
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
-    
+
     res.status(200).json({ received: true });
   }
 );

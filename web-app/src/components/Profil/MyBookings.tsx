@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { HandlePaymentIntentSucceededWebhookMutation, HandlePaymentIntentSucceededWebhookMutationVariables, PaymentStatusEnum } from "@/gql/graphql";
-import { Box, Text, Stack, Heading, Spinner, Alert, Flex, SimpleGrid, Image, Link, AlertIcon } from "@chakra-ui/react";
+import { Box, Text, Stack, Heading, Spinner, Alert, AlertIcon } from "@chakra-ui/react";
 
 // const HANDLE_PAYMENT_INTENT_SUCCEEDED_WEBHOOK = gql`
 //   mutation HandlePaymentIntentSucceededWebhook($bookingId: String!) {
@@ -49,9 +48,7 @@ export default function MyBookings() {
       <Box>
       
     </Box>
-    );
-
-
+  );
 }
 
 
