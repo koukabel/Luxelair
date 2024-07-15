@@ -32,7 +32,6 @@ class Booking extends BaseEntity {
   @Field()
   totalPrice!: number;
 
-  // Voir après pour mettre un enum pour mettre plusieurs status
   @Column({ default: false })
   @Field()
   status!: boolean;
@@ -53,11 +52,10 @@ class Booking extends BaseEntity {
   @Field(() => Ad)
   ad!: Ad;
 
-  //one booking can have many payments (failed and succeeded)
-  @OneToMany(() => Payment, payment => payment.booking)
+  @OneToMany(() => Payment, (payment) => payment.booking)
   @Field(() => [Payment])
   payments!: Payment[];
-  
+
   constructor(booking?: Partial<Booking>) {
     super();
     if (booking) {
@@ -108,7 +106,7 @@ class Booking extends BaseEntity {
   static async getBooking(id: string): Promise<Booking> {
     const booking = await Booking.findOne({
       where: { id: id },
-      relations: ["ad", "user"],  
+      relations: ["ad", "user", "payments"],
     });
     if (!booking) {
       throw new Error("Booking does not exist");
@@ -143,7 +141,7 @@ class Booking extends BaseEntity {
   static async getBookingsByTraveller(userId: string): Promise<Booking[]> {
     const bookings = await Booking.find({
       where: { user: { id: userId } },
-      relations: ["ad", "user"],
+      relations: ["ad", "user", "payments"],  
     });
 
     if (bookings.length === 0) {
