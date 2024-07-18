@@ -53,7 +53,6 @@ export default function Booking() {
   });
 
   if (data) {
-    console.log(data)
     return (
       <ChakraProvider>
         <Navbar />

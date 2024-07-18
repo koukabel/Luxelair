@@ -88,11 +88,44 @@ export class PaymentResolver {
    }
 
    @Mutation(() => PaymentStatusResult)
-   async handlePaymentIntentSucceededWebhook(
-     @Arg("bookingId") bookingId: string
-   ): Promise<PaymentStatusResult> {
-     return await Payment.handlePaymentIntent(bookingId);
-   }
-   
+  //  async handlePaymentIntentSucceededWebhook(
+  //    @Arg("bookingId") bookingId: string
+  //  ): Promise<PaymentStatusResult> {
+  //    // Update payment status logic here
+  //    // For example, you could update the payment status in your database
+  //    const payment = await Payment.findOne({ where: { booking_id: bookingId } });
+  //    if (!payment) {
+  //      throw new Error(`Payment with booking ID ${bookingId} not found`);
+  //    }
+  //    payment.status = PaymentStatusEnum.Completed;
+  //    await payment.save();
+ 
+  //    return {
+  //      success: true,
+  //      message: `Payment for booking ID ${bookingId} successfully updated`,
+  //    };
+  //  }
+  @Mutation(() => Boolean)
+  async handlePaymentIntentSucceededWebhook(
+    @Arg("bookingId") bookingId: string
+  ): Promise<boolean> {
+    try {
+      const payment = await Payment.findOne({ where: { booking_id: bookingId } });
+      if (!payment) {
+        throw new Error(`Payment with booking ID ${bookingId} not found`);
+      }
+
+      // Update payment status to "completed" if it's not already updated
+      if (payment.status !== PaymentStatusEnum.Confirmed) {
+        payment.status = PaymentStatusEnum.Confirmed;
+        await payment.save();
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+      return false;
+    }
+  }
 }
 
