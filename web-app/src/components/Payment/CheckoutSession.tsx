@@ -1,135 +1,66 @@
 
-// import React from "react";
-// import { loadStripe } from "@stripe/stripe-js";
-// import { gql, useMutation } from "@apollo/client";
-// import {
-//   Center,
-//   Button,
-//   Text
-// } from "@chakra-ui/react";
+import React from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { gql, useMutation } from "@apollo/client";
+import {
+  Center,
+  Button,
+  Text
+} from "@chakra-ui/react";
 
-// const stripePublishableKey = "pk_test_51PJd3M07GbaJqaEDWtBaETRYzha5dVydrINevHGkDOJZg64ixF8mPJkmE4Cbcj72BMD8pLQLJ7YCdUfy7UFYhxiG00fS1tuYJB"
-// if (!stripePublishableKey) {
-//   throw new Error("Stripe key is missing");
-// }
+const stripePublishableKey = "pk_test_51PJd3M07GbaJqaEDWtBaETRYzha5dVydrINevHGkDOJZg64ixF8mPJkmE4Cbcj72BMD8pLQLJ7YCdUfy7UFYhxiG00fS1tuYJB"
+if (!stripePublishableKey) {
+  throw new Error("Stripe key is missing");
+}
 
-// const stripePromise = loadStripe(stripePublishableKey);
+const stripePromise = loadStripe(stripePublishableKey);
 
-// const CREATE_CHECKOUT_SESSION = gql`
-// mutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $currency: String!, $amount: Float!) {
-//     createStripeCheckoutSession(userId: $userId, bookingId: $bookingId, currency: $currency, amount: $amount)
-//   }
-// `;
+const CREATE_CHECKOUT_SESSION = gql`
+mutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $currency: String!, $amount: Float!) {
+    createStripeCheckoutSession(userId: $userId, bookingId: $bookingId, currency: $currency, amount: $amount)
+  }
+`;
 
-// interface Props {
-//  amount:number,
-//  currency: string,
-//  bookingId: string,
-//  userId: string
-// }
-// const CheckoutSession: React.FC<Props> = ({ amount, currency, bookingId, userId }) => {
+interface Props {
+ amount:number,
+ currency: string,
+ bookingId: string,
+ userId: string
+}
+const CheckoutSession: React.FC<Props> = ({ amount, currency, bookingId, userId }) => {
   
 
-//   const [createCheckoutSession, { loading, error }] = useMutation(CREATE_CHECKOUT_SESSION);
-
-//   const handleCheckout = async () => {
-    // try {
-    //   const { data } = await createCheckoutSession({
-    //     variables: { amount, currency, bookingId, userId },
-    //   });
-
-    //   const sessionId = data.createStripeCheckoutSession;
-    //   const stripe = await stripePromise;
-    //   if (!stripe) {
-    //     throw new Error("Failed to load Stripe.js");
-    //   }
-
-    //   const { error } = await stripe.redirectToCheckout({ sessionId });
-
-    //   if (error) {
-    //     console.error("Stripe checkout error:", error);
-    //   }
-    // } catch (error) {
-    //   console.error("Error during checkout:", error);
-    // }
-
-
-
-
-//   };
-
-//   return (
-//     <Center className="grey-circle">
-//       <Button bg='#B4770A' w="7rem" mb="30px" color='white' onClick={handleCheckout} disabled={loading} >
-
-//         {loading ? "Traitement..." : "Payer"}
-//       </Button>
-//       {error && <Text>Error: {error.message}</Text>}
-//     </Center>
-//   );
-// };
-
-// export default CheckoutSession;
-
-
-
-import React, { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Center, Button, Text } from "@chakra-ui/react";
-
-const stripePromise = loadStripe("pk_test_51PJd3M07GbaJqaEDWtBaETRYzha5dVydrINevHGkDOJZg64ixF8mPJkmE4Cbcj72BMD8pLQLJ7YCdUfy7UFYhxiG00fS1tuYJB");
-
-const CheckoutSession = ({ amount, currency, bookingId, userId }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [createCheckoutSession, { loading, error }] = useMutation(CREATE_CHECKOUT_SESSION);
 
   const handleCheckout = async () => {
-    setLoading(true);
-    setError(null);
-
     try {
-      const response = await fetch('/create-checkout-session', {  
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, currency, bookingId, userId }),
+      const { data } = await createCheckoutSession({
+        variables: { amount, currency, bookingId, userId },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-
-      const session = await response.json();
+      const sessionId = data.createStripeCheckoutSession;
       const stripe = await stripePromise;
-
       if (!stripe) {
         throw new Error("Failed to load Stripe.js");
       }
 
-      const result = await stripe.redirectToCheckout({ sessionId: session.id });
+      const { error } = await stripe.redirectToCheckout({ sessionId });
 
-      if (result.error) {
-        throw new Error(result.error.message);
+      if (error) {
+        console.error("Stripe checkout error:", error);
       }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error("Error during checkout:", error);
     }
   };
 
   return (
-    <Center>
-      <Button
-        bg='#B4770A'
-        w="7rem"
-        mb="30px"
-        color='white'
-        onClick={handleCheckout}
-        disabled={loading}
-      >
+    <Center className="grey-circle">
+      <Button bg='#B4770A' w="7rem" mb="30px" color='white' onClick={handleCheckout} disabled={loading} >
+
         {loading ? "Traitement..." : "Payer"}
       </Button>
-      {error && <Text color="red.500">Error: {error}</Text>}
+      {error && <Text>Error: {error.message}</Text>}
     </Center>
   );
 };

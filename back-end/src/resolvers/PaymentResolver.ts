@@ -86,25 +86,6 @@ export class PaymentResolver {
     await payment.save();
     return session.id;
    }
-
-   @Mutation(() => PaymentStatusResult)
-  //  async handlePaymentIntentSucceededWebhook(
-  //    @Arg("bookingId") bookingId: string
-  //  ): Promise<PaymentStatusResult> {
-  //    // Update payment status logic here
-  //    // For example, you could update the payment status in your database
-  //    const payment = await Payment.findOne({ where: { booking_id: bookingId } });
-  //    if (!payment) {
-  //      throw new Error(`Payment with booking ID ${bookingId} not found`);
-  //    }
-  //    payment.status = PaymentStatusEnum.Completed;
-  //    await payment.save();
- 
-  //    return {
-  //      success: true,
-  //      message: `Payment for booking ID ${bookingId} successfully updated`,
-  //    };
-  //  }
   @Mutation(() => Boolean)
   async handlePaymentIntentSucceededWebhook(
     @Arg("bookingId") bookingId: string

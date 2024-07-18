@@ -13,13 +13,11 @@ import { getDataSource } from "./database";
 import { PaymentResolver } from "./resolvers/PaymentResolver"; 
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import { webhookHandler } from "./stripe";
+import { webhookHandler, stripe } from "./stripe";
 
 dotenv.config();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-04-10",
-});
+
 
 export type Context = { req: any, res: Response; user: User | null; stripe: Stripe };
 
