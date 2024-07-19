@@ -87,16 +87,16 @@ export class PaymentResolver {
     return session.id;
    }
   @Mutation(() => Boolean)
+  @Mutation(() => Boolean)
   async handlePaymentIntentSucceededWebhook(
     @Arg("bookingId") bookingId: string
   ): Promise<boolean> {
     try {
-      const payment = await Payment.findOne({ where: { booking_id: bookingId } });
+      const payment = await Payment.findOne({ where: { booking: { id: bookingId } } });
       if (!payment) {
         throw new Error(`Payment with booking ID ${bookingId} not found`);
       }
 
-      // Update payment status to "completed" if it's not already updated
       if (payment.status !== PaymentStatusEnum.Confirmed) {
         payment.status = PaymentStatusEnum.Confirmed;
         await payment.save();

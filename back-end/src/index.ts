@@ -13,11 +13,9 @@ import { getDataSource } from "./database";
 import { PaymentResolver } from "./resolvers/PaymentResolver"; 
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import { webhookHandler, stripe } from "./stripe";
+import { stripeRouter, stripe } from "./stripe";
 
 dotenv.config();
-
-
 
 export type Context = { req: any, res: Response; user: User | null; stripe: Stripe };
 
@@ -54,7 +52,7 @@ const startServer = async () => {
   await getDataSource();
 
   const app = express();
-  app.use('/webhook', webhookHandler);
+  app.use('/webhook', stripeRouter);
 
   console.log(`🚀  Server ready at: ${url}`);
 };
