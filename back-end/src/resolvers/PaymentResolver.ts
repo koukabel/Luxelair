@@ -1,5 +1,4 @@
 import {
-  ObjectType,
   Field,
   InputType,
   Arg,
@@ -11,7 +10,7 @@ import Payment, { PaymentStatusEnum } from "../entities/payment";
 import User from "../entities/user";
 import Booking from "../entities/booking";
 import { stripe } from "../stripe";
-import Stripe from "stripe";
+
 
 export
 @InputType()
@@ -52,8 +51,12 @@ export class PaymentResolver {
   async getPaymentById(@Arg("id") id: string): Promise<Payment> {
     return await Payment.getPaymentById(id);
   }
+
+  //this function creates a cehckout session (the payment page) thanks to "stripe.checkout.sessions.create"
+  //this function sends to stripe the necessary to pay like the unit amount, the total price
   @Mutation(() => String)
   async createStripeCheckoutSession(
+    //the arguments we send to stripe
     @Arg('amount') amount: number,
     @Arg('currency') currency: string,
     @Arg('bookingId') bookingId: string,
@@ -79,6 +82,7 @@ export class PaymentResolver {
         },
       ],
       mode: 'payment',
+      //we'll be redirected to one of these urls after the checkout session
       success_url: `${process.env.FRONTEND_URL}/payment/success`,
       cancel_url: `${process.env.FRONTEND_URL}/payment/cancel`,
       metadata: {
@@ -86,7 +90,8 @@ export class PaymentResolver {
         userId,
       },
     });
-
+//we save the payment in our db
+//we save stripeCheckoutSessionId which we will use later to get the successful bookings
     const payment = new Payment();
     payment.amount = amount;
     payment.currency = currency;
