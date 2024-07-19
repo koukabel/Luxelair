@@ -45,7 +45,9 @@ class Booking extends BaseEntity {
   statusPayment!: boolean;
 
   @ManyToOne(() => User, (user) => user.bookings)
+  @ManyToOne(() => User, (user) => user.bookings)
   @Field(() => User)
+  user!: User;
   user!: User;
 
   @ManyToOne(() => Ad, (ad) => ad.bookings, { eager: true })
@@ -89,6 +91,9 @@ class Booking extends BaseEntity {
   }
 
   static async getBookings(): Promise<Booking[]> {
+    const bookings = await Booking.find({
+      relations: ["ad", "ad.user", "user"],
+    });
     const bookings = await Booking.find({
       relations: ["ad", "ad.user", "user"],
     });

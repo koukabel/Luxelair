@@ -1,101 +1,138 @@
-import { LuSettings2 } from "react-icons/lu";
-import{ Button, Flex, IconButton, HStack, Box, AbsoluteCenter, Text, VStack} from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	faHome,
+	faBuilding,
+	faHotel,
+	faDoorOpen,
+	faChessRook,
+	faShip,
+	faWater,
+	faCity,
+	faCogs,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
-import { FaHouse } from "react-icons/fa6";
-
-import { TbBuildingCottage } from "react-icons/tb";
-import { BsBuildings } from "react-icons/bs";
-import { LuHotel } from "react-icons/lu";
-import { BsHouseDoor } from "react-icons/bs";
-import { PiCastleTurret } from "react-icons/pi";
-import { MdOutlineDirectionsBoatFilled } from "react-icons/md";
-import { MdOutlineHouseboat } from "react-icons/md";
-import { MdOutlineCastle } from "react-icons/md";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { Pagination } from "swiper/modules";
 import FilterDialog from "./FilterDialog";
-import { useDisclosure} from "@chakra-ui/react";
-import { FilterTypeQuery, HousingTypeEnum } from "@/gql/graphql";
+
 const FilterSection = () => {
-  const GET_HOUSE_TYPES = gql`
-  query GetHousingTypes {
-    getHousingTypes
-  }
-`;
+	const GET_HOUSE_TYPES = gql`
+		query GetHousingTypes {
+			getHousingTypes
+		}
+	`;
 
+	const FILTER_BY_HOUSETYPE = gql`
+		query filterType($type: String!) {
+			filterByHouseType(type: $type) {
+				housingType
+				id
+			}
+		}
+	`;
 
-const FILTER_BY_HOUSETYPE = gql`
-query filterType($type: String!) {
-  filterByHouseType(type: $type) {
-    housingType
-    id
-  }
-}`;
+	const { data } = useQuery(GET_HOUSE_TYPES);
+	const [filteredAds] = useLazyQuery(FILTER_BY_HOUSETYPE);
+	const router = useRouter();
+	const [selectedType, setSelectedType] = useState(null);
 
+	const searchByHouseType = (type: any) => {
+		setSelectedType(type);
+		filteredAds({ variables: { type: selectedType } });
+		router.push(`/searchResults/type-results?type=${type}`);
+	};
 
-const { data } = useQuery(GET_HOUSE_TYPES);
-const [filteredAds] = useLazyQuery<FilterTypeQuery>(FILTER_BY_HOUSETYPE);
+	const getIconForType = (type: any) => {
+		switch (type) {
+			case "Chalet":
+				return <FontAwesomeIcon icon={faHome} />;
+			case "Appartement":
+				return <FontAwesomeIcon icon={faBuilding} />;
+			case "HotelParticulier":
+				return <FontAwesomeIcon icon={faHotel} />;
+			case "Maison":
+				return <FontAwesomeIcon icon={faDoorOpen} />;
+			case "Chateau":
+				return <FontAwesomeIcon icon={faChessRook} />;
+			case "Bateau":
+				return <FontAwesomeIcon icon={faShip} />;
+			case "Tour":
+				return <FontAwesomeIcon icon={faCity} />;
+			case "LogementSurLEau":
+				return <FontAwesomeIcon icon={faWater} />;
+			default:
+				return <FontAwesomeIcon icon={faBuilding} />;
+		}
+	};
 
-const router = useRouter(); 
-const [selectedType, setSelectedType] = useState<HousingTypeEnum | null>(null); 
-
-const { isOpen, onOpen, onClose } = useDisclosure()
-const searchByHouseType = (type: HousingTypeEnum) => {
-  setSelectedType(type);
-  filteredAds({ variables: { type: selectedType } }); 
-  router.push(`/searchResults/type-results?type=${type}`);
-};
-
-const getIconForType = (type: HousingTypeEnum) => {
-  switch (type) {
-    case HousingTypeEnum.Chalet:
-      return <TbBuildingCottage />;
-    case HousingTypeEnum.Appartement:
-      return <BsBuildings />;
-    case HousingTypeEnum.HotelParticulier:
-      return <LuHotel />;
-    case HousingTypeEnum.Maison:
-      return <BsHouseDoor />;
-    case HousingTypeEnum.Chateau:
-      return <MdOutlineCastle />;
-    case HousingTypeEnum.Bateau:
-      return <MdOutlineDirectionsBoatFilled />;
-    case HousingTypeEnum.Tour:
-      return <PiCastleTurret />;
-    case HousingTypeEnum.LogementSurLEau:
-      return <MdOutlineHouseboat />;
-    default:
-      return <FaHouse />;
-  }
-};
-
-return (
-
-  <HStack spacing='24px' h="10vh" m='5px' justifyContent='center' pos='sticky' top="0" zIndex= "1000" bg="white" > 
-  <Flex alignItems='center'>
-  {data?.getHousingTypes && data.getHousingTypes.map((type: HousingTypeEnum, index: number) => (
-  <VStack pr='50px' key={type}>
-    <Box onClick={() => searchByHouseType(type)} cursor="pointer" color={selectedType === type ? "black" : "gray"}  display="contents"> 
-      {getIconForType(type)}
-      <Text fontSize='xs' textAlign="center">{type}</Text> 
-    </Box>
-  </VStack>
-))}
-
- 
-     <Button leftIcon={<LuSettings2 />} colorScheme='gray' variant='outline' pl='10px' fontSize='sm' onClick={onOpen}>
-    Filtres
-  </Button>
-  {isOpen && <FilterDialog isOpen={isOpen} onClose={onClose} />}
-
-
-  </Flex>
-</HStack>
-
-);
-
+	return (
+		<div
+			style={{
+				position: "sticky",
+				top: "0",
+				zIndex: "0",
+				background: "white",
+				padding: "5px",
+			}}
+		>
+			<Swiper
+				spaceBetween={10}
+				slidesPerView={2}
+				pagination={{ clickable: true }}
+				breakpoints={{
+					640: {
+						slidesPerView: 2,
+						spaceBetween: 10,
+					},
+					768: {
+						slidesPerView: 3,
+						spaceBetween: 10,
+					},
+					1024: {
+						slidesPerView: 5,
+						spaceBetween: 10,
+					},
+				}}
+				modules={[Pagination]}
+			>
+				{data?.getHousingTypes &&
+					data.getHousingTypes.map((type: any, index: any) => (
+						<SwiperSlide key={index}>
+							<div
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									alignItems: "center",
+									margin: "10%",
+									cursor: "pointer",
+									color: selectedType === type ? "black" : "gray",
+								}}
+								onClick={() => searchByHouseType(type)}
+							>
+								{getIconForType(type)}
+								<p style={{ fontSize: "12px", textAlign: "center" }}>{type}</p>
+							</div>
+						</SwiperSlide>
+					))}
+			</Swiper>
+			<button
+				style={{
+					marginTop: "10px",
+					padding: "10px",
+					fontSize: "14px",
+					borderColor: "gray",
+					backgroundColor: "white",
+					cursor: "pointer",
+					width: "100%",
+				}}
+			>
+				<FontAwesomeIcon icon={faCogs} /> Filtres
+			</button>
+		</div>
+	);
 };
 
 export default FilterSection;
-
-

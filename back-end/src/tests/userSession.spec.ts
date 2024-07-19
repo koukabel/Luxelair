@@ -18,14 +18,15 @@
 //     await database.destroy();
 //   });
 
-//   describe("saveNewSession", () => {
-//     it("returns user with session", async () => {
-//       const user = await User.createNewUser({
-//         email: "test@email.com",
-//         firstName: "Test",
-//         lastName: "User",
-//         password: "testpassword",
-//       });
+  describe("saveNewSession", () => {
+    it("returns user with session", async () => {
+      const user = await User.createNewUser({
+        email: "test@email.com",
+        firstName: "Test",
+        lastName: "User",
+        password: "testpassword",
+        roles: ["Traveller"],
+      });
 
 //       const session1 = await UserSession.saveNewSession(user);
 //       const session2 = await UserSession.getSessionById(session1.id);

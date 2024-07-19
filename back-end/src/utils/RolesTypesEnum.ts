@@ -1,4 +1,4 @@
 export enum RolesTypesEnum {
-    Host = "Host",
-    Traveller = "Traveller",
-  }
+  Host = "Host",
+  Traveller = "Traveller",
+}

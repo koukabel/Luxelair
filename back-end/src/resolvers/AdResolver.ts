@@ -79,11 +79,6 @@ export class AdResolver {
   }
 
   @Query(() => [Ad])
-  ads() {
-    return Ad.getAds();
-  }
-
-  @Query(() => [Ad])
   search(@Arg("location") location: string) {
     return Ad.searchAd(location);
   }
@@ -111,5 +106,15 @@ export class AdResolver {
   @Mutation(() => Ad)
   createAd(@Args() args: editOrCreateAd) {
     return Ad.createAd(args);
+  }
+
+  @Mutation(() => Ad)
+  updateAd(@Arg("id", () => ID) id: string, @Args() args: editOrCreateAd) {
+    return Ad.updateAd(id, args);
+  }
+
+  @Mutation(() => Ad)
+  deleteAd(@Arg("id", () => ID) id: string) {
+    return Ad.deleteAd(id);
   }
 }

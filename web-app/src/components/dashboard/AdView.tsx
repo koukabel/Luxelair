@@ -1,7 +1,9 @@
-import { Badge, Box, Image, SimpleGrid } from "@chakra-ui/react";
+import { Badge, Box, Image, SimpleGrid, Link } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
 import { GetMyProfileQuery } from "@/gql/graphql";
 import { GET_MY_PROFIL } from "@/pages/publishAd/CreateAdForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const GET_ADS_BY_USER = gql`
   query GetAdsByUser($getAdsByUserId: ID!) {
@@ -17,6 +19,7 @@ const GET_ADS_BY_USER = gql`
     }
   }
 `;
+
 export default function AdView() {
   const { data: profileData, error } =
     useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
@@ -25,6 +28,7 @@ export default function AdView() {
       getAdsByUserId: profileData?.myProfile.id,
     },
   });
+
   return (
     <>
       <div>
@@ -34,6 +38,7 @@ export default function AdView() {
         {data ? (
           data.getAdsByUser.map((ad) => (
             <Box
+              key={ad.id}
               maxW="sm"
               borderWidth="1px"
               borderRadius="lg"
@@ -42,20 +47,30 @@ export default function AdView() {
               <Image src={`/file-hosting/${ad.id}.jpg`} alt={ad.title} />
 
               <Box p="6">
-                <Box display="flex" alignItems="baseline">
-                  <Badge borderRadius="full" px="2" colorScheme="teal">
-                    New
-                  </Badge>
-                  <Box
-                    color="gray.500"
-                    fontWeight="semibold"
-                    letterSpacing="wide"
-                    fontSize="xs"
-                    textTransform="uppercase"
-                    ml="2"
-                  >
-                    beds &bull; baths
-                  </Box>
+                <Box mb="2">
+                  {ad.equipements.map((equipement, index) => (
+                    <Badge
+                      key={index}
+                      borderRadius="full"
+                      px="2"
+                      colorScheme="teal"
+                      mr="2"
+                      mb="2"
+                    >
+                      {equipement}
+                    </Badge>
+                  ))}
+                </Box>
+
+                <Box
+                  mb="2"
+                  color="gray.500"
+                  fontWeight="semibold"
+                  letterSpacing="wide"
+                  fontSize="xs"
+                  textTransform="uppercase"
+                >
+                  {ad.housingType}
                 </Box>
 
                 <Box
@@ -74,11 +89,20 @@ export default function AdView() {
                     /jour
                   </Box>
                 </Box>
+
+                <Box display="flex" justifyContent="flex-end" mt="2">
+                  <Link
+                    href={`/dashboard/edit/${ad.id}`}
+                    style={{ marginRight: "10px" }}
+                  >
+                    <FontAwesomeIcon icon={faPen} />
+                  </Link>
+                </Box>
               </Box>
             </Box>
           ))
         ) : (
-          <p>Vous avez aucune annonce en ligne</p>
+          <p>Vous n'avez aucune annonce en ligne.</p>
         )}
       </SimpleGrid>
     </>

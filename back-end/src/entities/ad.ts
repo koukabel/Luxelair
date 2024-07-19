@@ -4,17 +4,15 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   Like,
   ILike,
   ManyToOne,
-  OneToMany,
 } from "typeorm";
 import { editOrCreateAd } from "../resolvers/AdResolver";
 import Booking from "./booking";
-import { Between, In } from "typeorm";
+import { Between } from "typeorm";
 import User from "./user";
+import { getCache } from "../cache";
 
 export enum HousingTypeEnum {
   Chalet = "Chalet",
@@ -107,14 +105,12 @@ class Ad extends BaseEntity {
   @Field(() => HousingTypeEnum, { nullable: true })
   housingType!: HousingTypeEnum;
 
-  @ManyToOne(() => User, (user) => user.ads, {
-    eager: true,
-  })
+  @ManyToOne(() => User, (user) => user.ads)
   @Field(() => User)
   user!: User;
 
-  @OneToMany(() => Booking, (booking) => booking.ad)
-  @Field(() => Booking)
+  @ManyToOne(() => Booking, (booking) => booking.ad)
+  @Field(() => [Booking])
   bookings!: Booking[];
 
   constructor(ad?: Partial<Ad>) {
@@ -157,25 +153,35 @@ class Ad extends BaseEntity {
   }
 
   static async getAds(): Promise<Ad[]> {
-    const ads = await Ad.find();
+    const ads = await Ad.find({ relations: ["user"] });
     return ads;
   }
 
   static async getAdById(id: string): Promise<Ad> {
-    const ad = await Ad.findOneBy({ id: id });
+    const ad = await Ad.findOne({
+      where: { id },
+      relations: ["user"],
+    });
     if (!ad) {
-      throw new Error("Ad does not exist");
+      throw new Error("Ad does not exist ");
     }
     return ad;
   }
 
   static async searchAd(location: string): Promise<Ad[]> {
+    const cache = await getCache();
+    const cachedResult = await cache.get(location);
+    if (cachedResult) {
+      return JSON.parse(cachedResult);
+    }
     const adLocation = await Ad.find({
       where: { location: ILike(`%${location}%`) },
+      relations: ["user"],
     });
     if (adLocation.length === 0) {
       throw new Error("Location does not exist");
     }
+    cache.set(location, JSON.stringify(adLocation));
     return adLocation;
   }
 
@@ -222,26 +228,38 @@ class Ad extends BaseEntity {
   static async createAd(adInformations: editOrCreateAd): Promise<Ad> {
     const newAd = new Ad(adInformations);
     const user = await User.getUserById(adInformations.userId);
+    const newRole = "Host";
+    if (!user.roles.includes(newRole)) {
+      user.roles.push(newRole);
+      await User.save(user);
+    }
     newAd.user = user;
     const savedAd = await newAd.save();
     return savedAd;
   }
 
-  static async updateAd(id: string, adInformations: Ad): Promise<Ad> {
-    const adToUpdate = await Ad.findOneBy({ id: id });
+  static async updateAd(
+    id: string,
+    adInformations: editOrCreateAd
+  ): Promise<Ad> {
+    const adToUpdate = await Ad.getAdById(id);
     if (!adToUpdate) {
       throw new Error("Ad does not exist");
     }
-    await Ad.update(id, adInformations);
-    await adToUpdate?.reload();
+    Object.assign(adToUpdate, adInformations);
+
+    if (adInformations.userId) {
+      adToUpdate.user = await User.getUserById(adInformations.userId);
+    }
+    await adToUpdate.save();
+    adToUpdate.reload();
     return adToUpdate;
   }
 
-  static async deleteAd(id: string): Promise<void> {
-    const { affected } = await Ad.delete(id);
-    if (affected === 0) {
-      throw new Error(`Ad with ID ${id} does not exist.`);
-    }
+  static async deleteAd(id: string): Promise<Ad> {
+    const ad = await Ad.getAdById(id);
+    await Ad.delete(id);
+    return ad;
   }
 }
 

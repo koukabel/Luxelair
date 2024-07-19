@@ -10,12 +10,9 @@ import { AuthChecker } from "type-graphql";
 import express, { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
-import { PaymentResolver } from "./resolvers/PaymentResolver"; 
-import Stripe from "stripe";
-import dotenv from "dotenv";
-import { stripeRouter, stripe } from "./stripe";
-
-dotenv.config();
+import { getCache } from "./cache";
+import { generateUsers } from "./fixtures/user";
+import { generateAds } from "./fixtures/ad";
 
 export type Context = { req: any, res: Response; user: User | null; stripe: Stripe };
 
@@ -50,11 +47,13 @@ const startServer = async () => {
 
   await getDataSource();
 
-  const app = express();
-  app.use('/webhook', stripeRouter);
+  if (process.env.NODE_ENV === "dev") {
+    await generateUsers();
+    await generateAds();
+  }
+  await getCache();
 
-  console.log(`🚀  Server ready at: ${url}`);
-  
+  console.log(`🚀  Server ready at : ${url}`);
 };
 
 startServer();

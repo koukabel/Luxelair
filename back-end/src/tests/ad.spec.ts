@@ -1,50 +1,25 @@
-// import { getDataSource } from "../database";
-// import Ad, { HousingTypeEnum } from "../entities/ad";
+import { getDataSource } from "../database";
+import Ad from "../entities/ad";
+import { createAds } from "./mocks/AdData";
+import { createUsers } from "./mocks/userData";
 
 // describe("Ad", () => {
 //   let newAds: any[] = [];
 
-//   beforeEach(async () => {
-//     const database = await getDataSource();
-//     for (const entity of database.entityMetadatas) {
-//       const repository = database.getRepository(entity.name);
-//       await repository.query(
-//         `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
-//       );
-//     }
-//     newAds = await Promise.all([
-//       Ad.createAd({
-//         title: "Chalet de montagne",
-//         description: "Magnifique chalet au cœur des Alpes",
-//         price: 200,
-//         location: "Annecy",
-//         equipements: ["WiFi", "Chauffage", "Piscine"],
-//         housingType: HousingTypeEnum.Chalet,
-//         image: "",
-//         userId: "",
-//       }),
-//       Ad.createAd({
-//         title: "Appartement en ville",
-//         description: "Appartement moderne en centre-ville",
-//         price: 150,
-//         location: "Paris",
-//         equipements: ["WiFi", "Climatisation", "Parking"],
-//         housingType: HousingTypeEnum.Appartement,
-//         image: "",
-//         userId: "",
-//       }),
-//       Ad.createAd({
-//         title: "Maison de campagne",
-//         description: "Belle maison dans la campagne française",
-//         price: 300,
-//         location: "Avignon",
-//         equipements: ["WiFi", "Jardin", "Piscine"],
-//         housingType: HousingTypeEnum.Maison,
-//         image: "",
-//         userId: "",
-//       }),
-//     ]);
-//   });
+  beforeEach(async () => {
+    const database = await getDataSource();
+    for (const entity of database.entityMetadatas) {
+      const repository = database.getRepository(entity.name);
+      await repository.query(
+        `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
+      );
+    }
+
+    const users = await createUsers();
+    const newUser = users[0];
+
+    newAds = await createAds(newUser.id);
+  });
 
 //   afterAll(async () => {
 //     const database = await getDataSource();
