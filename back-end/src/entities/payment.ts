@@ -56,6 +56,10 @@ class Payment extends BaseEntity {
   @Field(() => PaymentStatusEnum, { nullable: true })
   status!: PaymentStatusEnum;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  stripeCheckoutSessionId!: string;
+
   @ManyToOne(() => Booking, (booking) => booking.payments, { eager: true })
   @JoinColumn({ name: "booking_id" })
   @Field(() => Booking)

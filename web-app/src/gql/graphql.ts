@@ -134,6 +134,7 @@ export type Payment = {
   currency: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   status?: Maybe<PaymentStatusEnum>;
+  stripeCheckoutSessionId?: Maybe<Scalars['String']['output']>;
   user: User;
 };
 
@@ -162,8 +163,8 @@ export type Query = {
   getHousingTypes: Array<HousingTypeEnum>;
   getPaymentByBookingById: Payment;
   getPaymentById: Payment;
-  getPaymentStatus: Scalars['String']['output'];
   getRolesTypes: Array<RolesTypesEnum>;
+  getSucceededBookings: Array<Scalars['String']['output']>;
   myProfile: User;
   search: Array<Ad>;
   user: User;
@@ -227,8 +228,8 @@ export type QueryGetPaymentByIdArgs = {
 };
 
 
-export type QueryGetPaymentStatusArgs = {
-  bookingId: Scalars['String']['input'];
+export type QueryGetSucceededBookingsArgs = {
+  userId: Scalars['String']['input'];
 };
 
 
