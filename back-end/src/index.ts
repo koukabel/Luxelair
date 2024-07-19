@@ -44,8 +44,7 @@ const startServer = async () => {
       const user = userSessionId
         ? await User.getUserWithSessionId(userSessionId)
         : null;
-        return { req, res, user, stripe };
-
+      return { req, res, user, stripe };
     },
   });
 
@@ -55,6 +54,7 @@ const startServer = async () => {
   app.use('/webhook', stripeRouter);
 
   console.log(`🚀  Server ready at: ${url}`);
+  
 };
 
 startServer();
