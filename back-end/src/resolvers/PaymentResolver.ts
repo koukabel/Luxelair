@@ -79,70 +79,55 @@ export class PaymentResolver {
     return session.id;
   }
 
-  @Mutation(() => Boolean)
-  @Mutation(() => Boolean)
-  async handlePaymentIntentSucceededWebhook(
-    @Arg("bookingId") bookingId: string
-  ): Promise<boolean> {
-    try {
-      const payment = await Payment.findOne({ where: { booking: { id: bookingId } } });
-      if (!payment) {
-        throw new Error(`Payment with booking ID ${bookingId} not found`);
-      }
 
+
+  @Query(() => String)
+async getPaymentStatus(
+  @Arg("bookingId") bookingId: string
+): Promise<string> {
+  try {
+
+    const payment = await Payment.getPaymentByBookingId(bookingId);
+    if (!payment) {
+      console.log(`Payment not found for booking ID: ${bookingId}`);
+      throw new Error("Payment not found for booking ID");
+    }
+    console.log(`Retrieved payment: ${JSON.stringify(payment)}`);
+
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(payment.id);
+
+    console.log(`Retrieved payment intent from Stripe: ${JSON.stringify(paymentIntent)}`);
+
+    // Check the status of the payment intent and log it
+    const status = paymentIntent.status;
+    console.log(`Payment intent status: ${status}`);
+
+    if (status === 'succeeded') {
       if (payment.status !== PaymentStatusEnum.Confirmed) {
         payment.status = PaymentStatusEnum.Confirmed;
         await payment.save();
       }
-
-      return true;
-    } catch (error) {
-      console.error("Error updating payment status:", error);
-      return false;
+      console.log(`Payment status updated to: ${PaymentStatusEnum.Confirmed}`);
+      return PaymentStatusEnum.Confirmed;
+    } else if (status === 'canceled') {
+      if (payment.status !== PaymentStatusEnum.Failed) {
+        payment.status = PaymentStatusEnum.Failed;
+        await payment.save();
+      }
+      console.log(`Payment status updated to: ${PaymentStatusEnum.Failed}`);
+      return PaymentStatusEnum.Failed;
+    } else if (status === 'processing' || status === 'requires_action' || status === 'requires_capture' || status === 'requires_confirmation' || status === 'requires_payment_method') {
+      console.log(`Payment status is pending`);
+      return PaymentStatusEnum.Pending;
+    } else {
+      console.error(`Unexpected payment status: ${status}`);
+      return PaymentStatusEnum.Pending;
     }
+  } catch (error) {
+    console.error("Error retrieving payment status:", error);
+    throw new Error("Failed to retrieve payment status");
   }
+}
 
-  @Mutation(() => Boolean)
-  async handleWebhookSuccess(
-    @Arg("payload") payload: string,
-    @Arg("signature") signature: string
-  ): Promise<boolean> {
-    let event: Stripe.Event;
-
-    try {
-      event = stripe.webhooks.constructEvent(
-        payload,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET!
-      );
-      console.log("Webhook event verified successfully:", event);
-    } catch (err) {
-      console.error("Webhook signature verification failed:", err);
-      return false;
-    }
-
-    switch (event.type) {
-      case "payment_intent.succeeded":
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        const metadata = paymentIntent.metadata;
-        if (metadata && metadata.bookingId) {
-          const bookingId = metadata.bookingId;
-          try {
-            console.log(`Payment succeeded for booking ID: ${bookingId}`);
-            const statusUpdated = await this.handlePaymentIntentSucceededWebhook(bookingId);
-            console.log(`Payment status updated: ${statusUpdated}`);
-            return statusUpdated;
-          } catch (error) {
-            console.error("Failed to update payment status:", error);
-            return false;
-          }
-        }
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
-        return false;
-    }
-
-    return true;
-  }
 }
