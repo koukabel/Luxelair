@@ -12,12 +12,8 @@ import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
 import { PaymentResolver } from "./resolvers/PaymentResolver"; 
 import Stripe from "stripe";
-import dotenv from "dotenv";
-import { webhookHandler, stripe } from "./stripe";
-
-dotenv.config();
-
-
+import { stripe } from "./stripe";
+import { createWebhookMiddleware } from "./webhookHandler"; 
 
 export type Context = { req: any, res: Response; user: User | null; stripe: Stripe };
 
@@ -46,17 +42,17 @@ const startServer = async () => {
       const user = userSessionId
         ? await User.getUserWithSessionId(userSessionId)
         : null;
-        return { req, res, user, stripe };
-
+      return { req, res, user, stripe };
     },
   });
 
   await getDataSource();
 
   const app = express();
+  const webhookHandler = await createWebhookMiddleware();
   app.use('/webhook', webhookHandler);
-
   console.log(`🚀  Server ready at: ${url}`);
+  
 };
 
 startServer();

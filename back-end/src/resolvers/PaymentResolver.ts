@@ -3,7 +3,7 @@ import Payment, { PaymentStatusEnum } from "../entities/payment";
 import User from "../entities/user";
 import Booking from "../entities/booking";
 import { stripe } from "../stripe";
-import PaymentStatusResult from "../utils/PaymentStatusResult";
+import Stripe from "stripe";
 
 
 export @InputType()
@@ -61,7 +61,7 @@ export class PaymentResolver {
         {
           price_data: {
             unit_amount: amountInCents,
-            currency: 'eur',
+            currency,
             product: "prod_QAeATtmABPgraI"
           },
           quantity: 1,
@@ -75,28 +75,20 @@ export class PaymentResolver {
         userId,
       },
     });
-    const payment = Payment.create({
-      amount,
-      currency,
-      status: PaymentStatusEnum.Pending,
-      booking,
-      user,
-    });
 
-    await payment.save();
     return session.id;
-   }
+  }
+
   @Mutation(() => Boolean)
   async handlePaymentIntentSucceededWebhook(
     @Arg("bookingId") bookingId: string
   ): Promise<boolean> {
     try {
-      const payment = await Payment.findOne({ where: { booking_id: bookingId } });
+      const payment = await Payment.findOne({ where: { booking: { id: bookingId } } });
       if (!payment) {
         throw new Error(`Payment with booking ID ${bookingId} not found`);
       }
 
-      // Update payment status to "completed" if it's not already updated
       if (payment.status !== PaymentStatusEnum.Confirmed) {
         payment.status = PaymentStatusEnum.Confirmed;
         await payment.save();
@@ -108,5 +100,48 @@ export class PaymentResolver {
       return false;
     }
   }
-}
 
+  @Mutation(() => Boolean)
+  async handleWebhookSuccess(
+    @Arg("payload") payload: string,
+    @Arg("signature") signature: string
+  ): Promise<boolean> {
+    let event: Stripe.Event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        payload,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET!
+      );
+      console.log("Webhook event verified successfully:", event);
+    } catch (err) {
+      console.error("Webhook signature verification failed:", err);
+      return false;
+    }
+
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const metadata = paymentIntent.metadata;
+        if (metadata && metadata.bookingId) {
+          const bookingId = metadata.bookingId;
+          try {
+            console.log(`Payment succeeded for booking ID: ${bookingId}`);
+            const statusUpdated = await this.handlePaymentIntentSucceededWebhook(bookingId);
+            console.log(`Payment status updated: ${statusUpdated}`);
+            return statusUpdated;
+          } catch (error) {
+            console.error("Failed to update payment status:", error);
+            return false;
+          }
+        }
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+        return false;
+    }
+
+    return true;
+  }
+}
