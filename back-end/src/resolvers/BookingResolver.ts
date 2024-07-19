@@ -63,15 +63,6 @@ export class BookingResolver {
     return Booking.getBookingsByTraveller(userId);
   }
 
-  @Query(() => [Booking])
-  getBookingsByHost(@Arg("userId", () => ID) userId: string) {
-    return Booking.getBookingsByHost(userId);
-  }
-
-  @Query(() => [Booking])
-  getBookingsByTraveller(@Arg("userId", () => ID) userId: string) {
-    return Booking.getBookingsByTraveller(userId);
-  }
   @Query(() => [String])
   async getSucceededBookings(@Arg("userId") userId: string): Promise<string[]> {
     try {

@@ -6,6 +6,7 @@ import { AdResolver } from "./resolvers/AdResolver";
 import User from "./entities/user";
 import { UserResolver } from "./resolvers/UserResolver";
 import { BookingResolver } from "./resolvers/BookingResolver";
+import { PaymentResolver } from "./resolvers/PaymentResolver";
 import { AuthChecker } from "type-graphql";
 import express, { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
@@ -14,7 +15,7 @@ import { getCache } from "./cache";
 import { generateUsers } from "./fixtures/user";
 import { generateAds } from "./fixtures/ad";
 
-export type Context = { req: any, res: Response; user: User | null; stripe: Stripe };
+export type Context = { req: any, res: Response; user: User | null };
 
 const authChecker: AuthChecker<Context> = ({ context }) => {
   return Boolean(context.user);
@@ -41,7 +42,7 @@ const startServer = async () => {
       const user = userSessionId
         ? await User.getUserWithSessionId(userSessionId)
         : null;
-      return { req, res, user, stripe };
+      return { req, res, user };
     },
   });
 
