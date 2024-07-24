@@ -1,19 +1,21 @@
 import "reflect-metadata";
+import "dotenv/config";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { AdResolver } from "./resolvers/AdResolver";
 import User from "./entities/user";
 import { UserResolver } from "./resolvers/UserResolver";
 import { BookingResolver } from "./resolvers/BookingResolver";
+import { PaymentResolver } from "./resolvers/PaymentResolver";
 import { AuthChecker } from "type-graphql";
-import { Response } from "express";
+import express, { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
 import { getCache } from "./cache";
 import { generateUsers } from "./fixtures/user";
 import { generateAds } from "./fixtures/ad";
 
-export type Context = { res: Response; user: User | null };
+export type Context = { req: any, res: Response; user: User | null };
 
 const authChecker: AuthChecker<Context> = ({ context }) => {
   return Boolean(context.user);
@@ -22,7 +24,7 @@ const authChecker: AuthChecker<Context> = ({ context }) => {
 const buildSchemaAsync = async () => {
   const { buildSchema } = await import("type-graphql");
   return buildSchema({
-    resolvers: [AdResolver, UserResolver, BookingResolver],
+    resolvers: [AdResolver, UserResolver, BookingResolver, PaymentResolver],
     validate: true,
     authChecker,
   });
@@ -35,12 +37,12 @@ const startServer = async () => {
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
-    context: async ({ req, res }): Promise<Context> => {
+    context: async ({ req, res }: { req: any; res: any }): Promise<Context> => {
       const userSessionId = getUserSessionIdFromCookie(req);
       const user = userSessionId
         ? await User.getUserWithSessionId(userSessionId)
         : null;
-      return { res: res as Response, user };
+      return { req, res, user };
     },
   });
 

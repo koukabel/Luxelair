@@ -5,11 +5,13 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   In,
+  OneToMany,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import Ad from "./ad";
 import User from "./user";
 import { CreateOrUpdateBooking } from "src/resolvers/BookingResolver";
+import Payment from "./payment";
 
 @Entity()
 @ObjectType()
@@ -30,7 +32,6 @@ class Booking extends BaseEntity {
   @Field()
   totalPrice!: number;
 
-  // Voir après pour mettre un enum pour mettre plusieurs status
   @Column({ default: false })
   @Field()
   status!: boolean;
@@ -47,9 +48,14 @@ class Booking extends BaseEntity {
   @Field(() => User)
   user!: User;
 
-  @ManyToOne(() => Ad, (ad) => ad.bookings)
+
+  @ManyToOne(() => Ad, (ad) => ad.bookings, { eager: true })
   @Field(() => Ad)
   ad!: Ad;
+
+  @OneToMany(() => Payment, (payment) => payment.booking)
+  @Field(() => [Payment])
+  payments!: Payment[];
 
   constructor(booking?: Partial<Booking>) {
     super();
@@ -101,10 +107,10 @@ class Booking extends BaseEntity {
   static async getBooking(id: string): Promise<Booking> {
     const booking = await Booking.findOne({
       where: { id: id },
-      relations: ["ad"],
+      relations: ["ad", "user", "payments"],
     });
     if (!booking) {
-      throw new Error("Booking does not existy");
+      throw new Error("Booking does not exist");
     }
     return booking;
   }
@@ -136,7 +142,7 @@ class Booking extends BaseEntity {
   static async getBookingsByTraveller(userId: string): Promise<Booking[]> {
     const bookings = await Booking.find({
       where: { user: { id: userId } },
-      relations: ["ad", "user"],
+      relations: ["ad", "user", "payments"],  
     });
 
     if (bookings.length === 0) {

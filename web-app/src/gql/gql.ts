@@ -19,10 +19,12 @@ const documents = {
     "\n  mutation CreateUser(\n    $email: String!\n    $password: String!\n    $lastName: String!\n    $firstName: String!\n  ) {\n    createUser(\n      email: $email\n      password: $password\n      lastName: $lastName\n      firstName: $firstName\n    ) {\n      email\n      firstName\n      id\n      lastName\n    }\n  }\n": types.CreateUserDocument,
     "\n    query getEquipements {\n      getEquipmentTypes\n    }\n  ": types.GetEquipementsDocument,
     "\n    query FilerByPrice($max: Float!, $min: Float!) {\n      filerByPrice(max: $max, min: $min) {\n        id\n      }\n    }\n  ": types.FilerByPriceDocument,
-    "\n    query filterType($type: String!) {\n      filterByHouseType(type: $type) {\n        housingType\n        id\n      }\n    }\n  ": types.FilterTypeDocument,
+    "\n  query GetHousingTypes {\n    getHousingTypes\n  }\n": types.GetHousingTypesDocument,
+    "\nquery filterType($type: String!) {\n  filterByHouseType(type: $type) {\n    housingType\n    id\n  }\n}": types.FilterTypeDocument,
     "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n": types.GetMyProfileDocument,
     "\n  mutation SignOut {\n    signOut\n  }\n": types.SignOutDocument,
     "\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n": types.SearchAdDocument,
+    "\nmutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $currency: String!, $amount: Float!) {\n    createStripeCheckoutSession(userId: $userId, bookingId: $bookingId, currency: $currency, amount: $amount)\n  }\n": types.CreateStripeCheckoutSessionDocument,
     "\n\tquery GetMyProfilUpdate {\n\t  myProfile {\n\t\temail\n\t\tfirstName\n\t\tid\n\t\tlastName\n\t\tlocation\n\t\tdescription\n\t\tcity\n\t\tphoneNumber\n\t  }\n\t}\n  ": types.GetMyProfilUpdateDocument,
     "\n\tmutation UpdateUser(\n\t  $email: String!\n\t  $updateUserId: ID!\n\t  $description: String\n\t  $city: String\n\t  $location: String\n\t  $phoneNumber: String\n\t  $lastName: String!\n\t  $firstName: String!\n\t) {\n\t  updateUser(\n\t\temail: $email\n\t\tid: $updateUserId\n\t\tdescription: $description\n\t\tcity: $city\n\t\tlocation: $location\n\t\tphoneNumber: $phoneNumber\n\t\tlastName: $lastName\n\t\tfirstName: $firstName\n\t  ) {\n\t\temail\n\t\tfirstName\n\t\tid\n\t\tlastName\n\t  }\n\t}\n  ": types.UpdateUserDocument,
     "\n  query GetBookingsByTraveller($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        title\n        description\n      }\n    }\n  }\n": types.GetBookingsByTravellerDocument,
@@ -32,6 +34,7 @@ const documents = {
     "\n  query GetMyProfil {\n    myProfile {\n      email\n      firstName\n      id\n      lastName\n      city\n      location\n      phoneNumber\n      description\n    }\n  }\n": types.GetMyProfilDocument,
     "\n    query GetEquipements {\n      getEquipmentTypes\n    }\n  ": types.GetEquipementsDocument,
     "\n  query getAd($adId: ID!) {\n    ad(id: $adId) {\n      id\n      title\n      price\n      location\n      description\n      image\n      equipements\n      housingType\n    }\n  }\n": types.GetAdDocument,
+    "\n  query GetBookingsByAds($getBookingsByAdsId: String!) {\n    getBookingsByAds(id: $getBookingsByAdsId) {\n      checkinDate\n      checkoutDate\n      id\n    }\n  }\n": types.GetBookingsByAdsDocument,
     "\n  query GetBookingsByAds($getBookingsByAdsId: String!) {\n    getBookingsByAds(id: $getBookingsByAdsId) {\n      checkinDate\n      checkoutDate\n      id\n    }\n  }\n": types.GetBookingsByAdsDocument,
     "\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n": types.AdDocument,
     "\n  mutation createBooking(\n    $checkinDate: DateTimeISO!\n    $checkoutDate: DateTimeISO!\n    $adId: String!\n    $userId: String!\n    $statusPayment: Boolean!\n    $totalPrice: Float!\n  ) {\n    createBooking(\n      checkinDate: $checkinDate\n      checkoutDate: $checkoutDate\n      adId: $adId\n      userId: $userId\n      statusPayment: $statusPayment\n      totalPrice: $totalPrice\n    ) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      totalPrice\n    }\n  }\n": types.CreateBookingDocument,
@@ -111,7 +114,7 @@ export function graphql(source: "\n\tmutation UpdateUser(\n\t  $email: String!\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetBookingsByTraveller($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        title\n        description\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBookingsByTraveller($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        title\n        description\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query Query($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      id\n      payments {\n        status\n      }\n      ad {\n        id\n        image\n        location\n        price\n        title\n      }\n    }\n  }\n"): (typeof documents)["\n  query Query($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      id\n      payments {\n        status\n      }\n      ad {\n        id\n        image\n        location\n        price\n        title\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
