@@ -9,7 +9,8 @@ import {
   Arg,
   ID,
 } from "type-graphql";
-
+import { stripe } from "../stripe";
+import Payment from "../entities/payment";
 @ArgsType()
 export class CreateOrUpdateBooking {
   @Field()
@@ -60,5 +61,55 @@ export class BookingResolver {
   @Query(() => [Booking])
   getBookingsByTraveller(@Arg("userId", () => ID) userId: string) {
     return Booking.getBookingsByTraveller(userId);
+  }
+
+
+  //this function uses some info found in the user checkout session (like if teh session is completed and the payment was successful) 
+  //and returns all the  successfully booked reservations
+  @Query(() => [String])
+  async getSucceededBookings(@Arg("userId") userId: string): Promise<string[]> {
+    try {
+      const payments = await Payment.find({ where: { user: { id: userId } } });
+      const succeededBookings: string[] = [];
+
+      for (const payment of payments) {
+        const checkoutSessionId = payment.stripeCheckoutSessionId;
+
+        if (!checkoutSessionId) {
+          console.log(
+            `No Stripe Checkout Session ID for payment ID: ${payment.id}`
+          );
+          continue;
+        }
+
+        try {
+          //stripe.checkout.sessions.retrieve is a native function in stripe
+          const session = await stripe.checkout.sessions.retrieve(
+            checkoutSessionId
+          );
+
+          console.log(
+            `Retrieved checkout session from Stripe: ${JSON.stringify(session)}`
+          );
+
+          if (session.payment_status === "paid") {
+            succeededBookings.push(payment.booking.id);
+            console.log(
+              `Booking ID with succeeded payment`
+            );
+          }
+        } catch (error) {
+          console.error(
+            `Error retrieving checkout session`,
+            error
+          );
+        }
+      }
+
+      return succeededBookings;
+    } catch (error) {
+      console.error("Error retrieving succeeded bookings:", error);
+      throw new Error("Failed to retrieve succeeded bookings");
+    }
   }
 }

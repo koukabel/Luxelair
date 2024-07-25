@@ -3,10 +3,10 @@ import Ad from "./entities/ad";
 import Booking from "./entities/booking";
 import User from "./entities/user";
 import UserSession from "./entities/userSession";
+import Payment from "./entities/payment";
 
 let dataSource: DataSource;
 
-//import { EquipmentResolver } from "./resolvers/EquipementResolver";
 export const getDataSource = async () => {
   if (!dataSource) {
     dataSource = new DataSource({
@@ -15,7 +15,7 @@ export const getDataSource = async () => {
         process.env.NODE_ENV === "test"
           ? process.env.TEST_DATABASE_URL
           : process.env.DATABASE_URL,
-      entities: [Ad, User, Booking, UserSession],
+      entities: [Ad, User, Booking, UserSession, Payment],
       synchronize: true,
     });
     await dataSource.initialize();

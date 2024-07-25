@@ -6,7 +6,6 @@ interface Props {
 const FinalStep: React.FC<Props> = ({ onSubmit }) => {
   const handleClick = () => {
     onSubmit();
-    console.log('sub')
   };
   return (
     <VStack height={'40vh'}> 

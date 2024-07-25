@@ -6,6 +6,7 @@ import { AdResolver } from "./resolvers/AdResolver";
 import User from "./entities/user";
 import { UserResolver } from "./resolvers/UserResolver";
 import { BookingResolver } from "./resolvers/BookingResolver";
+import { PaymentResolver } from "./resolvers/PaymentResolver";
 import { AuthChecker } from "type-graphql";
 import express, { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
@@ -23,7 +24,7 @@ const authChecker: AuthChecker<Context> = ({ context }) => {
 const buildSchemaAsync = async () => {
   const { buildSchema } = await import("type-graphql");
   return buildSchema({
-    resolvers: [AdResolver, UserResolver, BookingResolver],
+    resolvers: [AdResolver, UserResolver, BookingResolver, PaymentResolver],
     validate: true,
     authChecker,
   });

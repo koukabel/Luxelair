@@ -42,7 +42,6 @@ const FilterDialog: React.FC<FilterDialogProps> = ({ onClose, isOpen }) => {
   const [checkboxes, setCheckboxes] = useState<CheckboxesState>({});
 
   const handleSliderValueChange = (newSliderValue: React.SetStateAction<number[]>) => {
-    console.log("New Slider Value:", newSliderValue);
     setNewSliderValue(newSliderValue);
   };
 

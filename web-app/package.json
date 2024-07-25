@@ -23,6 +23,8 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.4.1",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "browser-image-resizer": "^2.4.1",

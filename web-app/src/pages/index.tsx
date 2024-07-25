@@ -8,77 +8,62 @@ import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
 import FilterSection from "@/components/Filters/FilterSection";
-import { Divider, CircularProgress } from "@chakra-ui/react";
-import { Global, css } from "@emotion/react";
-
+import { Divider } from "@chakra-ui/react";
 const GET_ADS = gql`
-	query Ads {
-		getAds {
-			location
-			price
-			title
-			id
-		}
-	}
+  query Ads {
+    getAds {
+      location
+      price
+      title
+      id
+    }
+  }
 `;
 
 export default function HomePage() {
-	const { data } = useQuery<AdsQuery>(GET_ADS);
-	return (
-		<ChakraProvider>
-			<Global
-				styles={css`
-					body {
-						margin: 0;
-						overflow-x: hidden;
-					}
-				`}
-			/>
-			<Navbar />
-			<SearchBar />
-			<Divider />
-			<FilterSection />
-			<Box pos="relative" w="100%" overflow="hidden">
-				<Image
-					margin="auto"
-					objectFit="cover"
-					src="welcome_page.png"
-					alt="Welcome Page"
-					w="100%"
-				/>
-				<Box
-					pos="absolute"
-					top="0"
-					left="0"
-					right="0"
-					bottom="0"
-					display="flex"
-					justifyContent="center"
-					alignItems="center"
-				>
-					<Heading
-						color="white"
-						textAlign="center"
-						fontSize={["2xl", "3xl", "4xl", "5xl"]}
-					>
-						LuxeLair.. Où le bien-être commence
-					</Heading>
-				</Box>
-			</Box>
-			<SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
-				{data?.getAds
-					? data.getAds.map((ad) => (
-							<Card
-								key={ad.id}
-								id={ad.id}
-								price={ad.price}
-								location={ad.location}
-								image={`/file-hosting/${ad.id}.jpg`}
-							/>
-					  ))
-					: null}
-			</SimpleGrid>
-			<Footer />
-		</ChakraProvider>
-	);
+  const { data } = useQuery<AdsQuery>(GET_ADS);
+  return (
+    <ChakraProvider>
+      <Box height="100vh" display="flex" flexDirection="column">
+        <Navbar />
+        <SearchBar />
+        <Divider />
+        <FilterSection />
+        <Box pos="relative">
+          <Image
+            margin="auto"
+            objectFit="cover"
+            src="welcome_page.png"
+            alt="Welcome Page"
+          />
+
+          <Heading
+            w="100%"
+            pos="absolute"
+            top="80%"
+            left="70%"
+            color="white"
+            transform="translate(-50%,-50%)"
+          >
+            LuxeLair.. Où le bien-être commence{" "}
+          </Heading>
+        </Box>
+
+        <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
+          {data?.getAds
+            ? data.getAds.map((ad) => (
+                <Card
+                  key={ad.id}
+                  id={ad.id}
+                  price={ad.price}
+                  location={ad.location}
+                  image={`/file-hosting/${ad.id}.jpg`}
+                />
+              ))
+            : null}
+        </SimpleGrid>
+        <Footer />
+      </Box>
+    </ChakraProvider>
+  );
 }

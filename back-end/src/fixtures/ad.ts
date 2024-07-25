@@ -3,7 +3,7 @@ import Ad from "../entities/ad";
 import { generateUsers } from "./user";
 import { EquipmentTypeEnum, HousingTypeEnum } from "../entities/ad";
 
-const ADS_COUNT = 300;
+const ADS_COUNT = 100;
 
 export const generateAds = async () => {
   const users = await generateUsers();
