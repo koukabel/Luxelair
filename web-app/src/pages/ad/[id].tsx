@@ -168,7 +168,6 @@ export default function Ad() {
 		}
 	}, [dataAds]);
 
-	console.log(disabledDates);
 
 	const newBooking = async () => {
 		try {
@@ -199,7 +198,6 @@ export default function Ad() {
 
 	if (data) {
 		const { ad } = data;
-		console.log(data);
 		return (
 			<ChakraProvider>
 				<Navbar />

@@ -101,7 +101,7 @@ import {
   
 	function handleChange(e: any) {
 	  const { name, value } = e.target;
-	  setupdateUser((prevState) => ({
+	  setupdateUser((prevState: any) => ({
 		...prevState,
 		[name]: value,
 	  }));

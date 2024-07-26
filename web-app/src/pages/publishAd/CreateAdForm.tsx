@@ -181,9 +181,9 @@ export default function CreateAdForm() {
 
 
 	useEffect(() => {
-		// Hide "Previous" button if currentComponent is 1
+		// Hide previous button if currentComponent is 1
 		setHidePreviousButton(currentComponent === 1);
-		// Hide "Next" button if currentComponent is 11
+		// Hide next button if currentComponent is 11
 		setHideNextButton(currentComponent === 10);
 
 		setIsPublicationButtonShown(currentComponent === 10)
