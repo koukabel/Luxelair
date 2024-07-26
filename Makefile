@@ -19,9 +19,3 @@ web-app-test-watch:
 
 web-app-generate-graphql-types:
 	cd web-app && npm run graphql-codegen
-
-back-end-generate-ads: 
-	cd back-end && npm run generate-ads
-
-back-end-generate-users: 
-	cd back-end && npm run generate-users
