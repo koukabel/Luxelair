@@ -46,7 +46,7 @@ export default function SearchHousingTypePage() {
             Aucun logement sur Luxelair ne correspond à vos critères
           </Text>
         ) : (
-          <Box p="3rem" display="flex">
+          <Box p="3rem" display="flex" >
             {data?.filerByPrice.map((ad:any) => (
               <Card
                 key={ad.id}
