@@ -43,7 +43,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "4.1.0",
-    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^15.0.7",
     "@types/jest": "^29.5.12",
     "@types/leaflet": "^1.9.12",
