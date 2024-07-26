@@ -5,7 +5,7 @@ import { useMap, MapContainer, TileLayer } from "react-leaflet";
 import { Heading, VStack } from "@chakra-ui/react";
 import * as L from "leaflet";
 
-//  type for the geosearch result event
+// Define the type for the GeoSearch result event
 interface GeoSearchResultEvent extends L.LeafletEvent {
   location: {
     x: number;
@@ -16,6 +16,7 @@ interface GeoSearchResultEvent extends L.LeafletEvent {
   };
 }
 
+// Define the type for LocationProps
 interface LocationProps {
   onLocationChange: (newLocation: { x: number; y: number; label: string; bounds: any; raw: any }) => void;
 }
@@ -24,24 +25,28 @@ const SearchLocation = ({ provider, onLocationChange }: { provider: any, onLocat
   const map = useMap();
 
   useEffect(() => {
-    const searchControl = new GeoSearchControl({
+    const searchControl = new (GeoSearchControl as any)({
       provider: provider,
       autoComplete: true,
     });
 
     map.addControl(searchControl);
 
-    // event listener to log the location and show the popup
-    map.on('geosearch/showlocation', (event: GeoSearchResultEvent) => {
-      const location = event.location;
-      onLocationChange(` ${location.label}`);
+    // Event listener to handle the location change
+    const handleShowLocation = (event: L.LeafletEvent) => {
+      const geoSearchEvent = event as GeoSearchResultEvent;
+      const location = geoSearchEvent.location;
+      onLocationChange(location);
 
       // Leaflet marker and popup to show the location
       const marker = L.marker([location.y, location.x]).addTo(map);
-      marker.bindPopup(`<b>Adresse trouvée: ${location.label}`).openPopup();
-    });
+      marker.bindPopup(`<b>Adresse trouvée: ${location.label}</b>`).openPopup();
+    };
+
+    map.on('geosearch/showlocation', handleShowLocation);
 
     return () => {
+      map.off('geosearch/showlocation', handleShowLocation);
       map.removeControl(searchControl);
     };
   }, [map, provider, onLocationChange]);

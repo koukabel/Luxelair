@@ -1,4 +1,3 @@
-import { StarIcon } from "@chakra-ui/icons";
 import { Box, Image } from "@chakra-ui/react";
 
 export default function ProfileTravelerImg() {

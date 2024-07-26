@@ -2,7 +2,6 @@ import { gql, useQuery } from "@apollo/client";
 import {
   Box,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
@@ -11,7 +10,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 const GET_BOOKINGS_BY_HOST = gql`
   query GetBookingsByHost($userId: ID!) {
@@ -60,7 +58,7 @@ export default function BookingView() {
     const checkoutDate = new Date(booking.checkoutDate);
     return checkoutDate > new Date();
   });
-  console.log(bookingPending);
+
 
   return (
     <>

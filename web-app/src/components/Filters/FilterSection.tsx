@@ -17,6 +17,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { Pagination } from "swiper/modules";
 import FilterDialog from "./FilterDialog";
+import { useDisclosure} from "@chakra-ui/react";
+
 
 const FilterSection = () => {
 	const GET_HOUSE_TYPES = gql`
@@ -38,7 +40,7 @@ const FilterSection = () => {
 	const [filteredAds] = useLazyQuery(FILTER_BY_HOUSETYPE);
 	const router = useRouter();
 	const [selectedType, setSelectedType] = useState(null);
-
+	const { isOpen, onOpen, onClose } = useDisclosure() 
 	const searchByHouseType = (type: any) => {
 		setSelectedType(type);
 		filteredAds({ variables: { type: selectedType } });
@@ -119,6 +121,7 @@ const FilterSection = () => {
 					))}
 			</Swiper>
 			<button
+			onClick={onOpen}
 				style={{
 					marginTop: "10px",
 					padding: "10px",
@@ -131,6 +134,7 @@ const FilterSection = () => {
 			>
 				<FontAwesomeIcon icon={faCogs} /> Filtres
 			</button>
+			{isOpen && <FilterDialog isOpen={isOpen} onClose={onClose} />}
 		</div>
 	);
 };

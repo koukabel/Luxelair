@@ -5,8 +5,6 @@ import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import SearchBar from "@/components/Navbar/SearchBar";
 import Card from "../../components/Ad/Card";
-import { Key } from "react";
-import { Ad } from "@/gql/graphql";
 
 const SEARCH_AD = gql`
   query FilterByPrice($min: Float!, $max: Float!) {
@@ -48,7 +46,7 @@ export default function SearchHousingTypePage() {
             Aucun logement sur Luxelair ne correspond à vos critères
           </Text>
         ) : (
-          <Box p="3rem" display="flex">
+          <Box p="3rem" display="flex" >
             {data?.filerByPrice.map((ad:any) => (
               <Card
                 key={ad.id}

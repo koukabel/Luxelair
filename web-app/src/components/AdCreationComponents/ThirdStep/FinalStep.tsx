@@ -9,9 +9,7 @@ const FinalStep: React.FC<Props> = ({ onSubmit }) => {
   };
   return (
     <VStack height={'40vh'}> 
-    <Heading p={10} textAlign={"left"}>
-          Félicitations
-      </Heading><Button onClick={handleClick}>Publier mon annonce</Button>
+      <Button onClick={handleClick}>Publier mon annonce</Button>
       </VStack> 
   );
 };

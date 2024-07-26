@@ -10,7 +10,6 @@ import { ObjectType, Field, ID, Float, registerEnumType } from "type-graphql";
 import Booking from "./booking";
 import User from "./user";
 import { EditOrCreatePayment } from "../resolvers/PaymentResolver";
-import PaymentStatusResult from "src/utils/PaymentStatusResult";
 
 export enum PaymentStatusEnum {
   Confirmed = "Confirmé",
