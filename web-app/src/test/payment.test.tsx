@@ -28,7 +28,7 @@ describe("Payment Component", () => {
     const datePicker = screen.getByPlaceholderText("Date d'arrivée");
 
     await act(async () => {
-      fireEvent.change(datePicker, { target: { value: "2024-07-25" } });
+      fireEvent.input(datePicker, { target: { value: "2024-07-25" } });
     });
 
     expect(defaultProps.onCheckInChange).toHaveBeenCalled();
