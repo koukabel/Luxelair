@@ -31,7 +31,7 @@ describe("Payment Component", () => {
       fireEvent.input(datePicker, { target: { value: "2024-07-25" } });
     });
 
-    expect(defaultProps.onCheckInChange).toHaveBeenCalled();
+    expect(defaultProps.onCheckInChange).toHaveBeenCalledTimes(1);
   });
 
   test("calls onCheckOutChange when check-out date is changed", async () => {

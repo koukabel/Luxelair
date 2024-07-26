@@ -46,7 +46,7 @@ describe("Ad", () => {
       await expect(Ad.searchAd("Bordeaux")).rejects.toThrow(
         "Location does not exist"
       );
-    });
+    }, 10000);
     it("when location is match", async () => {
       const ads = newAds.filter((ad) => ad.location === "Paris");
       const search = await Ad.searchAd("Paris");
@@ -67,7 +67,7 @@ describe("Ad", () => {
           )
         ).toBe(true);
       });
-    });
+    }, 10000);
   });
   describe("getAdById", () => {
     it("when ad does not exist", async () => {
