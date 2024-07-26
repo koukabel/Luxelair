@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Payment from "./../components/Annonces/Payment";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 
 describe("Payment Component", () => {
