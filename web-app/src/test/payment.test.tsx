@@ -1,5 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Payment from "./../components/Annonces/Payment";
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
+import { act } from "react-dom/test-utils";
 
 describe("Payment Component", () => {
   const defaultProps = {
@@ -21,24 +24,36 @@ describe("Payment Component", () => {
     expect(screen.getByText(/100 €/i)).toBeInTheDocument();
   });
 
-  test("calls onCheckInChange when check-in date is changed", () => {
+  test("calls onCheckInChange when check-in date is changed", async () => {
     render(<Payment {...defaultProps} />);
     const datePicker = screen.getByPlaceholderText("Date d'arrivée");
-    fireEvent.change(datePicker, { target: { value: "2024-07-25" } });
+
+    await act(async () => {
+      fireEvent.change(datePicker, { target: { value: "2024-07-25" } });
+    });
+
     expect(defaultProps.onCheckInChange).toHaveBeenCalled();
   });
 
-  test("calls onCheckOutChange when check-out date is changed", () => {
+  test("calls onCheckOutChange when check-out date is changed", async () => {
     render(<Payment {...defaultProps} />);
     const datePicker = screen.getByPlaceholderText("Date de départ");
-    fireEvent.change(datePicker, { target: { value: "2024-07-26" } });
+
+    await act(async () => {
+      fireEvent.change(datePicker, { target: { value: "2024-07-26" } });
+    });
+
     expect(defaultProps.onCheckOutChange).toHaveBeenCalled();
   });
 
-  test("calls onSubmit when Réserver button is clicked", () => {
+  test("calls onSubmit when Réserver button is clicked", async () => {
     render(<Payment {...defaultProps} />);
     const button = screen.getByText(/Réserver/i);
-    fireEvent.click(button);
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
     expect(defaultProps.onSubmit).toHaveBeenCalled();
   });
 });

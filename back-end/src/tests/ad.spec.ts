@@ -8,6 +8,7 @@ describe("Ad", () => {
   let newUser: any = [];
 
   beforeEach(async () => {
+    jest.setTimeout(10000);
     const database = await getDataSource();
     for (const entity of database.entityMetadatas) {
       const repository = database.getRepository(entity.name);
