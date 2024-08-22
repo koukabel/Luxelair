@@ -256,10 +256,12 @@ class Ad extends BaseEntity {
     return adToUpdate;
   }
 
-  static async deleteAd(id: string): Promise<Ad> {
+  static async deleteAd(id: string): Promise<void> {
     const ad = await Ad.getAdById(id);
+    if (!ad) {
+      throw new Error("Ad does not exist");
+    }
     await Ad.delete(id);
-    return ad;
   }
 }
 

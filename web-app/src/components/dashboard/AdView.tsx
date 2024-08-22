@@ -20,6 +20,16 @@ const GET_ADS_BY_USER = gql`
   }
 `;
 
+interface Ad {
+  id: string;
+  image: string;
+  location: string;
+  price: number;
+  title: string;
+  housingType: string;
+  description: string;
+}
+
 export default function AdView() {
   const { data: profileData, error } =
     useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
@@ -36,7 +46,7 @@ export default function AdView() {
       </div>
       <SimpleGrid columns={[2, null, 3]} spacing="40px">
         {data ? (
-          data.getAdsByUser.map((ad) => (
+          data.getAdsByUser.map((ad: Ad) => (
             <Box
               key={ad.id}
               maxW="sm"

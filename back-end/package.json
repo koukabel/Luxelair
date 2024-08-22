@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watchAll",
+    "test:watch": "jest --watchAll --detectOpenHandles",
     "test:coverage": "jest --coverage",
     "build": "tsc",
     "start": "node dist/index.js",
@@ -27,6 +27,7 @@
     "nodemon": "^3.0.1",
     "stripe": "^15.7.0",
     "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
