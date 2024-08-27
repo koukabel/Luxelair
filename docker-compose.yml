@@ -2,30 +2,55 @@ version: "3.8"
 
 services:
   back-end:
-    build: ./back-end
+    build:
+      context: ./back-end
+      target: dev
     environment:
+      - NODE_ENV=dev
       - DATABASE_URL=postgres://postgres:password@database:5432/postgres
+      - TEST_DATABASE_URL=postgres://postgres:password@test-database:5432/postgres
+      - CACHE_URL=redis://cache:6379
+    depends_on:
+      - database
     ports:
       - 4000:4000
-    volumes:
-      - ./back-end:/app
-      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./back-end
+          target: /app
+        - action: rebuild
+          path: back-end/package.json
 
   file-hosting:
-    build: ./file-hosting
+    build:
+      context: ./file-hosting
+      target: dev
     ports:
       - 5001:5001
     volumes:
-      - ./file-hosting:/app
-      - /app/node_modules
+      - file-hosting-public:/app/public
+    develop:
+      watch:
+        - action: sync
+          path: ./file-hosting
+          target: /app
+        - action: rebuild
+          path: file-hosting/package.json
 
   web-app:
-    build: ./web-app
+    build:
+      context: ./web-app
+      target: dev
     ports:
       - 3000:3000
-    volumes:
-      - ./web-app:/app
-      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./web-app
+          target: /app
+        - action: rebuild
+          path: web-app/package.json
 
   database:
     image: postgres:15
@@ -34,5 +59,14 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
 
+  test-database:
+    image: postgres:15
+    environment:
+      - POSTGRES_PASSWORD=password
+
+  cache:
+    image: redis
+
 volumes:
   database-data:
+  file-hosting-public:

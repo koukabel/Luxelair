@@ -1,0 +1,121 @@
+* {
+	box-sizing: border-box;
+	font-family: "Montserrat";
+}
+
+body {
+	margin: 0;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: "Roboto";
+}
+
+a {
+	font-family: "Montserrat";
+}
+
+.mainHeading {
+	text-transform: uppercase;
+	background: linear-gradient(to right, #5a5d4c 0%, #b4770a 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.custom-input {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 8px;
+	font-size: 96px;
+}
+
+.custom-datepicker {
+	border: 2px solid #b4770a;
+	border-radius: 4px;
+	margin-left: 0.5rem;
+}
+
+@import url("leaflet/dist/leaflet.css");
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	max-width: 70%;
+	position: relative;
+	top: 14rem;
+	left: 50%;
+	background-color: white;
+	transform: translate(-50%, -50%);
+	border-radius: 10px;
+}
+
+.location-icon {
+	position: absolute;
+	top: 50%;
+	right: 10px; /* Adjust as needed to position the icon */
+	transform: translateY(-50%);
+}
+
+.geosearch.leaflet-bar.leaflet-control.leaflet-control-geosearch.leaflet-geosearch-button {
+	position: absolute;
+	left: 18vw;
+	/* right: 50%; */
+	/* transform: translate(-50%, -50%); */
+	background-color: white;
+	width: 30vw;
+	display: flex;
+	justify-content: flex-start;
+}
+
+.input.glass {
+	width: 26vw;
+	border: none;
+}
+
+a.leaflet-bar-part.leaflet-bar-part-single {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M5.47 13.97l-5.5-5.5c-.4-.4-.4-1 0-1.41s1-.4 1.41 0l4.09 4.09 9.09-9.09c.4-.4 1-.4 1.41 0s.4 1 0 1.41l-9.5 9.5c-.2.2-.45.31-.71.31-.26 0-.52-.1-.71-.29z'/%3E%3C/svg%3E");
+	background-size: 50%;
+}
+
+/* filterSection component style */
+
+.filter-section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 10vh;
+	margin: 5px;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background: white;
+}
+
+.filter-section .filter-icons {
+	display: flex;
+	align-items: center;
+}
+
+.filter-section .filter-icon-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-right: 50px;
+	cursor: pointer;
+	color: gray;
+}
+
+.filter-section .filter-icon-box.selected {
+	color: black;
+}
+
+.filter-section .filter-text {
+	font-size: 12px;
+	text-align: center;
+}
+
+.filter-section .filter-button {
+	margin-left: 10px;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid gray;
+	background: white;
+	cursor: pointer;
+}
