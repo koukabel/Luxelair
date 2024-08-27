@@ -36,11 +36,11 @@ export default function Banner() {
 					<Heading>Information sur Béatrice</Heading>
 					<EditProfile />
 					<Text fontSize="2xl">Je vis à Nice</Text>
-					<Text fontSize="1xl">
+					{/* <Text fontSize="1xl">
 						Bonjour, je m'appelle Béatrice <br /> Je propose ma magnifique villa{" "}
 						<br /> en toute simplicité, profitez de la mer
 						<br />A bientot sur Luxelair
-					</Text>
+					</Text> */}
 				</Flex>
 			</Flex>
 		</>

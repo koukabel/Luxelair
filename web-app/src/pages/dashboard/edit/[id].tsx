@@ -236,7 +236,7 @@ export default function EditAd() {
         }
       }, 1000);
     } catch (error) {
-      console.log(error);
+
     }
   };
   const handleDeleteAd = async () => {

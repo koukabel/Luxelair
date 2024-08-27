@@ -11,6 +11,7 @@ import HouseType from "@/components/AdCreationComponents/FirstStep/HouseType";
 import SecondStep from "@/components/AdCreationComponents/SecondStep/SecondStep";
 import ImageUploader from "@/components/AdCreationComponents/SecondStep/ImageUploader";
 // import Location from "@/components/AdCreationComponents/FirstStep/Location";
+import { useToast } from "@chakra-ui/react";
 import AdTitle from "@/components/AdCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/AdCreationComponents/SecondStep/AdDescription";
 import ThirdStep from "@/components/AdCreationComponents/ThirdStep/ThirdStep";
@@ -47,6 +48,10 @@ export const GET_MY_PROFIL = gql`
 export default function CreateAdForm() {
   const [currentComponent, setCurrentComponent] = useState(1);
   const [progressValue, setProgressValue] = useState(10);
+  const [hidePreviousButton, setHidePreviousButton] = useState(true);
+  const [hideNextButton, setHideNextButton] = useState(false);
+  const [isPublicationButtonShown, setIsPublicationButtonShown] =
+    useState(false);
   const { data, error } = useQuery<GetMyProfileQuery>(GET_MY_PROFIL);
 
   const [publishAdInfo, setPublishAdInfo] =
@@ -86,7 +91,7 @@ export default function CreateAdForm() {
     setProgressValue((prevProgress) => prevProgress - 10);
     setCurrentComponent((currentComponent) => currentComponent - 1);
   };
-
+  const toast = useToast();
   const CREATE_AD = gql`
     mutation adCreation(
       $title: String!
@@ -150,15 +155,40 @@ export default function CreateAdForm() {
         const { id } = data.createAd;
         await uploadImage(id);
         router.push(`/ad/${data.createAd.id}`);
+        toast({
+          title: "Félicitation 🎉",
+          description: "Votre annonce est désormais publiée",
+          status: "success",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error("Error publishing ad:", error);
+      toast({
+        title: "Erreur de publication",
+        description:
+          "Une erreur est survenue lors de la publication de l'annonce.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   const handleSubmit = () => {
     publishAd();
   };
+
+  useEffect(() => {
+    // Hide previous button if currentComponent is 1
+    setHidePreviousButton(currentComponent === 1);
+    // Hide next button if currentComponent is 11
+    setHideNextButton(currentComponent === 10);
+
+    setIsPublicationButtonShown(currentComponent === 10);
+  }, [currentComponent]);
 
   return !data?.myProfile ? (
     <Login />
@@ -235,11 +265,14 @@ export default function CreateAdForm() {
             />
           )}
 
-          {currentComponent === 11 && <FinalStep onSubmit={handleSubmit} />}
           <ControlButtons
             handleNext={handleNext}
             handlePrevious={handlePrevious}
             progressValue={progressValue}
+            hidePreviousButton={hidePreviousButton}
+            hideNextButton={hideNextButton}
+            handleSubmit={handleSubmit}
+            isPublicationButtonShown={isPublicationButtonShown}
           />
         </Box>
         <Footer />

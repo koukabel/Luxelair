@@ -12,9 +12,7 @@ import {
 	Stack,
 	Text,
 } from "@chakra-ui/react";
-import ProfileImg from "../ProfileTravelerImg";
-import { gql, useQuery } from "@apollo/client";
-import { GetMyProfileQuery } from "@/gql/graphql";
+
 
 export default function HostVerify() {
 	return (

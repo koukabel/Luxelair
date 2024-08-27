@@ -2,7 +2,6 @@ import { gql, useQuery } from "@apollo/client";
 import {
   Box,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
@@ -77,7 +76,7 @@ export default function BookingView() {
     const checkoutDate = new Date(booking.checkoutDate);
     return checkoutDate > new Date();
   });
-  console.log(bookingPending);
+
 
   return (
     <>

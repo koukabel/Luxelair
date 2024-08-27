@@ -8,7 +8,7 @@ import { UserResolver } from "./resolvers/UserResolver";
 import { BookingResolver } from "./resolvers/BookingResolver";
 import { PaymentResolver } from "./resolvers/PaymentResolver";
 import { AuthChecker } from "type-graphql";
-import express, { Response } from "express";
+import  { Response } from "express";
 import { getUserSessionIdFromCookie } from "./utils/cookie";
 import { getDataSource } from "./database";
 import { getCache } from "./cache";

@@ -37,7 +37,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onFileSelect }) => {
         <VStack flexDirection={"column"}>  
         <BsCloudUpload />
          <Heading as='h5' size='sm'> Faites glisser vos photos ici</Heading>
-        <Text>Choisissez au moins une photo</Text>
+        <Text>Choisissez une photo</Text>
 
         <Button
               as="label"
