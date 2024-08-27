@@ -159,7 +159,7 @@ const Payment: React.FC<PaymentProps> = ({
                 </Text>
               </Container>
               <Container>
-                <Text align="right" size="md">
+                <Text align="right" size="md" data-testid="total-price">
                   {totalPrice}€
                 </Text>
               </Container>
@@ -169,6 +169,7 @@ const Payment: React.FC<PaymentProps> = ({
                 name="totalPrice"
                 fontFamily="Montserrat"
                 fontWeight="regular"
+                data-testid="price-input"
                 fontSize="16px"
                 type="number"
                 value={`${totalPrice} `}
