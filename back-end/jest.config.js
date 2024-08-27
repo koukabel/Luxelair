@@ -5,4 +5,5 @@ module.exports = {
   testEnvironment: "node",
   maxWorkers: 1,
   detectOpenHandles: true,
+  forceExit: true,
 };
