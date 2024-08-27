@@ -2,6 +2,7 @@ import { getDataSource } from "../database";
 import Ad from "../entities/ad";
 import { createAds } from "./mocks/AdData";
 import { createUsers } from "./mocks/userData";
+import { closeCache } from "src/cache";
 
 describe("Ad", () => {
   let newAds: any[] = [];
@@ -26,6 +27,7 @@ describe("Ad", () => {
   afterAll(async () => {
     const database = await getDataSource();
     await database.destroy();
+    await closeCache();
   });
 
   describe("getAds", () => {

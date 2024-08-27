@@ -1,6 +1,6 @@
 import { RedisClientType, createClient } from "redis";
 
-let cacheClient: RedisClientType;
+let cacheClient: RedisClientType | null;
 
 export const getCache = async () => {
   if (!cacheClient) {
@@ -8,4 +8,11 @@ export const getCache = async () => {
     await cacheClient.connect();
   }
   return cacheClient;
+};
+
+export const closeCache = async () => {
+  if (cacheClient) {
+    await cacheClient.quit();
+    cacheClient = null;
+  }
 };
