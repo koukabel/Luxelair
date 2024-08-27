@@ -2,7 +2,7 @@ import { getDataSource } from "../database";
 import Ad from "../entities/ad";
 import { createAds } from "./mocks/AdData";
 import { createUsers } from "./mocks/userData";
-import { closeCache } from "src/cache";
+import { closeCache } from "../cache";
 
 describe("Ad", () => {
   let newAds: any[] = [];
