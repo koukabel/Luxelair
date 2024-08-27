@@ -1,58 +1,76 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import Payment from "./../components/Annonces/Payment";
 import React from "react";
-import { act } from "react-dom/test-utils";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import Payment from "@/components/Annonces/Payment";
+
+jest.mock("react-datepicker", () => ({
+  __esModule: true,
+  default: ({
+    onChange,
+    selected,
+  }: {
+    onChange: (date: Date | null) => void;
+    selected: Date | null;
+  }) => (
+    <input
+      data-testid="mock-datepicker"
+      type="text"
+      onChange={(e) => onChange(new Date(e.target.value))}
+      value={selected ? selected.toString() : ""}
+    />
+  ),
+}));
 
 describe("Payment Component", () => {
   const defaultProps = {
     price: 100,
     nights: 3,
-    totalPrice: 315, // 100 * 3 + 20 + 15 + 12
-    checkIn: null,
-    checkOut: null,
+    totalPrice: 315,
+    checkIn: new Date("2024-08-01"),
+    checkOut: new Date("2024-08-04"),
     onCheckInChange: jest.fn(),
     onCheckOutChange: jest.fn(),
     onPriceChange: jest.fn(),
     onSubmit: jest.fn(),
-    disabledDates: [],
+    disabledDates: [new Date("2024-08-02")],
   };
 
-  test("renders correctly with default props", () => {
+  it("renders correctly with initial props", () => {
     render(<Payment {...defaultProps} />);
-    expect(screen.getByText(/Prix total:/i)).toBeInTheDocument();
-    expect(screen.getByText(/100 €/i)).toBeInTheDocument();
+
+    const totalPriceElement = screen.getByTestId("total-price");
+    expect(totalPriceElement).toBeInTheDocument();
   });
 
-  test("calls onCheckInChange when check-in date is changed", async () => {
+  it("calls onCheckInChange and onCheckOutChange when dates are changed", () => {
     render(<Payment {...defaultProps} />);
-    const datePicker = screen.getByPlaceholderText("Date d'arrivée");
 
-    await act(async () => {
-      fireEvent.input(datePicker, { target: { value: "2024-07-25" } });
-    });
+    const datePickers = screen.getAllByTestId("mock-datepicker");
+    fireEvent.change(datePickers[0], { target: { value: "2024-08-03" } });
+    fireEvent.change(datePickers[1], { target: { value: "2024-08-05" } });
 
-    expect(defaultProps.onCheckInChange).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onCheckInChange).toHaveBeenCalledWith(
+      new Date("2024-08-03")
+    );
+    expect(defaultProps.onCheckOutChange).toHaveBeenCalledWith(
+      new Date("2024-08-05")
+    );
   });
 
-  test("calls onCheckOutChange when check-out date is changed", async () => {
+  it("calls onSubmit when the button is clicked", () => {
     render(<Payment {...defaultProps} />);
-    const datePicker = screen.getByPlaceholderText("Date de départ");
 
-    await act(async () => {
-      fireEvent.change(datePicker, { target: { value: "2024-07-26" } });
-    });
+    const button = screen.getByText("Réserver");
+    fireEvent.click(button);
 
-    expect(defaultProps.onCheckOutChange).toHaveBeenCalled();
+    expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1);
   });
 
-  test("calls onSubmit when Réserver button is clicked", async () => {
+  it("calls onPriceChange when the price input is changed", () => {
     render(<Payment {...defaultProps} />);
-    const button = screen.getByText(/Réserver/i);
+    const priceInput = screen.getByTestId("price-input");
+    fireEvent.change(priceInput, { target: { value: "200" } });
 
-    await act(async () => {
-      fireEvent.click(button);
-    });
-
-    expect(defaultProps.onSubmit).toHaveBeenCalled();
+    expect(defaultProps.onPriceChange).toHaveBeenCalledWith(200);
   });
 });

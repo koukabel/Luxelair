@@ -10,9 +10,6 @@ import {
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import Rating from "@/components/Reviews/Rating";
-// import TagAd from "./components/TagAd";
-//import Toggle from "@/components/Toggle";
-import Payment from "@/components/Payment/Payment";
 import ProfileImg from "@/components/ProfileTravelerImg";
 import { gql } from "@apollo/client";
 
@@ -44,9 +41,6 @@ export default function Ad() {
         <Text fontSize="1xl">Orléans, Val de Loire </Text>
         <Rating />
       </Stack>
-      <Flex margin="3%" display="flex">
-        <Payment />
-      </Flex>
       <Footer />
     </ChakraProvider>
   );

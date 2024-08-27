@@ -1,6 +1,4 @@
-import { Badge, Box } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
-import Link from "next/link";
+import { Badge, Box, Image, Link } from "@chakra-ui/react";
 
 interface props {
   id: string;
@@ -11,7 +9,7 @@ interface props {
 
 const Card: React.FC<props> = ({ id, location, price, image }) => {
   return (
-    <Link href={`/ad/${id}`}>
+    <Link href={`/ad/${id}`} _hover={{ textDecoration: "none" }}>
       <Box
         cursor="pointer"
         maxW="sm"
