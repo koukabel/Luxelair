@@ -26,10 +26,12 @@ describe("Payment Component", () => {
   test("calls onCheckInChange when check-in date is changed", async () => {
     render(<Payment {...defaultProps} />);
     const datePicker = screen.getByPlaceholderText("Date d'arrivée");
+    screen.debug();
 
     await act(async () => {
-      fireEvent.input(datePicker, { target: { value: "2024-07-25" } });
+      fireEvent.change(datePicker, { target: { value: "2024-07-25" } });
     });
+    screen.debug();
 
     expect(defaultProps.onCheckInChange).toHaveBeenCalledTimes(1);
   });

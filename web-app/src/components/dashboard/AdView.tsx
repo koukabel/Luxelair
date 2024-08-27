@@ -28,6 +28,7 @@ interface Ad {
   title: string;
   housingType: string;
   description: string;
+  equipements: string[];
 }
 
 export default function AdView() {

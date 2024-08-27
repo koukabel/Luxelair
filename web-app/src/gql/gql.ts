@@ -19,30 +19,29 @@ const documents = {
     "\n  mutation CreateUser(\n    $email: String!\n    $password: String!\n    $lastName: String!\n    $firstName: String!\n  ) {\n    createUser(\n      email: $email\n      password: $password\n      lastName: $lastName\n      firstName: $firstName\n    ) {\n      email\n      firstName\n      id\n      lastName\n    }\n  }\n": types.CreateUserDocument,
     "\n    query getEquipements {\n      getEquipmentTypes\n    }\n  ": types.GetEquipementsDocument,
     "\n    query FilerByPrice($max: Float!, $min: Float!) {\n      filerByPrice(max: $max, min: $min) {\n        id\n      }\n    }\n  ": types.FilerByPriceDocument,
-    "\n  query GetHousingTypes {\n    getHousingTypes\n  }\n": types.GetHousingTypesDocument,
-    "\nquery filterType($type: String!) {\n  filterByHouseType(type: $type) {\n    housingType\n    id\n  }\n}": types.FilterTypeDocument,
-    "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n": types.GetMyProfileDocument,
-    "\n  mutation SignOut {\n    signOut\n  }\n": types.SignOutDocument,
+    "\n    query filterType($type: String!) {\n      filterByHouseType(type: $type) {\n        housingType\n        id\n      }\n    }\n  ": types.FilterTypeDocument,
+    "\n\tquery GetMyProfile {\n\t\tmyProfile {\n\t\t\temail\n\t\t\tid\n\t\t\tfirstName\n\t\t\tlastName\n\t\t}\n\t}\n": types.GetMyProfileDocument,
+    "\n\tmutation SignOut {\n\t\tsignOut\n\t}\n": types.SignOutDocument,
     "\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n": types.SearchAdDocument,
     "\nmutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $currency: String!, $amount: Float!) {\n    createStripeCheckoutSession(userId: $userId, bookingId: $bookingId, currency: $currency, amount: $amount)\n  }\n": types.CreateStripeCheckoutSessionDocument,
     "\n\tquery GetMyProfilUpdate {\n\t  myProfile {\n\t\temail\n\t\tfirstName\n\t\tid\n\t\tlastName\n\t\tlocation\n\t\tdescription\n\t\tcity\n\t\tphoneNumber\n\t  }\n\t}\n  ": types.GetMyProfilUpdateDocument,
     "\n\tmutation UpdateUser(\n\t  $email: String!\n\t  $updateUserId: ID!\n\t  $description: String\n\t  $city: String\n\t  $location: String\n\t  $phoneNumber: String\n\t  $lastName: String!\n\t  $firstName: String!\n\t) {\n\t  updateUser(\n\t\temail: $email\n\t\tid: $updateUserId\n\t\tdescription: $description\n\t\tcity: $city\n\t\tlocation: $location\n\t\tphoneNumber: $phoneNumber\n\t\tlastName: $lastName\n\t\tfirstName: $firstName\n\t  ) {\n\t\temail\n\t\tfirstName\n\t\tid\n\t\tlastName\n\t  }\n\t}\n  ": types.UpdateUserDocument,
-    "\n  query GetBookingsByTraveller($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        title\n        description\n      }\n    }\n  }\n": types.GetBookingsByTravellerDocument,
+    "\n  query Query($userId: String!) {\n  getSucceededBookings(userId: $userId)\n}\n": types.QueryDocument,
     "\n\tquery GetMyProfil {\n\t\tmyProfile {\n\t\t\temail\n\t\t\tfirstName\n\t\t\tid\n\t\t\tlastName\n\t\t\tcity\n\t\t\tlocation\n\t\t\tphoneNumber\n\t\t\tdescription\n\t\t}\n\t}\n": types.GetMyProfilDocument,
     "\n  query GetAdsByUser($getAdsByUserId: ID!) {\n    getAdsByUser(id: $getAdsByUserId) {\n      id\n      image\n      location\n      price\n      title\n      housingType\n      equipements\n      description\n    }\n  }\n": types.GetAdsByUserDocument,
     "\n  query GetBookingsByHost($userId: ID!) {\n    getBookingsByHost(userId: $userId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        title\n      }\n      user {\n        firstName\n        lastName\n      }\n    }\n  }\n": types.GetBookingsByHostDocument,
     "\n  query GetMyProfil {\n    myProfile {\n      email\n      firstName\n      id\n      lastName\n      city\n      location\n      phoneNumber\n      description\n    }\n  }\n": types.GetMyProfilDocument,
-    "\n    query GetEquipements {\n      getEquipmentTypes\n    }\n  ": types.GetEquipementsDocument,
     "\n  query getAd($adId: ID!) {\n    ad(id: $adId) {\n      id\n      title\n      price\n      location\n      description\n      image\n      equipements\n      housingType\n    }\n  }\n": types.GetAdDocument,
     "\n  query GetBookingsByAds($getBookingsByAdsId: String!) {\n    getBookingsByAds(id: $getBookingsByAdsId) {\n      checkinDate\n      checkoutDate\n      id\n    }\n  }\n": types.GetBookingsByAdsDocument,
-    "\n  query GetBookingsByAds($getBookingsByAdsId: String!) {\n    getBookingsByAds(id: $getBookingsByAdsId) {\n      checkinDate\n      checkoutDate\n      id\n    }\n  }\n": types.GetBookingsByAdsDocument,
-    "\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n": types.AdDocument,
+    "\n  query Ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n      user {\n        id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.AdDocument,
     "\n  mutation createBooking(\n    $checkinDate: DateTimeISO!\n    $checkoutDate: DateTimeISO!\n    $adId: String!\n    $userId: String!\n    $statusPayment: Boolean!\n    $totalPrice: Float!\n  ) {\n    createBooking(\n      checkinDate: $checkinDate\n      checkoutDate: $checkoutDate\n      adId: $adId\n      userId: $userId\n      statusPayment: $statusPayment\n      totalPrice: $totalPrice\n    ) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      totalPrice\n    }\n  }\n": types.CreateBookingDocument,
-    "\n  query GetBooking($getBookingId: String!) {\n    getBooking(id: $getBookingId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        housingType\n        equipements\n        description\n        image\n        price\n        title\n        location\n      }\n    }\n  }\n": types.GetBookingDocument,
+    "\n  query GetBooking($getBookingId: String!) {\n\tgetBooking(id: $getBookingId) {\n\t  checkinDate\n\t  checkoutDate\n\t  datePayment\n\t  id\n\t  status\n\t  statusPayment\n\t  totalPrice\n\t  ad {\n\t\tid\n\t\thousingType\n\t\tequipements\n\t\tdescription\n\t\timage\n\t\tprice\n\t\ttitle\n\t\tlocation\n\t  }\n\t  user {\n\t\tid\n\t  }\n\t}\n  }\n  ": types.GetBookingDocument,
+    "\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n": types.AdDocument,
     "\n  mutation UpdateAd(\n    $title: String!\n    $description: String!\n    $location: String!\n    $price: Float!\n    $updateAdId: ID!\n    $housingType: HousingTypeEnum\n    $equipements: [String!]\n    $userId: String!\n  ) {\n    updateAd(\n      title: $title\n      description: $description\n      location: $location\n      price: $price\n      id: $updateAdId\n      housingType: $housingType\n      equipements: $equipements\n      userId: $userId\n    ) {\n      id\n      location\n      price\n      title\n      housingType\n      equipements\n      description\n    }\n  }\n": types.UpdateAdDocument,
     "\n  mutation DeleteAd($deleteAdId: ID!) {\n    deleteAd(id: $deleteAdId) {\n      id\n      title\n    }\n  }\n": types.DeleteAdDocument,
     "\n  query Ads {\n    getAds {\n      location\n      price\n      title\n      id\n    }\n  }\n": types.AdsDocument,
-    "\n  query User($userId: ID!) {\n    user(id: $userId) {\n      id\n      lastName\n      location\n      phoneNumber\n      firstName\n      email\n      description\n      city\n    }\n  }\n": types.UserDocument,
+    "\n\tquery User($userId: ID!) {\n\t\tuser(id: $userId) {\n\t\t\tid\n\t\t\tlastName\n\t\t\tlocation\n\t\t\tphoneNumber\n\t\t\tfirstName\n\t\t\temail\n\t\t\tdescription\n\t\t\tcity\n\t\t}\n\t}\n": types.UserDocument,
+    "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n": types.GetMyProfileDocument,
     "\n    mutation adCreation(\n      $title: String!\n      $description: String!\n      $location: String!\n      $price: Float!\n      $equipements: [String!]\n      $housingType: HousingTypeEnum\n      $userId: String!\n    ) {\n      createAd(\n        title: $title\n        description: $description\n        location: $location\n        price: $price\n        equipements: $equipements\n        housingType: $housingType\n        userId: $userId\n      ) {\n        id\n      }\n    }\n  ": types.AdCreationDocument,
     "\n  query FilterByPrice($min: Float!, $max: Float!) {\n    filerByPrice(min: $min, max: $max) {\n      id\n      price\n      location\n      image\n    }\n  }\n": types.FilterByPriceDocument,
     "\nquery SearchAd($location: String!) {\n  search(location: $location) {\n    title\n    price\n    location\n    id\n    description\n  }\n}\n": types.SearchAdDocument,
@@ -94,15 +93,19 @@ export function graphql(source: "\n    query filterType($type: String!) {\n     
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n"): (typeof documents)["\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n"];
+export function graphql(source: "\n\tquery GetMyProfile {\n\t\tmyProfile {\n\t\t\temail\n\t\t\tid\n\t\t\tfirstName\n\t\t\tlastName\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery GetMyProfile {\n\t\tmyProfile {\n\t\t\temail\n\t\t\tid\n\t\t\tfirstName\n\t\t\tlastName\n\t\t}\n\t}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation SignOut {\n    signOut\n  }\n"): (typeof documents)["\n  mutation SignOut {\n    signOut\n  }\n"];
+export function graphql(source: "\n\tmutation SignOut {\n\t\tsignOut\n\t}\n"): (typeof documents)["\n\tmutation SignOut {\n\t\tsignOut\n\t}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n"): (typeof documents)["\n  query SearchAd($location: String!) {\n    search(location: $location) {\n      title\n      price\n      location\n      id\n      description\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nmutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $currency: String!, $amount: Float!) {\n    createStripeCheckoutSession(userId: $userId, bookingId: $bookingId, currency: $currency, amount: $amount)\n  }\n"): (typeof documents)["\nmutation CreateStripeCheckoutSession($userId: String!, $bookingId: String!, $currency: String!, $amount: Float!) {\n    createStripeCheckoutSession(userId: $userId, bookingId: $bookingId, currency: $currency, amount: $amount)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -114,7 +117,7 @@ export function graphql(source: "\n\tmutation UpdateUser(\n\t  $email: String!\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Query($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      id\n      payments {\n        status\n      }\n      ad {\n        id\n        image\n        location\n        price\n        title\n      }\n    }\n  }\n"): (typeof documents)["\n  query Query($userId: ID!) {\n    getBookingsByTraveller(userId: $userId) {\n      id\n      payments {\n        status\n      }\n      ad {\n        id\n        image\n        location\n        price\n        title\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query Query($userId: String!) {\n  getSucceededBookings(userId: $userId)\n}\n"): (typeof documents)["\n  query Query($userId: String!) {\n  getSucceededBookings(userId: $userId)\n}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -134,10 +137,6 @@ export function graphql(source: "\n  query GetMyProfil {\n    myProfile {\n     
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetEquipements {\n      getEquipmentTypes\n    }\n  "): (typeof documents)["\n    query GetEquipements {\n      getEquipmentTypes\n    }\n  "];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
 export function graphql(source: "\n  query getAd($adId: ID!) {\n    ad(id: $adId) {\n      id\n      title\n      price\n      location\n      description\n      image\n      equipements\n      housingType\n    }\n  }\n"): (typeof documents)["\n  query getAd($adId: ID!) {\n    ad(id: $adId) {\n      id\n      title\n      price\n      location\n      description\n      image\n      equipements\n      housingType\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -146,7 +145,7 @@ export function graphql(source: "\n  query GetBookingsByAds($getBookingsByAdsId:
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n"): (typeof documents)["\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n"];
+export function graphql(source: "\n  query Ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n      user {\n        id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  query Ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n      user {\n        id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -154,7 +153,11 @@ export function graphql(source: "\n  mutation createBooking(\n    $checkinDate: 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetBooking($getBookingId: String!) {\n    getBooking(id: $getBookingId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        housingType\n        equipements\n        description\n        image\n        price\n        title\n        location\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBooking($getBookingId: String!) {\n    getBooking(id: $getBookingId) {\n      checkinDate\n      checkoutDate\n      datePayment\n      id\n      status\n      statusPayment\n      totalPrice\n      ad {\n        id\n        housingType\n        equipements\n        description\n        image\n        price\n        title\n        location\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetBooking($getBookingId: String!) {\n\tgetBooking(id: $getBookingId) {\n\t  checkinDate\n\t  checkoutDate\n\t  datePayment\n\t  id\n\t  status\n\t  statusPayment\n\t  totalPrice\n\t  ad {\n\t\tid\n\t\thousingType\n\t\tequipements\n\t\tdescription\n\t\timage\n\t\tprice\n\t\ttitle\n\t\tlocation\n\t  }\n\t  user {\n\t\tid\n\t  }\n\t}\n  }\n  "): (typeof documents)["\n  query GetBooking($getBookingId: String!) {\n\tgetBooking(id: $getBookingId) {\n\t  checkinDate\n\t  checkoutDate\n\t  datePayment\n\t  id\n\t  status\n\t  statusPayment\n\t  totalPrice\n\t  ad {\n\t\tid\n\t\thousingType\n\t\tequipements\n\t\tdescription\n\t\timage\n\t\tprice\n\t\ttitle\n\t\tlocation\n\t  }\n\t  user {\n\t\tid\n\t  }\n\t}\n  }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n"): (typeof documents)["\n  query ad($adId: ID!) {\n    ad(id: $adId) {\n      title\n      price\n      id\n      location\n      housingType\n      equipements\n      description\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -170,7 +173,11 @@ export function graphql(source: "\n  query Ads {\n    getAds {\n      location\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query User($userId: ID!) {\n    user(id: $userId) {\n      id\n      lastName\n      location\n      phoneNumber\n      firstName\n      email\n      description\n      city\n    }\n  }\n"): (typeof documents)["\n  query User($userId: ID!) {\n    user(id: $userId) {\n      id\n      lastName\n      location\n      phoneNumber\n      firstName\n      email\n      description\n      city\n    }\n  }\n"];
+export function graphql(source: "\n\tquery User($userId: ID!) {\n\t\tuser(id: $userId) {\n\t\t\tid\n\t\t\tlastName\n\t\t\tlocation\n\t\t\tphoneNumber\n\t\t\tfirstName\n\t\t\temail\n\t\t\tdescription\n\t\t\tcity\n\t\t}\n\t}\n"): (typeof documents)["\n\tquery User($userId: ID!) {\n\t\tuser(id: $userId) {\n\t\t\tid\n\t\t\tlastName\n\t\t\tlocation\n\t\t\tphoneNumber\n\t\t\tfirstName\n\t\t\temail\n\t\t\tdescription\n\t\t\tcity\n\t\t}\n\t}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n"): (typeof documents)["\n  query GetMyProfile {\n    myProfile {\n      email\n      id\n      firstName\n      lastName\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

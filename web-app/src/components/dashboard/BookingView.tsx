@@ -11,7 +11,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 const GET_BOOKINGS_BY_HOST = gql`
   query GetBookingsByHost($userId: ID!) {
@@ -35,6 +34,24 @@ const GET_BOOKINGS_BY_HOST = gql`
   }
 `;
 
+interface Booking {
+  checkinDate: Date;
+  checkoutDate: Date;
+  datePayment: Date;
+  id: string;
+  status: boolean;
+  statusPayment: boolean;
+  totalPrice: number;
+  ad: {
+    id: string;
+    title: string;
+  };
+  user: {
+    firstName: string;
+    lastName: string;
+  };
+}
+
 export default function BookingView() {
   const router = useRouter();
   const { id } = router.query;
@@ -51,12 +68,12 @@ export default function BookingView() {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  const bookingFinish = data?.getBookingsByHost.filter((booking) => {
+  const bookingFinish = data?.getBookingsByHost.filter((booking: Booking) => {
     const checkoutDate = new Date(booking.checkoutDate);
     return checkoutDate < new Date();
   });
 
-  const bookingPending = data?.getBookingsByHost.filter((booking) => {
+  const bookingPending = data?.getBookingsByHost.filter((booking: Booking) => {
     const checkoutDate = new Date(booking.checkoutDate);
     return checkoutDate > new Date();
   });
@@ -79,7 +96,7 @@ export default function BookingView() {
             </Thead>
             <Tbody>
               {data && bookingPending.length > 0 ? (
-                bookingPending.map((booking) => (
+                bookingPending.map((booking: Booking) => (
                   <Tr key={booking.id}>
                     <Td>
                       {booking.user.firstName} {booking.user.lastName}
@@ -117,7 +134,7 @@ export default function BookingView() {
             </Thead>
             <Tbody>
               {data && bookingFinish.length > 0 ? (
-                bookingFinish.map((booking) => (
+                bookingFinish.map((booking: Booking) => (
                   <Tr key={booking.id}>
                     <Td>
                       {booking.user.firstName} {booking.user.lastName}
