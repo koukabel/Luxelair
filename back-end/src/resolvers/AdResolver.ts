@@ -4,13 +4,16 @@ import {
   ArgsType,
   Field,
   Float,
+  Ctx,
   ID,
   InputType,
   Mutation,
   Query,
   Resolver,
   registerEnumType,
+  createMethodDecorator
 } from "type-graphql";
+import { Context } from "..";
 import Ad, { EquipmentTypeEnum, HousingTypeEnum } from "../entities/ad";
 import { MinLength, Min } from "class-validator";
 
@@ -55,6 +58,16 @@ export class editOrCreateAd {
   @Field()
   userId!: string;
 }
+
+export function AdOwner() {
+  return createMethodDecorator(async ({ args, context }, next) => {
+    if (await (context as Context).user?.isAdOwner(args.id)) {
+      return next();
+    }
+    throw new Error("You must own the ad to perform this action.");
+  });
+}
+
 
 @Resolver()
 export class AdResolver {
@@ -107,12 +120,13 @@ export class AdResolver {
   createAd(@Args() args: editOrCreateAd) {
     return Ad.createAd(args);
   }
-
+  @AdOwner()
   @Mutation(() => Ad)
   updateAd(@Arg("id", () => ID) id: string, @Args() args: editOrCreateAd) {
     return Ad.updateAd(id, args);
   }
 
+  @AdOwner()
   @Mutation(() => Ad)
   deleteAd(@Arg("id", () => ID) id: string) {
     return Ad.deleteAd(id);

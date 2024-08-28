@@ -107,9 +107,9 @@ export default function Register() {
               isClosable: true,
             });
 
-            setTimeout(() => {
+        
               router.push("/");
-            }, 2000);
+   
           }
         } catch (error) {
           toast.close(loadingToastId);
@@ -143,7 +143,6 @@ export default function Register() {
       flexDirection="column"
       width="100wh"
       height="100vh"
-      backgroundColor="gray.200"
       justifyContent="center"
       alignItems="center"
     >
@@ -152,6 +151,8 @@ export default function Register() {
         mb="2"
         justifyContent="center"
         alignItems="center"
+          borderRadius="20px"
+        boxShadow='box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;'
       >
         <Avatar bg="#B4770A" />
         <Heading color="#B4770A">Inscription</Heading>
@@ -222,6 +223,7 @@ export default function Register() {
               )}
             </FormControl>
             <Button
+             borderRadius="20px"
               variant="solid"
               bg="#000000"
               color="white"
