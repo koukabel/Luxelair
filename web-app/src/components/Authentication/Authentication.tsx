@@ -86,9 +86,9 @@ export default function Authentication({ onSignUpClick }: props) {
               isClosable: true,
             });
 
-            setTimeout(() => {
-              router.push(`/profil/traveler/${data.signIn.id}`);
-            }, 2000);
+    
+              router.push(`/`);
+         
           }
         } catch (error) {
           toast.close(loadingToastId);
@@ -112,7 +112,6 @@ export default function Authentication({ onSignUpClick }: props) {
       flexDirection="column"
       width="100wh"
       height="100vh"
-      backgroundColor="gray.200"
       justifyContent="center"
       alignItems="center"
     >
@@ -121,6 +120,8 @@ export default function Authentication({ onSignUpClick }: props) {
         mb="2"
         justifyContent="center"
         alignItems="center"
+        borderRadius="20px"
+        boxShadow='box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;'
       >
         <Avatar bg="#B4770A" />
         <Heading color="#B4770A">Connectez-vous</Heading>
@@ -175,7 +176,7 @@ export default function Authentication({ onSignUpClick }: props) {
                 </FormHelperText>
               </FormControl>
               <Button
-                borderRadius={0}
+                borderRadius="20px"
                 type="submit"
                 variant="solid"
                 bg="#000000"

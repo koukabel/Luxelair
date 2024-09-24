@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import User from "../entities/user";
 
-const USERS_COUNT = 20;
+const USERS_COUNT = 2;
 
 export const generateUsers = async () => {
   const users = [];

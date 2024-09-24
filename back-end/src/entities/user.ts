@@ -162,6 +162,15 @@ class User extends BaseEntity {
     }
     return user.ads;
   }
+
+  async isAdOwner(adId: string): Promise<boolean> {
+    try {
+      const ad = await Ad.getAdById(adId);
+      return this.id === ad.user.id;
+    } catch (error) {
+      return false;
+    }
+  }
 }
 
 export default User;
