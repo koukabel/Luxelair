@@ -10,13 +10,11 @@ import Equipements from "@/components/AdCreationComponents/SecondStep/Equipement
 import HouseType from "@/components/AdCreationComponents/FirstStep/HouseType";
 import SecondStep from "@/components/AdCreationComponents/SecondStep/SecondStep";
 import ImageUploader from "@/components/AdCreationComponents/SecondStep/ImageUploader";
-// import Location from "@/components/AdCreationComponents/FirstStep/Location";
 import { useToast } from "@chakra-ui/react";
 import AdTitle from "@/components/AdCreationComponents/SecondStep/AdTitle";
 import AdDescription from "@/components/AdCreationComponents/SecondStep/AdDescription";
 import ThirdStep from "@/components/AdCreationComponents/ThirdStep/ThirdStep";
 import AdPrice from "@/components/AdCreationComponents/ThirdStep/AdPrice";
-import FinalStep from "@/components/AdCreationComponents/ThirdStep/FinalStep";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import router from "next/router";
 import {
@@ -265,16 +263,16 @@ export default function CreateAdForm() {
             />
           )}
 
-          <ControlButtons
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            progressValue={progressValue}
-            hidePreviousButton={hidePreviousButton}
-            hideNextButton={hideNextButton}
-            handleSubmit={handleSubmit}
-            isPublicationButtonShown={isPublicationButtonShown}
-          />
         </Box>
+        <ControlButtons
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+          progressValue={progressValue}
+          hidePreviousButton={hidePreviousButton}
+          hideNextButton={hideNextButton}
+          handleSubmit={handleSubmit}
+          isPublicationButtonShown={isPublicationButtonShown}
+        />
         <Footer />
       </Box>
     </ChakraProvider>

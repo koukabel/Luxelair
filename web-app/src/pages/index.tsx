@@ -32,13 +32,14 @@ export default function HomePage() {
         <Box pos="relative">
           <Image
             margin="auto"
+            p="10px"
             objectFit="cover"
             src="welcome_page.png"
             alt="Welcome Page"
           />
 
           <Heading
-            w="100%"
+            w="50%"
             pos="absolute"
             top="80%"
             left="70%"

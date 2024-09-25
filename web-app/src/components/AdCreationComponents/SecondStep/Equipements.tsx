@@ -31,18 +31,18 @@ const Equipements: React.FC<Props> = ({ onSelectedEquipmentChange }) =>  {
     setSelectedCards(prevSelectedCards => new Set(prevSelectedCards).add(equipment));
   }
   return (
-    <VStack>
-      <Box
-        margin={"auto"}
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"center"}
-      >
-        <Heading p={10} textAlign={"left"}>
+    <VStack p="2em">
+       <Heading fontSize="x-large" textAlign={"left"}>
           Indiquez aux voyageurs quels sont les équipements de votre logement
         </Heading>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+              justifyContent={"center"}
+      >
+       
         <SimpleGrid
-          p={20}
+          p={10}
           spacing={4}
           templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
         >

@@ -68,7 +68,6 @@ export default function Navbar() {
       width="100%"
       zIndex="1 "
       alignItems="center"
-      boxShadow="0 4px 10px rgba(0, 0, 0, 0.15)"
       p={{ base: 2, md: 4 }}
     >
       <Link href="/" width={"30%"}>

@@ -24,7 +24,7 @@ export default function FirstStep() {
           <Text lineHeight="2" as="b">
             Étape 1
           </Text>
-          <Heading lineHeight="2">Parlez-nous de votre logement</Heading>
+          <Heading  as='h3' size='md'  lineHeight="2">Parlez-nous de votre logement</Heading>
           <Text py="2" fontSize="md" lineHeight="10" textAlign="justify">
             Au cours de cette étape, nous allons vous demander quel type de
             logement vous proposez et si les voyageurs pourront le réserver dans

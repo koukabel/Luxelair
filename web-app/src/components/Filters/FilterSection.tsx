@@ -61,8 +61,6 @@ const FilterSection = () => {
 				return <FontAwesomeIcon icon={faShip} />;
 			case "Tour":
 				return <FontAwesomeIcon icon={faCity} />;
-			case "LogementSurLEau":
-				return <FontAwesomeIcon icon={faWater} />;
 			default:
 				return <FontAwesomeIcon icon={faBuilding} />;
 		}

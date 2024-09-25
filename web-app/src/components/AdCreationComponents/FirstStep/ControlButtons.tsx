@@ -1,4 +1,4 @@
-import { Button, Flex, Progress } from "@chakra-ui/react";
+import { Button, Flex, Progress, Container } from "@chakra-ui/react";
 
 
 
@@ -15,7 +15,7 @@ interface ControlButtonsProps {
 
 const ControlButtons: React.FC<ControlButtonsProps> = ({ handleNext, handlePrevious, progressValue, hidePreviousButton, hideNextButton, handleSubmit, isPublicationButtonShown  }) => {
   return (
-    <div>
+    <div className="controlBtns">
       <Progress colorScheme="yellow" size="sm" value={progressValue} />
       <Flex justifyContent="space-between" p={10}>
       {!hidePreviousButton && <Button bg="black" color="white" onClick={handlePrevious}>Retour</Button>}
