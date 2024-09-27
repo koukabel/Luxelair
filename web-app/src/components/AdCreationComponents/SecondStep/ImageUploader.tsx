@@ -21,7 +21,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onFileSelect }) => {
           
   return (
     <VStack>
-      <Heading>Ajoutez quelques photos de votre maison</Heading>
+      <Heading fontSize="x-large" textAlign={"center"}>Ajoutez quelques photos de votre maison</Heading>
       <Box
         margin={"10"}
         display={"flex"}

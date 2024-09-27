@@ -2,12 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faHome,
 	faBuilding,
-	faHotel,
 	faDoorOpen,
 	faChessRook,
 	faShip,
-	faWater,
 	faCity,
+	faIgloo
 	
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -51,8 +50,10 @@ const FilterSection = () => {
 				return <FontAwesomeIcon icon={faHome} />;
 			case "Appartement":
 				return <FontAwesomeIcon icon={faBuilding} />;
-			case "HotelParticulier":
-				return <FontAwesomeIcon icon={faHotel} />;
+				case "Maison":
+					return <FontAwesomeIcon icon={faDoorOpen} />;
+					case "Igloo":
+						return	<FontAwesomeIcon icon={faIgloo} />
 			case "Maison":
 				return <FontAwesomeIcon icon={faDoorOpen} />;
 			case "Chateau":
@@ -62,7 +63,7 @@ const FilterSection = () => {
 			case "Tour":
 				return <FontAwesomeIcon icon={faCity} />;
 			default:
-				return <FontAwesomeIcon icon={faBuilding} />;
+				return <FontAwesomeIcon icon={faHome} />;
 		}
 	};
 

@@ -2,7 +2,7 @@ import { faker, fakerFR } from "@faker-js/faker";
 import Ad from "../entities/ad";
 import { generateUsers } from "./user";
 import { EquipmentTypeEnum, HousingTypeEnum } from "../entities/ad";
-
+//import image from ""
 const ADS_COUNT = 2;
 
 export const generateAds = async () => {
@@ -14,7 +14,7 @@ export const generateAds = async () => {
     ad.description = fakerFR.lorem.paragraph();
     ad.price = faker.number.int({ min: 800, max: 8000 });
     ad.location = fakerFR.location.city();
-    ad.image = "";
+    ad.image =  ""
     ad.equipements = [
       faker.helpers.arrayElement(
         Object.values(EquipmentTypeEnum)

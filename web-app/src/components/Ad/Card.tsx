@@ -1,13 +1,14 @@
-import { Badge, Box, Image, Link } from "@chakra-ui/react";
+import { Badge, Box, Image, Link, Text } from "@chakra-ui/react";
 
 interface props {
   id: string;
   location: string;
   price: number;
   image: string;
+  title: string
 }
 
-const Card: React.FC<props> = ({ id, location, price, image }) => {
+const Card: React.FC<props> = ({ id, location, price, title, image }) => {
   return (
     <Link href={`/ad/${id}`} _hover={{ textDecoration: "none" }}>
       <Box
@@ -17,29 +18,33 @@ const Card: React.FC<props> = ({ id, location, price, image }) => {
         borderRadius="lg"
         overflow="hidden"
       >
-        <Image objectFit="cover" src={image} alt={id} />
-
-        <Box p="6"></Box>
+        <Image objectFit="cover" src={image} alt="" />
         <Box display="flex" alignItems="baseline">
           <Badge borderRadius="full" px="2" bg="#B4770A" color="white">
             New
           </Badge>
         </Box>
+      </Box>
+      <Box
+        mt="1"
+        as="h4"
+        lineHeight="tight"
+        noOfLines={1}
+      >
+        {title}
+      </Box>
 
-        <Box
-          mt="1"
-          fontWeight="semibold"
-          as="h4"
-          lineHeight="tight"
-          noOfLines={1}
-        >
-          {location}
-        </Box>
+      <Box
+        mt="1"
+       as="h4"
+        lineHeight="tight"
+        noOfLines={1}
+      >
+           <Text fontSize="sm" color="blackAlpha.600">  {location}</Text>
+      </Box>
 
-        <Box>
-          {price}
-          <Box as="span" color="gray.600" fontSize="sm"></Box>
-        </Box>
+      <Box>
+        <Text fontSize="sm"  > {price}  € par nuit</Text>
       </Box>
     </Link>
   );

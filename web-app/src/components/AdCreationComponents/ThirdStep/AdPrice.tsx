@@ -44,9 +44,13 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
   }
 
   return (
-    <VStack height={"48vh"}>
-      <Box display={"flex"} flexDirection={"column"} justifyContent={"center"}>
-        <Heading p={10} textAlign={"left"}>
+
+      <Box   p="2em"
+      display={'flex'}
+      flexDirection={'column'}
+      gap="1em"
+      justifyContent={'center'}>
+        <Heading  fontSize="x-large" textAlign={"center"}>
           À présent, fixez votre prix
         </Heading>
 
@@ -54,21 +58,24 @@ const AdPrice: React.FC<Props> = ({ value, onChange }) => {
         <Editable
           textAlign="center"
           defaultValue={price.toString()}
-          fontSize="7xl"
+          fontSize="6xl"
           isPreviewFocusable={false}
+            p="10px"
+        
         >
           <EditablePreview />
           <Input
             as={EditableInput}
             width={"30vw"}
             value={price}
-            onChange={handlePriceChange} // Handle input change
+            onChange={handlePriceChange} 
+            p="10px"
           />
-          $
+           € 
           <EditableControls />
         </Editable>
       </Box>
-    </VStack>
+  
   );
 };
 

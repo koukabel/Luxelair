@@ -47,16 +47,22 @@ export type Booking = {
 };
 
 export enum HousingTypeEnum {
-  Appartement = 'Appartement',
-  Bateau = 'Bateau',
-  Chalet = 'Chalet',
-  Chateau = 'Chateau',
-  Duplex = 'Duplex',
-  HotelParticulier = 'Hotel_particulier',
-  LogementSurLEau = 'Logement_sur_l_eau',
-  Maison = 'Maison',
-  Tour = 'Tour'
+  Chalet = "Chalet",
+  Appartement = "Appartement",
+  Maison = "Maison",
+  Chateau = "Chateau",
+  Bateau = "Bateau",
+  Tour = "Tour",
+  Duplex = "Duplex",
+  Studio = "Studio",      
+  Loft = "Loft",            
+  Villa = "Villa",          
+  Penthouse = "Penthouse",  
+  Yourte = "Yourte",        
+  Igloo = "Igloo",         
+  Riad = "Riad"
 }
+
 
 export type Mutation = {
   __typename?: 'Mutation';

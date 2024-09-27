@@ -16,13 +16,14 @@ const AdDecription: React.FC<Props> = ({ value, onChange }) => {
   }
   
   return (
-    <VStack height={'41vh'}>
-      <Box
-        display={'flex'}
-        flexDirection={'column'}
-        justifyContent={'center'}
-      >
-        <Heading p={10} textAlign={'left'}>
+    <Box
+    p="2em"
+      display={'flex'}
+      flexDirection={'column'}
+      justifyContent={'center'}
+        gap="1em"
+    >
+        <Heading  fontSize="x-large" textAlign={"center"}>
         Créez votre description
 
         </Heading>
@@ -30,10 +31,10 @@ const AdDecription: React.FC<Props> = ({ value, onChange }) => {
         <Textarea
           value={decription} 
           onChange={handleInputChange} 
-          size='xl'
+          size='sm'
+          p="10px"
         />
       </Box>
-    </VStack>
   );
 };
 

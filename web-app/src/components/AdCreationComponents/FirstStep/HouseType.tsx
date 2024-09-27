@@ -24,41 +24,34 @@ const HouseType: React.FC<HouseTypeProps> = ({ onSelectedTypeChange }) => {
   };
 
   return (
-    <VStack>
-      <Box
-        margin={"auto"}
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"center"}
+
+    <Box
+      p="2em"
+    >
+      <Heading fontSize="x-large" textAlign={"center"}>
+        Parmi les propositions suivantes, laquelle décrit le mieux votre logement ?
+      </Heading>
+      <SimpleGrid
+        w="100%" padding="10" minChildWidth="150px" spacing="50px"
       >
-        <Heading p={10} textAlign={"left"}>
-          Parmi les propositions suivantes, laquelle décrit le mieux votre logement ?
-        </Heading>
-        <SimpleGrid
-          p={20}
-          spacing={4}
-          templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-        >
-          {data?.getHousingTypes
-            ? data.getHousingTypes.map((type: HousingTypeEnum) => (
-                <Card
-                  key={type}
-                  cursor="pointer"
-                  onClick={() => saveHousingType(type)}
-                  bg={selectedType === type ? "lightGray" : "white"} 
-                >
-                  <CardHeader>
-                    <FaHouse />
-                  </CardHeader>
-                  <CardBody>
-                    <Heading size="sm">{type}</Heading>
-                  </CardBody>
-                </Card>
-              ))
-            : null}
-        </SimpleGrid>
-      </Box>
-    </VStack>
+        {data?.getHousingTypes
+          ? data.getHousingTypes.map((type: HousingTypeEnum) => (
+            <Card
+              key={type}
+              cursor="pointer"
+              onClick={() => saveHousingType(type)}
+              bg={selectedType === type ? "lightGray" : "white"}
+            >
+
+              <CardBody>
+                <Heading textAlign="center" size="sm">{type}</Heading>
+              </CardBody>
+            </Card>
+          ))
+          : null}
+      </SimpleGrid>
+    </Box>
+
   );
 };
 

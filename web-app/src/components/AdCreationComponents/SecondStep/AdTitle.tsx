@@ -16,13 +16,15 @@ const AdTitle: React.FC<Props> = ({ value, onChange }) => {
   }
   
   return (
-    <VStack height={'50vh'}>
+
       <Box
+      p="2em"
         display={'flex'}
         flexDirection={'column'}
+        gap="1em"
         justifyContent={'center'}
       >
-        <Heading p={10} textAlign={'left'}>
+        <Heading fontSize="x-large" textAlign={"center"}>
           À présent, donnez un titre à votre annonce
         </Heading>
         <Text fontSize='md' textAlign={'center'} color={'gray'} p={'10px'}>
@@ -33,9 +35,10 @@ const AdTitle: React.FC<Props> = ({ value, onChange }) => {
           value={title} 
           onChange={handleInputChange} 
           size='sm'
+          p="10px"
         />
       </Box>
-    </VStack>
+
   );
 };
 

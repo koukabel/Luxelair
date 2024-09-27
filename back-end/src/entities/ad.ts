@@ -18,13 +18,19 @@ export enum HousingTypeEnum {
   Chalet = "Chalet",
   Appartement = "Appartement",
   Maison = "Maison",
-  Hotel_particulier = "Hôtel particulier",
   Chateau = "Chateau",
-  Logement_sur_l_eau = "Logement sur l'eau",
   Bateau = "Bateau",
   Tour = "Tour",
-  Duplex = "Duplex"
+  Duplex = "Duplex",
+  Studio = "Studio",        
+  Loft = "Loft",           
+  Villa = "Villa",          
+  Penthouse = "Penthouse",  
+  Yourte = "Yourte",        
+  Igloo = "Igloo",          
+  Riad = "Riad"          
 }
+
 
 export enum EquipmentTypeEnum {
   Climatisation = "Climatisation",

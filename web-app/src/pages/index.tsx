@@ -29,7 +29,7 @@ export default function HomePage() {
         <SearchBar />
         <Divider />
         <FilterSection />
-        <Box pos="relative">
+        {/* <Box pos="relative">
           <Image
             margin="auto"
             p="10px"
@@ -48,7 +48,7 @@ export default function HomePage() {
           >
             LuxeLair.. Où le bien-être commence{" "}
           </Heading>
-        </Box>
+        </Box> */}
 
         <SimpleGrid w="100%" padding="10" minChildWidth="200px" spacing="50px">
           {data?.getAds
@@ -57,6 +57,7 @@ export default function HomePage() {
                   key={ad.id}
                   id={ad.id}
                   price={ad.price}
+                  title= {ad.title}
                   location={ad.location}
                   image={`/file-hosting/${ad.id}.jpg`}
                 />

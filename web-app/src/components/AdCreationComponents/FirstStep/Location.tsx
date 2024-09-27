@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import { useMap, MapContainer, TileLayer } from "react-leaflet";
-import { Heading, VStack } from "@chakra-ui/react";
+import { Heading, VStack, Box } from "@chakra-ui/react";
 import * as L from "leaflet";
 
 //  type for the geosearch result event
@@ -69,15 +69,15 @@ const Location: React.FC<LocationProps> = ({ onLocationChange }) => {
   const initialZoom = 6;
 
   return (
-    <div>
-      <VStack p={"10"}>
-        <Heading>Où est situé votre logement ?</Heading>
+    <Box> 
+      <VStack >
+        <Heading fontSize="x-large" textAlign={"center"} >Où est situé votre logement ?</Heading>
         <Heading
           as={"h6"}
           fontSize="md"
           textAlign={"center"}
           color={"gray"}
-          p={"10px"}
+          padding-top={"10px"}
         >
           Votre adresse est uniquement communiquée aux voyageurs une fois leur
           réservation effectuée.
@@ -86,7 +86,7 @@ const Location: React.FC<LocationProps> = ({ onLocationChange }) => {
       <MapContainer
         center={initialCenter}
         zoom={initialZoom}
-        style={{ height: "500px", width: "100%" }}
+        style={{ height: "350px", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -97,7 +97,7 @@ const Location: React.FC<LocationProps> = ({ onLocationChange }) => {
           onLocationChange={onLocationChange}
         />
       </MapContainer>
-    </div>
+      </Box>
   );
 };
 export default Location;
